@@ -1,11 +1,9 @@
 // Matchplan-Konfiguration.
-// Solange die Webhook-URLs leer sind, läuft die App im Demo-Modus mit Beispieldaten.
-// Sobald die n8n-Workflows stehen, hier die Produktions-URLs eintragen, z. B.:
-//   briefingUrl: 'https://aiva179.app.n8n.cloud/webhook/dashboard-briefing',
-//   checkinUrl:  'https://aiva179.app.n8n.cloud/webhook/dashboard-reflexion',
+// Die URLs zeigen auf den n8n-Workflow "ORCH - Matchplan - v1".
+// Ist der Workflow (noch) nicht aktiv, fällt die App automatisch in den Demo-Modus zurück.
 window.MATCHPLAN_CONFIG = {
   name: 'Lenard',
-  briefingUrl: '',
-  checkinUrl: '',
+  briefingUrl: 'https://aiva179.app.n8n.cloud/webhook/matchplan-briefing',
+  checkinUrl: 'https://aiva179.app.n8n.cloud/webhook/matchplan-checkin',
   timezone: 'America/Los_Angeles',
 };

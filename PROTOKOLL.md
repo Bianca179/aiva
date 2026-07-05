@@ -226,7 +226,28 @@ Design (Entwurf, privatsphäre-konform):
       Installierbar auf dem Homescreen (Manifest + Service Worker, offlinefähig).
       Deploy: Netlify-Site auf dieses Repo zeigen lassen (`netlify.toml` liegt bereit,
       Publish-Ordner `dashboard/`). Webhook-URLs kommen später in `dashboard/config.js`.
-- [ ] Phase 1, Teil 2: n8n-Workflows (Briefing, Check-in-Empfang) + Anbindung an Markus
+- [x] **Agent-IDs eingetragen (Bianca, 2026-07-05):** Markus `1f5336d8-7ccd-4a78-968f-80d1427ce588`,
+      Peter `513b14d5-09af-400f-83a2-c034da98f76c` — beide mit API-Key geteilt. ✅
+- [x] **Phase 1, Teil 2 gebaut: n8n-Workflow „ORCH - Matchplan - v1"** (Code validiert,
+      liegt in `n8n/matchplan-workflow.js`, Import-Datei `n8n/matchplan-workflow.json`):
+      - `GET /webhook/matchplan-briefing` → holt die letzten 7 Check-ins aus der Data Table
+        `lenard_logbuch` (Gedächtnis) → fragt Markus via Langdock-API → liefert Briefing-JSON.
+      - `POST /webhook/matchplan-checkin` → speichert den Abend-Check-in in `lenard_logbuch`
+        (privat); ist eine „Brauchst du was?"-Anfrage dabei, geht NUR diese zusätzlich ins
+        Airtable-Haupt-Logbuch (Quelle „Lenard (Matchplan)").
+      - App (`dashboard/config.js`) zeigt bereits auf diese URLs, fällt automatisch auf
+        Demo-Daten zurück, solange der Workflow nicht aktiv ist.
+- [ ] ⚠️ **BLOCKIERT — Freigabe nötig:** Das Anlegen von Data Table + Workflow in n8n
+      erfordert Biancas Zustimmung, die in dieser Session technisch nicht durchkam.
+      Zwei Wege:
+      1. **Bianca meldet sich im Chat** → Claude versucht die Anlage erneut (Freigabe-Dialog).
+      2. **Manuell (5 Min):** In n8n (a) Data Tables → neue Tabelle `lenard_logbuch` mit
+         Spalten `datum` (Text), `stimmung` (Zahl), `gefuehlt` (Zahl), `frage` (Text),
+         `antwort` (Text), `anfrage` (Text); (b) Workflows → „Import from File" →
+         `n8n/matchplan-workflow.json` → prüfen, ob die Credentials (Header Auth, Airtable)
+         zugeordnet sind → aktivieren.
+- [ ] Test nach Aktivierung: Liefert Markus über die API echte Whoop-Werte? (Claude ruft
+      den Briefing-Webhook auf und prüft die Antwort.)
 - [ ] Prototyp Lenard zeigen → er entscheidet, welche Module dazukommen (E-Mail/Kalender)
 - [ ] Phase 2 bauen (persönliche Assistenz), danach über Lerncoach entscheiden
 - [ ] Selbstverbesserungs-Schleife mit Helga (wöchentliches Feedbackgespräch, n8n)

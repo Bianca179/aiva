@@ -4,7 +4,6 @@
 
   const CFG = window.MATCHPLAN_CONFIG || {};
   const app = document.getElementById('app');
-  const demoMode = !CFG.briefingUrl;
 
   // ---------- Beispieldaten (werden später vom n8n-Briefing-Webhook geliefert) ----------
 
@@ -76,6 +75,42 @@
     return new Date().toLocaleDateString('sv-SE', { timeZone: CFG.timezone || undefined });
   }
 
+  // Briefing laden: n8n-Webhook → Tages-Cache → Demo-Fallback
+  async function loadBriefing() {
+    const cached = store.get('briefing-' + todayKey(), null);
+    if (cached) return cached;
+    if (!CFG.briefingUrl) return { ...MOCK_BRIEFING, demo: true };
+    try {
+      const res = await fetch(CFG.briefingUrl);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const b = await res.json();
+      if (b.error || !Array.isArray(b.text)) throw new Error('Ungültige Antwort');
+      const briefing = {
+        recovery: b.recovery ?? null,
+        sleepHours: b.sleepHours ?? null,
+        sleepGoal: b.sleepGoal ?? 8.5,
+        strainYesterday: b.strainYesterday ?? null,
+        focus: store.get('focus', MOCK_BRIEFING.focus),
+        text: b.text.length ? b.text : ['Kein Briefing-Text erhalten.'],
+        todos: Array.isArray(b.todos)
+          ? b.todos.map((t, i) => (typeof t === 'string' ? { id: 't' + i, text: t } : t))
+          : [],
+        from: b.from || 'Markus',
+        demo: false,
+      };
+      store.set('briefing-' + todayKey(), briefing);
+      return briefing;
+    } catch (e) {
+      console.warn('Briefing nicht erreichbar, Demo-Daten', e);
+      return { ...MOCK_BRIEFING, demo: true };
+    }
+  }
+
+  function fmtNum(v, suffix) {
+    if (v == null) return '–';
+    return String(v).replace('.', ',') + (suffix || '');
+  }
+
   async function submitCheckin(data) {
     const all = store.get('checkins', {});
     all[todayKey()] = data;
@@ -110,9 +145,19 @@
 
   // ---------- View: Heute ----------
 
-  function viewHeute() {
-    const b = MOCK_BRIEFING;
-    const rs = recoveryStatus(b.recovery);
+  async function viewHeute() {
+    app.replaceChildren(el(`
+      <div>
+        <header class="greeting">
+          <h1>Servus ${esc(CFG.name || '')} 👋</h1>
+          <p class="date">Briefing wird geladen …</p>
+        </header>
+      </div>
+    `));
+
+    const b = await loadBriefing();
+    if (currentView !== 'heute') return;
+    const rs = b.recovery != null ? recoveryStatus(b.recovery) : null;
     const dateStr = new Date().toLocaleDateString('de-DE', {
       weekday: 'long', day: 'numeric', month: 'long',
       timeZone: CFG.timezone || undefined,
@@ -120,7 +165,7 @@
 
     app.replaceChildren(el(`
       <div>
-        ${demoMode ? '<div class="demo-banner">Demo-Modus — Beispieldaten, noch nicht mit Whoop verbunden</div>' : ''}
+        ${b.demo ? '<div class="demo-banner">Demo-Modus — Beispieldaten, Verbindung zu Markus noch nicht aktiv</div>' : ''}
         <header class="greeting">
           <h1>Servus ${esc(CFG.name || '')} 👋</h1>
           <p class="date">${esc(dateStr)} · Irvine</p>
@@ -131,16 +176,16 @@
           <h2>Dein Körper heute</h2>
           <div class="stats">
             <div class="stat">
-              <div class="value">${b.recovery}<small> %</small></div>
+              <div class="value">${b.recovery != null ? b.recovery + '<small> %</small>' : '–'}</div>
               <div class="label">Recovery</div>
-              <div class="status ${rs.cls}"><span class="dot"></span>${rs.icon} ${esc(rs.label)}</div>
+              ${rs ? `<div class="status ${rs.cls}"><span class="dot"></span>${rs.icon} ${esc(rs.label)}</div>` : ''}
             </div>
             <div class="stat">
-              <div class="value">${String(b.sleepHours).replace('.', ',')}<small> h</small></div>
-              <div class="label">Schlaf (Ziel ${String(b.sleepGoal).replace('.', ',')} h)</div>
+              <div class="value">${fmtNum(b.sleepHours)}<small>${b.sleepHours != null ? ' h' : ''}</small></div>
+              <div class="label">Schlaf (Ziel ${fmtNum(b.sleepGoal)} h)</div>
             </div>
             <div class="stat">
-              <div class="value">${String(b.strainYesterday).replace('.', ',')}</div>
+              <div class="value">${fmtNum(b.strainYesterday)}</div>
               <div class="label">Strain gestern</div>
             </div>
           </div>
@@ -154,16 +199,17 @@
           <p class="von">— ${esc(b.from)}</p>
         </section>
 
+        ${b.todos.length ? `
         <section class="card">
           <h2>Heute erledigen</h2>
           <ul class="todo-list" id="todos"></ul>
-        </section>
+        </section>` : ''}
       </div>
     `));
 
     const doneMap = store.get('todos-' + todayKey(), {});
     const ul = document.getElementById('todos');
-    b.todos.forEach(todo => {
+    if (ul) b.todos.forEach(todo => {
       const li = el(`
         <li class="${doneMap[todo.id] ? 'done' : ''}">
           <button class="todo-check ${doneMap[todo.id] ? 'done' : ''}"
@@ -304,7 +350,7 @@
 
     app.replaceChildren(el(`
       <div>
-        ${demoMode ? '<div class="demo-banner">Demo-Modus — Beispieldaten</div>' : ''}
+        <div class="demo-banner">Beispieldaten — echte Wochen-Ansicht folgt mit deinen Check-ins</div>
         <header class="greeting"><h1>Deine Woche</h1>
           <p class="date">Gefühl vs. Messung — wo liegen sie auseinander?</p>
         </header>
@@ -324,12 +370,14 @@
   // ---------- Navigation ----------
 
   const views = { heute: viewHeute, checkin: viewCheckin, woche: viewWoche };
+  let currentView = 'heute';
 
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.tab').forEach(t =>
         t.setAttribute('aria-selected', String(t === tab)));
-      views[tab.dataset.view]();
+      currentView = tab.dataset.view;
+      views[currentView]();
       window.scrollTo(0, 0);
     });
   });
