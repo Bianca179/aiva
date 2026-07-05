@@ -214,7 +214,15 @@ Design (Entwurf, privatsphäre-konform):
 - [x] Grundfragen geklärt (Gerät, Datenquellen, Buy-in, Plattform) — 2026-07-05
 - [ ] Phasenplan von Bianca bestätigen lassen
 - [ ] Technische Restfragen klären (Langdock-API, Whoop-Anbindung, Hosting)
-- [ ] Phase 1 bauen: Mobile PWA mit Whoop-Tages-Briefing + Abend-Check-in
+- [x] **Phase 1, Teil 1 gebaut (2026-07-05): PWA „Matchplan"** im Ordner `dashboard/`
+      — läuft im Demo-Modus mit Beispieldaten. Drei Ansichten: **Heute** (Briefing mit
+      Recovery/Schlaf/Strain, Wochenfokus, abhakbare To-dos), **Check-in** (4 Schritte:
+      Stimmung per Emoji-Tap, gefühlte Fitness 1–10, rotierende Frage, „Brauchst du
+      was?" — alles skippable), **Woche** (Tabelle Stimmung × Gefühlt × Recovery).
+      Installierbar auf dem Homescreen (Manifest + Service Worker, offlinefähig).
+      Deploy: Netlify-Site auf dieses Repo zeigen lassen (`netlify.toml` liegt bereit,
+      Publish-Ordner `dashboard/`). Webhook-URLs kommen später in `dashboard/config.js`.
+- [ ] Phase 1, Teil 2: n8n-Workflows (Briefing, Check-in-Empfang) + Anbindung an Markus
 - [ ] Prototyp Lenard zeigen → er entscheidet, welche Module dazukommen (E-Mail/Kalender)
 - [ ] Phase 2 bauen (persönliche Assistenz), danach über Lerncoach entscheiden
 - [ ] Selbstverbesserungs-Schleife mit Helga (wöchentliches Feedbackgespräch, n8n)
