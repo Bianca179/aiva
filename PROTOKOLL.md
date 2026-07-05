@@ -144,6 +144,56 @@ erinnert an Vorsätze → Umsetzung wird sichtbar. Genau das „Führen-Lassen".
 
 ---
 
+## 3b. Design des Abend-Check-ins („Locker Room", Stand 2026-07-05)
+
+**Wunsch Bianca:** Stimmung tracken, wahrgenommenes Fitnesslevel erfassen, Reflexionsfragen
+(„Was hast du heute für deine Zukunft getan? Welche Extra-Meile bist du gelaufen? Was
+brauchst du?") — und vor allem: ihm das Gefühl geben, **dass er in Führung ist**.
+Ausdrücklich: Es darf **nicht nach Coaching anmuten**.
+
+**Design-Prinzipien (Claude):**
+
+1. **Match-Statistik statt Therapiestunde.** Stimmung und gefühlte Fitness sind für einen
+   Athleten normale Selbst-Ratings (RPE kennt er aus dem Training). Ein Tap, keine Worte nötig.
+2. **Taps vor Text.** 2 Taps Pflichtprogramm (~10 Sek.), Freitext immer optional, alles
+   skippable — ohne schlechtes Gewissen, ohne Streak-Vorwürfe.
+3. **Eine rotierende Frage pro Abend, nie alle auf einmal.** Kumpel-Ton, keine
+   „Warum"-Fragen.
+4. **Antworten haben sichtbare Konsequenzen.** Das Briefing am Morgen zitiert SEINE Worte
+   („Du hast gesagt, dir fehlt Schlaf → heute 22:30"). Sonst ist Reflexion nur Hausaufgabe.
+5. **Er führt strukturell:** Er setzt den Wochenfokus selbst; die Agenten richten sich danach.
+   „Was brauchst du?" wird ein echter Request-Kanal — was er anfragt, passiert. Das System
+   arbeitet für ihn, nicht er für das System.
+6. **Muster entdecken statt belehren:** Wochen-Ansicht Stimmung × gefühlte Fitness ×
+   Whoop-Recovery. Die Lücke zwischen „gefühlt" und „gemessen" ist Athleten-Gold — er zieht
+   die Schlüsse selbst.
+
+**Check-in-Ablauf (60–90 Sekunden, abends):**
+
+| Schritt | Frage | Format |
+|---|---|---|
+| 1 | „Wie war der Tag?" | 1 Tap (5 Stufen, Emoji) — Stimmung |
+| 2 | „Wie fit fühlst du dich?" | 1 Tap (Skala 1–10) — wahrgenommenes Fitnesslevel |
+| 3 | Eine Frage aus dem rotierenden Pool | Freitext, 1 Zeile, skippable |
+| 4 | „Brauchst du was?" | Freitext → Request-Kanal (landet sichtbar bei den Richtigen) |
+
+**Fragen-Pool (Biancas Fragen, entschult formuliert — rotierend):**
+
+- „Was war heute dein bester Move — auf oder neben dem Platz?" *(„für deine Zukunft getan")*
+- „Wo bist du heute übers Pflichtprogramm hinaus?" *(„Extra-Meile" — auch ‚nirgends' ist ok)*
+- „Was hat heute Energie gezogen?" *(„was fehlt dir")*
+- „Was würde morgen leichter machen?" *(„was brauchst du" — lösungsorientiert statt bedürftig)*
+- „Worauf freust du dich morgen?"
+
+**⚠️ Offene Design-Entscheidung — Privatsphäre des Logbuchs:**
+Stimmung und Reflexionen sind sensibel. Empfehlung: **Lenards Logbuch gehört Lenard** —
+eigene Tabelle, Rohantworten sieht nur er (bzw. seine Agenten fürs Briefing). Nur der
+„Brauchst du was?"-Kanal geht explizit nach außen (an Bianca/Agenten). Das muss ihm
+transparent gesagt werden — es ist der Kern von „er ist in Führung": Wer geführt wird,
+ohne zu wissen wer mitliest, ist nicht in Führung. → Bianca entscheidet.
+
+---
+
 ## 4. Nächste Schritte
 
 - [x] Grundfragen geklärt (Gerät, Datenquellen, Buy-in, Plattform) — 2026-07-05
