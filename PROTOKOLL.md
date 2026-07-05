@@ -177,6 +177,10 @@ Ausdrücklich: Es darf **nicht nach Coaching anmuten**.
 | 3 | Eine Frage aus dem rotierenden Pool | Freitext, 1 Zeile, skippable |
 | 4 | „Brauchst du was?" | Freitext → Request-Kanal (landet sichtbar bei den Richtigen) |
 
+**Sprachregel (Bianca, 2026-07-05):** Lenard wird immer **Lenard** genannt — keine
+Spitznamen, keine Verniedlichungen, nirgends (App, Briefings, Agenten-Prompts).
+Begründung Bianca: Spitznamen verändern die Identität. Gilt verbindlich für alle Texte.
+
 **Fragen-Pool (Biancas Fragen, entschult formuliert — rotierend):**
 
 - „Was war heute dein bester Move — auf oder neben dem Platz?" *(„für deine Zukunft getan")*
