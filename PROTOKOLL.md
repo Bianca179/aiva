@@ -68,12 +68,61 @@ Ein **Dashboard**, das es ihm leicht macht, „sich führen zu lassen" — d. h.
   Ein Morgen-Briefing aus seinen Whoop-Daten („Recovery 34 % — heute lockeres Training,
   früh ins Bett") ist dafür ideal: seine Daten, sein Sport, null Aufwand.
 
+**Nachtrag Bianca (2026-07-05, 2. Runde):**
+
+- ✅ **Einverständnis geklärt:** Lenard hat der Erstellung der Bots zugestimmt — er nutzt sie
+  nur aktuell nicht. Das Opt-in-Thema ist damit entschärft; es geht um **Adoption**, nicht
+  um Erlaubnis.
+- ✅ **Netlify-Account vorhanden** → Hosting der PWA geklärt.
+- ➕ **Neues Modul:** **Logbuch / Gedächtnis / Reflexion** — wird über **n8n** gesteuert.
+
+**Befund aus Biancas bestehender Infrastruktur (von Claude erhoben, 2026-07-05):**
+
+- **n8n-Cloud-Instanz:** `aiva179.app.n8n.cloud` — mit funktionierendem Muster:
+  - `ORCH - Agent-Router v1.1`: Webhook → Airtable-Registry → **Langdock-Agent-API**
+    (`api.langdock.com/agent/v1/chat/completions`, Header-Auth-Credential vorhanden ✅)
+    → Antwort → Logbuch-Eintrag.
+  - `ORCH - Abendreflexion v1`: täglich 17:00, 3 Reflexionsfragen → Claude strukturiert
+    → Airtable-Logbuch. **Dieses Muster übernehmen wir für Lenards Reflexion.**
+  - Credentials vorhanden: Langdock (Header Auth), Gmail, Google Calendar, Slack,
+    Anthropic, Airtable, Telegram u. a.
+- **Airtable-Basis `app9r4BK5FJTU219P`** („Team"): Registry mit 94 Agenten, Logbuch-,
+  Präzedenzfälle- und Skills-Tabellen.
+- **Lenards Agenten in der Registry (Team = „Lenard", Cluster „Privat/Familie"):**
+  | Agent | Funktion | Langdock-Agent-ID |
+  |---|---|---|
+  | **Markus** | Sports & Performance (= Whoop-/Fitness-Bot) | ❌ fehlt noch |
+  | **Peter** | Lenard's Executive Student Assistant | ❌ fehlt noch |
+  | **Helmut** | Lenards Coach / Tutor (2 Einträge — Dublette klären) | ❌ fehlt noch |
+  | **Matze** | Mathe Coach | ❌ fehlt noch |
+  - Zum Vergleich: Nur **Donna** hat bisher eine Langdock-Agent-ID (Router-Muster funktioniert dort).
+
+**Geplante Architektur (Entwurf):**
+
+```
+Lenards Handy (PWA, gehostet auf Netlify — dieses Repo)
+        │  https
+        ▼
+n8n-Webhooks (aiva179.app.n8n.cloud)
+  ├─ /dashboard-briefing   → Morgen-Briefing (Markus/Whoop + Kalender + Gedächtnis)
+  ├─ /dashboard-chat       → Nachricht an den passenden Langdock-Agenten (Registry)
+  └─ /dashboard-reflexion  → Abend-Check-in → Claude strukturiert → Logbuch
+        │
+        ├─ Langdock-Agent-API (Markus, Peter, ggf. Helmut)
+        └─ Airtable: Logbuch (Quelle=Lenard) = GEDÄCHTNIS
+             └─ fließt zurück ins nächste Briefing („Du hattest dir vorgenommen…")
+```
+
+Das Gedächtnis schließt den Kreislauf: Reflexion am Abend → Logbuch → das Morgen-Briefing
+erinnert an Vorsätze → Umsetzung wird sichtbar. Genau das „Führen-Lassen".
+
 **Geplanter Phasenplan (Entwurf, noch zu bestätigen):**
 
-- **Phase 1 — „Der erste Wow-Moment" (Whoop-first):**
-  Mobile PWA, ein Screen: Tages-Briefing vom Whoop-/Fitness-Coach-Bot (Recovery, Schlaf,
-  Belastung → 2–3 konkrete Empfehlungen für heute). Installierbar auf dem Homescreen,
-  lädt schnell, kein Login-Gefrickel.
+- **Phase 1 — „Der erste Wow-Moment" (Whoop-first + Reflexion):**
+  Mobile PWA, ein Screen: Tages-Briefing von Markus (Recovery, Schlaf, Belastung →
+  2–3 konkrete Empfehlungen für heute). Installierbar auf dem Homescreen, lädt schnell,
+  kein Login-Gefrickel. Dazu der **Abend-Check-in** (3 Fragen, 60 Sekunden) → Logbuch →
+  Gedächtnis, das ins nächste Briefing zurückfließt.
 - **Phase 2 — Persönliche Assistenz (nur mit seinem Opt-in):**
   E-Mails werden gelesen und zu max. 3 Punkten destilliert („Das musst du heute wissen /
   tun"), To-dos mit einem Tap abhakbar, Fokus auf **Umsetzung** (kleinste nächste
@@ -83,12 +132,15 @@ Ein **Dashboard**, das es ihm leicht macht, „sich führen zu lassen" — d. h.
 
 **Noch zu klären (vor dem Bauen, Phase 1):**
 
-- [ ] Hat euer Langdock-Plan API-Zugriff (API-Key)? → Voraussetzung, damit das Dashboard
-      die Bots ansprechen kann. Falls nein: Whoop-API direkt anbinden als Alternative.
-- [ ] Wie kommt der Whoop-Bot aktuell an die Whoop-Daten (Integration in Langdock, oder
-      manuell)?
-- [ ] Für Phase 2 später: Welcher E-Mail-Anbieter (Gmail / College-Outlook)?
-- [ ] Wo soll die PWA laufen (Hosting)? Vorschlag: einfacher Deploy z. B. via Vercel/Netlify.
+- [x] ~~Langdock-API-Zugriff?~~ → ✅ Ja, Header-Auth-Credential in n8n vorhanden, Muster läuft (Donna/Agent-Router).
+- [x] ~~Hosting?~~ → ✅ Netlify-Account vorhanden.
+- [ ] **Bianca:** Markus & Peter (ggf. Helmut) in Langdock **mit dem API-Key teilen** und ihre
+      **Agent-IDs** (aus der Langdock-URL) in die Airtable-Registry eintragen — wie bei Donna.
+- [ ] **Test:** Sieht Markus bei API-Aufrufen die Whoop-Daten? (Hängt davon ab, wie die
+      Whoop-Anbindung in Langdock realisiert ist.) → Testen wir, sobald die Agent-ID da ist.
+- [ ] Helmut-Dublette in der Registry klären (2 Einträge).
+- [ ] Für Phase 2 später: Welches E-Mail-Konto nutzt Lenard (Gmail / College-Mail)?
+- [ ] Zeitzone fürs Briefing: Irvine = America/Los_Angeles (9 h hinter Deutschland).
 
 ---
 
