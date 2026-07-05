@@ -185,12 +185,27 @@ Ausdrücklich: Es darf **nicht nach Coaching anmuten**.
 - „Was würde morgen leichter machen?" *(„was brauchst du" — lösungsorientiert statt bedürftig)*
 - „Worauf freust du dich morgen?"
 
-**⚠️ Offene Design-Entscheidung — Privatsphäre des Logbuchs:**
-Stimmung und Reflexionen sind sensibel. Empfehlung: **Lenards Logbuch gehört Lenard** —
-eigene Tabelle, Rohantworten sieht nur er (bzw. seine Agenten fürs Briefing). Nur der
-„Brauchst du was?"-Kanal geht explizit nach außen (an Bianca/Agenten). Das muss ihm
-transparent gesagt werden — es ist der Kern von „er ist in Führung": Wer geführt wird,
-ohne zu wissen wer mitliest, ist nicht in Führung. → Bianca entscheidet.
+**✅ ENTSCHIEDEN (Bianca, 2026-07-05) — Privatsphäre des Logbuchs:**
+**Alles gehört Lenard.** Bianca braucht und will keinen Zugriff auf seine Daten — auch
+keine Eskalationsstufe (wäre technisch möglich, wird bewusst nicht gebaut). Lenards
+Logbuch/Stimmung/Reflexionen sehen nur er und seine Agenten. Das wird ihm transparent
+so gesagt — es ist sein System.
+
+**✅ NEU (Bianca, 2026-07-05) — Selbstverbesserungs-Schleife mit Helga (HR):**
+Die Agenten sollen sich **zusammen mit Helga („Mutter der Nation", HR-Agentin) selbst
+verbessern** — analog zu den Feedbackgesprächen, die es im Team-System schon gibt
+(Feld „Feedbackgespräche" in der Registry).
+
+Design (Entwurf, privatsphäre-konform):
+- Das Dashboard sammelt **Meta-Signale, keine Inhalte**: 👍/👎 auf Briefings, Nutzungs-
+  und Skip-Raten, optional ein „War das hilfreich?"-Tap. Lenards Rohantworten (Stimmung,
+  Reflexionstexte) bleiben außen vor.
+- **Wöchentliches Feedbackgespräch (n8n, automatisch):** Helga bekommt die Meta-Signale
+  + die eigene Einschätzung des Agenten (Markus/Peter reflektieren ihre Woche) → Helga
+  schlägt konkrete Verbesserungen an der Stellenbeschreibung/dem Prompt vor → Update
+  wird versioniert in der Registry dokumentiert (Feld „Feedbackgespräche" + Logbuch).
+- Lenard kann jederzeit direkt Feedback geben („Sag Markus, er soll kürzer schreiben")
+  — der direkteste Verbesserungskanal, und wieder: **er führt**.
 
 ---
 
@@ -199,6 +214,7 @@ ohne zu wissen wer mitliest, ist nicht in Führung. → Bianca entscheidet.
 - [x] Grundfragen geklärt (Gerät, Datenquellen, Buy-in, Plattform) — 2026-07-05
 - [ ] Phasenplan von Bianca bestätigen lassen
 - [ ] Technische Restfragen klären (Langdock-API, Whoop-Anbindung, Hosting)
-- [ ] Phase 1 bauen: Mobile PWA mit Whoop-Tages-Briefing
-- [ ] Prototyp dem Sohn zeigen → sein Opt-in für Phase 2 (E-Mail/Kalender) einholen
+- [ ] Phase 1 bauen: Mobile PWA mit Whoop-Tages-Briefing + Abend-Check-in
+- [ ] Prototyp Lenard zeigen → er entscheidet, welche Module dazukommen (E-Mail/Kalender)
 - [ ] Phase 2 bauen (persönliche Assistenz), danach über Lerncoach entscheiden
+- [ ] Selbstverbesserungs-Schleife mit Helga (wöchentliches Feedbackgespräch, n8n)
