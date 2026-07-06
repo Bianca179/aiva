@@ -58,6 +58,16 @@ TOOLS = [
         "input_schema": {"type": "object", "properties": {}, "additionalProperties": False},
     },
     {
+        "name": "get_bank_matching",
+        "description": (
+            "Rezultatul reconcilierii bancare: care facturi sunt platite conform extrasului "
+            "de cont (chiar daca in Lexware apar inca deschise), platile alocate pe facturi "
+            "(inclusiv plati colective cu numar de aviz) si incasarile nealocate. "
+            "Apeleaza cand utilizatoarea intreaba ce s-a platit deja sau ce plati au sosit."
+        ),
+        "input_schema": {"type": "object", "properties": {}, "additionalProperties": False},
+    },
+    {
         "name": "search_emails",
         "description": (
             "Cauta in casuta de e-mail pentru facturi (expeditor/subiect). Apeleaza cand "
@@ -86,6 +96,8 @@ def _run_tool(name: str, tool_input: dict) -> str:
         return json.dumps(service.get_open_invoices(), ensure_ascii=False)
     if name == "get_missing_receipts":
         return json.dumps(service.get_missing_receipts(), ensure_ascii=False)
+    if name == "get_bank_matching":
+        return json.dumps(service.get_bank_matching(), ensure_ascii=False)
     if name == "search_emails":
         results = search_mailbox(tool_input.get("query", ""), int(tool_input.get("limit", 10)))
         return json.dumps(results, ensure_ascii=False)

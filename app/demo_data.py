@@ -61,35 +61,33 @@ OPEN_INVOICES = [
     },
 ]
 
-MISSING_RECEIPTS = [
-    {
-        "date": "2026-05-12",
-        "description": "Kartenzahlung Tankstelle Aral",
-        "amount": -86.40,
-        "hint": "Tankbeleg fehlt",
-    },
-    {
-        "date": "2026-05-28",
-        "description": "Ueberweisung 'Reinigungsmittel Grosshandel'",
-        "amount": -412.75,
-        "hint": "Eingangsrechnung fehlt",
-    },
-    {
-        "date": "2026-06-04",
-        "description": "Kartenzahlung Bauhaus",
-        "amount": -139.90,
-        "hint": "Kassenbon fehlt",
-    },
-    {
-        "date": "2026-06-17",
-        "description": "Lastschrift Telekom Geschaeftskunden",
-        "amount": -74.99,
-        "hint": "Rechnung fehlt",
-    },
-    {
-        "date": "2026-06-23",
-        "description": "Kartenzahlung Metro",
-        "amount": -268.30,
-        "hint": "Kassenbon fehlt",
-    },
+# Kontoumsaetze, wie sie ein Bank-CSV-Import liefern wuerde. Der Grosskunde
+# "FM Facility Partner" zahlt gesammelt mit Avisnummer statt Rechnungsnummer.
+BANK_TRANSACTIONS = [
+    {"date": "2026-06-20", "amount": 7200.00, "counterparty": "FM Facility Partner GmbH",
+     "reference": "AVIS 4711 Sammelzahlung Juni"},
+    {"date": "2026-06-28", "amount": 3940.00, "counterparty": "REWE Markt Feldstrasse",
+     "reference": "RE-2026-0157"},
+    {"date": "2026-06-30", "amount": 1500.00, "counterparty": "M. Ionescu",
+     "reference": "Anzahlung Treppenhausreinigung Juli"},
+    {"date": "2026-06-04", "amount": -139.90, "counterparty": "Bauhaus", "reference": "Kartenzahlung"},
+    {"date": "2026-06-15", "amount": -431.20, "counterparty": "Reinigungsmittel Grosshandel",
+     "reference": "RG 88123"},
+    {"date": "2026-06-17", "amount": -74.99, "counterparty": "Telekom Geschaeftskunden",
+     "reference": "Rechnung Juni 2026"},
+    {"date": "2026-06-23", "amount": -268.30, "counterparty": "Metro", "reference": "Kartenzahlung"},
+    {"date": "2026-06-30", "amount": -6800.00, "counterparty": "Sammelueberweisung",
+     "reference": "GEHALT Juni 2026"},
 ]
+
+# Zuordnung Avisnummer -> Rechnungen (kommt live aus dem geparsten Zahlungsavis
+# bzw. aus data/avis.json)
+AVIS_MAP = {"4711": ["RE-2026-0141", "RE-2026-0148"]}
+
+# Bereits in Lexware erfasste Einkaufsbelege (fuer den Abgleich der Ausgaenge)
+PURCHASE_VOUCHERS = [
+    {"voucherDate": "2026-06-14", "totalAmount": 431.20},
+]
+
+# Hinweis: Die Liste "fehlende Belege" wird nicht mehr statisch gepflegt,
+# sondern vom Matcher aus BANK_TRANSACTIONS + PURCHASE_VOUCHERS abgeleitet.

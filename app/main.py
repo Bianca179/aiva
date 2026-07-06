@@ -5,7 +5,7 @@ Start:  uvicorn app.main:app --reload
 
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -39,6 +39,19 @@ def open_invoices() -> list[dict]:
 @app.get("/api/receipts/missing")
 def missing_receipts() -> list[dict]:
     return service.get_missing_receipts()
+
+
+@app.get("/api/bank/matching")
+def bank_matching() -> dict:
+    return service.get_bank_matching()
+
+
+@app.post("/api/bank/upload")
+async def bank_upload(file: UploadFile) -> dict:
+    try:
+        return service.import_bank_csv(await file.read())
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
 
 
 @app.post("/api/chat")

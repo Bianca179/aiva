@@ -100,6 +100,13 @@
   .pill { font-size: 12px; border-radius: 999px; padding: 2px 9px; font-weight: 600; white-space: nowrap; }
   .pill.overdue { color: var(--status-critical); border: 1px solid var(--status-critical); }
   .pill.open { color: var(--text-secondary); border: 1px solid var(--baseline); }
+  .pill.paid_bank { color: var(--status-good); border: 1px solid var(--status-good); }
+  .pill.method { color: var(--text-secondary); border: 1px solid var(--baseline); font-weight: 500; }
+  .upload-btn {
+    border: 1px solid var(--border); background: transparent; color: var(--text-secondary);
+    border-radius: 6px; padding: 3px 9px; font-size: 12.5px; cursor: pointer;
+  }
+  .subheading { font-size: 13.5px; font-weight: 600; color: var(--text-secondary); margin: 14px 0 6px; }
   .hint { color: var(--text-muted); font-size: 13px; }
   /* Chat */
   #chat-log { max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 4px 0 10px; }
@@ -145,6 +152,7 @@
       <div class="label" data-i18n="openInvoices"></div>
       <div class="value" id="kpi-open">–</div>
       <div class="note critical" id="kpi-overdue"></div>
+      <div class="note good" id="kpi-paidbank"></div>
     </div>
     <div class="tile">
       <div class="label" data-i18n="missingReceipts"></div>
@@ -170,6 +178,17 @@
   <section class="card">
     <h2 data-i18n="openInvoicesTitle"></h2>
     <div id="invoices"></div>
+  </section>
+
+  <section class="card">
+    <div class="chart-head">
+      <h2 data-i18n="bankTitle"></h2>
+      <span class="spacer"></span>
+      <button class="upload-btn" onclick="document.getElementById('csv-file').click()" data-i18n="uploadCsv"></button>
+      <input id="csv-file" type="file" accept=".csv,text/csv" hidden onchange="uploadCsv(this)">
+    </div>
+    <p class="hint" data-i18n="bankHint"></p>
+    <div id="bank-matching"></div>
   </section>
 
   <section class="card">
@@ -204,10 +223,20 @@ const I18N = {
     showTable: "Tabel", showChart: "Grafic",
     openInvoicesTitle: "Cine nu a platit inca?",
     colInvoice: "Factura", colClient: "Client", colDue: "Scadenta", colAmount: "Suma", colStatus: "Status",
-    statusOverdue: "restanta", statusOpen: "deschisa",
+    statusOverdue: "restanta", statusOpen: "deschisa", statusPaidBank: "platita (banca)",
+    paidBankNote: (n, s) => `✓ ${n} platite conform bancii · ${s}`,
+    bankTitle: "Plati alocate (reconciliere bancara)",
+    bankHint: "Incasarile din extrasul de cont, alocate automat pe facturi - inclusiv platile colective cu numar de aviz. Lista de bifat pentru Lexware.",
+    colTransaction: "Incasare", colPayer: "Platitor", colInvoices: "Facturi acoperite", colMethod: "Alocat dupa",
+    methodInvoiceNo: "nr. factura", methodAvis: "aviz", methodAmount: "suma",
+    unmatchedTitle: "Incasari nealocate (de verificat)",
+    uploadCsv: "Incarca extras CSV", uploadOk: n => `${n} tranzactii importate`, uploadErr: "Import esuat: ",
+    noBankData: "Niciun extras de cont incarcat inca.",
     missingTitle: "Documente lipsa",
-    missingHint: "Trimite aceste bonuri/facturi pe adresa de e-mail dedicata - ajung automat in Lexware.",
-    colDate: "Data", colDesc: "Descriere", colHint: "Ce lipseste",
+    missingHint: "Plati din contul bancar fara document justificativ. Fotografiaza bonul/factura cu aplicatia Lexware Scan (sau trimite-o pe e-mail) - se ataseaza automat in Lexware.",
+    receiptAction: "Fotografiaza cu Lexware Scan",
+    noMissing: "Nicio plata fara document. 🎉",
+    colDate: "Data", colDesc: "Descriere", colHint: "Ce e de facut",
     chatTitle: "Intreab-o pe AIVA",
     chatPlaceholder: "De ex.: Cine nu a platit inca? Ce documente lipsesc?",
     chatSend: "Trimite",
@@ -226,10 +255,20 @@ const I18N = {
     showTable: "Tabelle", showChart: "Diagramm",
     openInvoicesTitle: "Wer hat noch nicht bezahlt?",
     colInvoice: "Rechnung", colClient: "Kunde", colDue: "Fällig am", colAmount: "Betrag", colStatus: "Status",
-    statusOverdue: "überfällig", statusOpen: "offen",
+    statusOverdue: "überfällig", statusOpen: "offen", statusPaidBank: "bezahlt (Bank)",
+    paidBankNote: (n, s) => `✓ ${n} laut Bank bezahlt · ${s}`,
+    bankTitle: "Auszifferungsliste (Bank-Abgleich)",
+    bankHint: "Zahlungseingänge aus dem Kontoauszug, automatisch Rechnungen zugeordnet – auch Sammelzahlungen mit Avisnummer. Abhakliste für Lexware.",
+    colTransaction: "Eingang", colPayer: "Zahler", colInvoices: "Deckt Rechnungen", colMethod: "Zuordnung über",
+    methodInvoiceNo: "Rechnungsnr.", methodAvis: "Avis", methodAmount: "Betrag",
+    unmatchedTitle: "Nicht zugeordnete Eingänge (prüfen)",
+    uploadCsv: "Bank-CSV hochladen", uploadOk: n => `${n} Umsätze importiert`, uploadErr: "Import fehlgeschlagen: ",
+    noBankData: "Noch kein Kontoauszug hochgeladen.",
     missingTitle: "Fehlende Belege",
-    missingHint: "Diese Bons/Rechnungen an die Beleg-E-Mail-Adresse senden – sie landen automatisch in Lexware.",
-    colDate: "Datum", colDesc: "Beschreibung", colHint: "Was fehlt",
+    missingHint: "Zahlungen vom Konto ohne Beleg. Bon/Rechnung mit der Lexware-Scan-App fotografieren (oder per E-Mail senden) – wird in Lexware automatisch zugeordnet.",
+    receiptAction: "Mit Lexware Scan fotografieren",
+    noMissing: "Keine Zahlung ohne Beleg. 🎉",
+    colDate: "Datum", colDesc: "Beschreibung", colHint: "Was ist zu tun",
     chatTitle: "Frag AIVA",
     chatPlaceholder: "Z. B.: Wer hat noch nicht bezahlt? Welche Belege fehlen?",
     chatSend: "Senden",
@@ -239,7 +278,7 @@ const I18N = {
 };
 
 let lang = localStorage.getItem("aiva-lang") || "ro";
-let DATA = null, INVOICES = [], RECEIPTS = [];
+let DATA = null, INVOICES = [], RECEIPTS = [], MATCHING = null;
 let chatHistory = [];
 let tableVisible = false;
 
@@ -266,12 +305,13 @@ function setLang(l) {
 }
 
 async function load() {
-  const [summary, invoices, receipts] = await Promise.all([
+  const [summary, invoices, receipts, matching] = await Promise.all([
     fetch("/api/summary").then(r => r.json()),
     fetch("/api/invoices/open").then(r => r.json()),
     fetch("/api/receipts/missing").then(r => r.json()),
+    fetch("/api/bank/matching").then(r => r.json()),
   ]);
-  DATA = summary; INVOICES = invoices; RECEIPTS = receipts;
+  DATA = summary; INVOICES = invoices; RECEIPTS = receipts; MATCHING = matching;
   document.getElementById("demo-badge").hidden = !summary.demoMode;
   setLang(lang);
 }
@@ -292,6 +332,9 @@ function render() {
     overdueEl.textContent = t("noOverdue");
     overdueEl.className = "note good";
   }
+  const paidBankEl = document.getElementById("kpi-paidbank");
+  paidBankEl.textContent = DATA.paidBankCount > 0
+    ? t("paidBankNote")(DATA.paidBankCount, eur(DATA.paidBankTotal)) : "";
   document.getElementById("kpi-missing").textContent = DATA.missingReceiptsCount;
   const missNote = document.getElementById("kpi-missing-note");
   missNote.textContent = t("missingNote")(DATA.missingReceiptsCount);
@@ -301,6 +344,7 @@ function render() {
   renderChart();
   renderChartTable();
   renderInvoices();
+  renderBankMatching();
   renderReceipts();
 }
 
@@ -365,11 +409,17 @@ function renderChartTable() {
 
 function toggleTable() { tableVisible = !tableVisible; render(); }
 
+function statusPill(status) {
+  if (status === "overdue") return `<span class="pill overdue">⚠ ${t("statusOverdue")}</span>`;
+  if (status === "paid_bank") return `<span class="pill paid_bank">✓ ${t("statusPaidBank")}</span>`;
+  return `<span class="pill open">${t("statusOpen")}</span>`;
+}
+
 function renderInvoices() {
   const rows = INVOICES.map(i => `<tr>
     <td>${i.voucherNumber}</td><td>${i.contactName}</td><td>${i.dueDate}</td>
     <td class="num">${eur(i.openAmount)}</td>
-    <td><span class="pill ${i.status}">${i.status === "overdue" ? "⚠ " + t("statusOverdue") : t("statusOpen")}</span></td>
+    <td>${statusPill(i.status)}</td>
   </tr>`).join("");
   document.getElementById("invoices").innerHTML = `<table><thead><tr>
     <th>${t("colInvoice")}</th><th>${t("colClient")}</th><th>${t("colDue")}</th>
@@ -377,13 +427,62 @@ function renderInvoices() {
   </tr></thead><tbody>${rows}</tbody></table>`;
 }
 
+function renderBankMatching() {
+  const el = document.getElementById("bank-matching");
+  if (!MATCHING || !MATCHING.hasBankData) {
+    el.innerHTML = `<p class="hint">${t("noBankData")}</p>`;
+    return;
+  }
+  const methodLabel = { invoice_no: t("methodInvoiceNo"), avis: t("methodAvis"), amount: t("methodAmount") };
+  const rows = MATCHING.matchedPayments.map(p => `<tr>
+    <td>${p.transaction.date}</td><td>${p.transaction.counterparty}</td>
+    <td class="num">${eur(p.transaction.amount)}</td>
+    <td>${p.invoices.join(", ")}</td>
+    <td><span class="pill method">${methodLabel[p.method] || p.method}</span></td>
+  </tr>`).join("");
+  let html = `<table><thead><tr>
+    <th>${t("colDate")}</th><th>${t("colPayer")}</th><th class="num">${t("colTransaction")}</th>
+    <th>${t("colInvoices")}</th><th>${t("colMethod")}</th>
+  </tr></thead><tbody>${rows}</tbody></table>`;
+  if (MATCHING.unmatchedCredits.length) {
+    html += `<div class="subheading">${t("unmatchedTitle")}</div>
+      <table><tbody>` + MATCHING.unmatchedCredits.map(c => `<tr>
+        <td>${c.date}</td><td>${c.counterparty}</td>
+        <td class="num">${eur(c.amount)}</td><td class="hint">${c.reference || ""}</td>
+      </tr>`).join("") + `</tbody></table>`;
+  }
+  el.innerHTML = html;
+}
+
 function renderReceipts() {
+  if (!RECEIPTS.length) {
+    document.getElementById("receipts").innerHTML = `<p class="hint">${t("noMissing")}</p>`;
+    return;
+  }
   const rows = RECEIPTS.map(r => `<tr>
-    <td>${r.date}</td><td>${r.description}</td><td class="num">${eur(r.amount)}</td><td>${r.hint}</td>
+    <td>${r.date}</td><td>${r.description}${r.reference ? ` <span class="hint">· ${r.reference}</span>` : ""}</td>
+    <td class="num">${eur(r.amount)}</td><td>📷 ${t("receiptAction")}</td>
   </tr>`).join("");
   document.getElementById("receipts").innerHTML = `<table><thead><tr>
     <th>${t("colDate")}</th><th>${t("colDesc")}</th><th class="num">${t("colAmount")}</th><th>${t("colHint")}</th>
   </tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+async function uploadCsv(input) {
+  const file = input.files[0];
+  if (!file) return;
+  input.value = "";
+  const form = new FormData();
+  form.append("file", file);
+  try {
+    const resp = await fetch("/api/bank/upload", { method: "POST", body: form });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.detail || resp.statusText);
+    alert(t("uploadOk")(data.imported));
+    load();
+  } catch (e) {
+    alert(t("uploadErr") + e.message);
+  }
 }
 
 async function sendChat() {

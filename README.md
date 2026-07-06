@@ -76,15 +76,35 @@ gut, um es der Mandantin zu zeigen, bevor irgendetwas verbunden wird.
 | `ANTHROPIC_API_KEY` | Chatbot | console.anthropic.com |
 | `IMAP_*` | Beleg-Postfach | Beim E-Mail-Provider (App-Passwort verwenden) |
 
-## 5. Grenzen der Lexware Public API (ehrlich gesagt)
+## 5. Bank-Abgleich: Avis-Zahlungen & fehlende Belege
 
-- **„Fehlende Belege"**: Die Public API liefert offene Rechnungen sehr gut, aber
-  **keine offenen Bank-Transaktionen ohne Beleg**. Die Kachel „Documente lipsa"
-  läuft daher im Demo-Modus mit Beispieldaten; live müsste man das entweder in
-  Lexware selbst prüfen oder über einen Bank-Feed (z. B. finAPI/GoCardless)
-  ergänzen. Das wäre Ausbaustufe 2.
-- Rate-Limit 2 Requests/Sekunde – für dieses Dashboard völlig ausreichend
-  (der Client drosselt automatisch).
+Lexware liest die Bank zwar ein, exportiert aber weder die noch zuzuordnenden
+Kontoumsätze noch die Zuordnung selbst – und die Public API stellt Bankdaten
+gar nicht bereit. AIVA zieht deshalb **dieselben Kontoumsätze parallel**
+(CSV-Export aus dem Online-Banking, Button im Dashboard; später FinTS/Open
+Banking) und gleicht selbst ab:
+
+1. **Rechnungsnummer** in der Referenz → direkte Zuordnung.
+2. **Avisnummer** → Zuordnung über das Zahlungsavis (`data/avis.json`,
+   perspektivisch automatisch aus dem Avis-PDF im Postfach geparst).
+   Damit sind die Sammelzahlungen des Avis-Kunden exakt auflösbar.
+3. **Betragsheuristik** → Eingang entspricht genau einer offenen Rechnung.
+
+Ergebnis im Dashboard:
+
+- **Auszifferungsliste**: „Eingang X deckt RE-…, RE-…" – Abhakliste, mit der
+  die Zahlungen in Lexware schnell ausgebucht werden können (die Public API
+  erlaubt kein automatisches Buchen von Zahlungen).
+- **Rechnungsstatus „bezahlt (Bank)"**: laut Konto bezahlt, in Lexware noch
+  offen → die Kachel „Offene Forderungen" zeigt die *wirklich* offenen Beträge.
+- **Fehlende Belege**: Abbuchungen ohne passenden Einkaufsbeleg in Lexware
+  (Betrag ± 10 Tage), abzüglich Ignorier-Liste (Gehalt, Steuern, Bankentgelte …,
+  siehe `IGNORE_KEYWORDS` in `app/matcher.py`). Diese Liste ist genau die
+  Arbeitsliste für die Mandantin: **Bon fotografieren mit der Lexware-Scan-App**
+  – Lexware ordnet den gescannten Beleg dem offenen Kontoumsatz dann selbst zu.
+
+Weitere Grenzen: Rate-Limit der API 2 Requests/Sekunde (der Client drosselt
+automatisch); Teilzahlungen und Skonto behandelt der Matcher noch nicht.
 
 ## 6. Datenschutz / DSGVO (wichtig fürs Mandat)
 
