@@ -113,7 +113,10 @@
         from: b.from || 'Markus',
         demo: false,
       };
-      store.set('briefing2-' + todayKey(), briefing);
+      // Nur cachen, wenn wirklich Daten drin sind — sonst beim nächsten Öffnen neu versuchen
+      if (briefing.recovery != null || briefing.fuel) {
+        store.set('briefing2-' + todayKey(), briefing);
+      }
       return briefing;
     } catch (e) {
       console.warn('Briefing nicht erreichbar, Demo-Daten', e);
