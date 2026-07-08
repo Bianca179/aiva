@@ -1,11 +1,11 @@
-/* Matchplan — Phase 1 (Demo-Modus mit Beispieldaten, bis n8n-Webhooks konfiguriert sind) */
+/* Matchplan — Phase 2 (Briefing + Check-in + Chat mit Markus + Fuel) */
 (function () {
   'use strict';
 
   const CFG = window.MATCHPLAN_CONFIG || {};
   const app = document.getElementById('app');
 
-  // ---------- Beispieldaten (werden später vom n8n-Briefing-Webhook geliefert) ----------
+  // ---------- Beispieldaten (Fallback, wenn n8n nicht erreichbar ist) ----------
 
   const MOCK_BRIEFING = {
     recovery: 61,          // %
@@ -14,6 +14,14 @@
     strainYesterday: 14.2,
     focus: 'Aufschlag stabilisieren',
     memory: 'Mehr Schlaf vor Matchtagen',
+    fuel: {
+      why: 'Mitteltag mit Training am Nachmittag — solide Carbs, viel Protein zur Regeneration.',
+      meals: [
+        'Frühstück: Porridge mit Banane, Walnüssen und Joghurt',
+        'Lunch: Reis-Bowl mit Hähnchen, Avocado und Brokkoli',
+        'Dinner: Pasta mit Lachs und Spinat — früh essen, Match morgen',
+      ],
+    },
     text: [
       'Recovery bei 61 % — solide, aber kein Tag für Limit. Techniktraining voll mitnehmen, beim Konditionsteil einen Gang rausnehmen.',
       'Du hast gestern gesagt: „Mehr Schlaf vor Matchtagen." Morgen ist Match — heute 22:30 Schluss, dann bist du bei ~8,5 h.',
@@ -53,6 +61,12 @@
     { emoji: '🔥', label: 'On fire' },
   ];
 
+  const CHAT_STARTERS = [
+    'Was koch ich heute Abend?',
+    'Mach mir eine Einkaufsliste für die Woche',
+    'Was esse ich vor dem Match morgen?',
+  ];
+
   // ---------- Status-Logik (Whoop-Konvention; Farbe nie ohne Icon+Label) ----------
 
   function recoveryStatus(pct) {
@@ -61,7 +75,7 @@
     return { cls: 'critical', icon: '⚠', label: 'Rot — Regeneration' };
   }
 
-  // ---------- Persistenz (Demo: localStorage; später zusätzlich POST an n8n) ----------
+  // ---------- Persistenz (localStorage; Check-ins zusätzlich POST an n8n) ----------
 
   const store = {
     get(key, fallback) {
@@ -77,7 +91,7 @@
 
   // Briefing laden: n8n-Webhook → Tages-Cache → Demo-Fallback
   async function loadBriefing() {
-    const cached = store.get('briefing-' + todayKey(), null);
+    const cached = store.get('briefing2-' + todayKey(), null);
     if (cached) return cached;
     if (!CFG.briefingUrl) return { ...MOCK_BRIEFING, demo: true };
     try {
@@ -91,6 +105,7 @@
         sleepGoal: b.sleepGoal ?? 8.5,
         strainYesterday: b.strainYesterday ?? null,
         focus: store.get('focus', MOCK_BRIEFING.focus),
+        fuel: (b.fuel && Array.isArray(b.fuel.meals) && b.fuel.meals.length) ? b.fuel : null,
         text: b.text.length ? b.text : ['Kein Briefing-Text erhalten.'],
         todos: Array.isArray(b.todos)
           ? b.todos.map((t, i) => (typeof t === 'string' ? { id: 't' + i, text: t } : t))
@@ -98,7 +113,7 @@
         from: b.from || 'Markus',
         demo: false,
       };
-      store.set('briefing-' + todayKey(), briefing);
+      store.set('briefing2-' + todayKey(), briefing);
       return briefing;
     } catch (e) {
       console.warn('Briefing nicht erreichbar, Demo-Daten', e);
@@ -198,6 +213,13 @@
             : `<p>${esc(p)}</p>`).join('')}
           <p class="von">— ${esc(b.from)}</p>
         </section>
+
+        ${b.fuel ? `
+        <section class="card">
+          <h2>Fuel heute</h2>
+          ${b.fuel.why ? `<p class="fuel-why">${esc(b.fuel.why)}</p>` : ''}
+          <ul class="fuel-list">${b.fuel.meals.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
+        </section>` : ''}
 
         ${b.todos.length ? `
         <section class="card">
@@ -337,6 +359,104 @@
     `));
   }
 
+  // ---------- View: Markus (Chat) ----------
+
+  function viewMarkus() {
+    const wrap = el(`
+      <div>
+        <header class="greeting">
+          <h1>Markus 💬</h1>
+          <p class="date">Rezepte, Einkaufsliste, Fuel-Fragen — er kennt deine Whoop-Daten.</p>
+        </header>
+        <div class="chat-log" id="chat-log"></div>
+        <div id="chat-starters"></div>
+        <div class="chat-input-row">
+          <textarea class="text-input" id="chat-input" rows="1" placeholder="Schreib Markus …"></textarea>
+          <button class="btn primary" id="chat-send" aria-label="Senden">➤</button>
+        </div>
+      </div>`);
+    app.replaceChildren(wrap);
+
+    const log = wrap.querySelector('#chat-log');
+    const startersBox = wrap.querySelector('#chat-starters');
+    const input = wrap.querySelector('#chat-input');
+    const sendBtn = wrap.querySelector('#chat-send');
+
+    const history = store.get('chat', []);
+
+    function renderLog() {
+      log.replaceChildren();
+      if (!history.length) {
+        log.appendChild(el('<div class="msg bot">Servus! Was brauchst du — Rezept, Einkaufsliste oder kurz durchsprechen, wie du heute isst?</div>'));
+      }
+      history.forEach(m => {
+        log.appendChild(el(`<div class="msg ${m.role === 'user' ? 'user' : 'bot'}">${esc(m.content).replace(/\n/g, '<br>')}</div>`));
+      });
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function renderStarters() {
+      startersBox.replaceChildren();
+      if (history.length) return;
+      const row = el('<div class="btn-row" style="flex-wrap:wrap;margin-top:10px"></div>');
+      CHAT_STARTERS.forEach(s => {
+        const btn = el(`<button class="btn ghost" style="border:1px solid var(--border);font-size:0.85rem;padding:9px 14px">${esc(s)}</button>`);
+        btn.addEventListener('click', () => { input.value = s; send(); });
+        row.appendChild(btn);
+      });
+      startersBox.appendChild(row);
+    }
+
+    async function send() {
+      const text = input.value.trim();
+      if (!text || sendBtn.disabled) return;
+      input.value = '';
+      history.push({ role: 'user', content: text });
+      store.set('chat', history.slice(-40));
+      renderLog();
+      renderStarters();
+
+      const typing = el('<div class="msg bot typing">Markus tippt …</div>');
+      log.appendChild(typing);
+      window.scrollTo(0, document.body.scrollHeight);
+      sendBtn.disabled = true;
+
+      try {
+        if (!CFG.chatUrl) throw new Error('Kein Chat-Webhook konfiguriert');
+        const res = await fetch(CFG.chatUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: history.filter(m => !m.error).slice(-12)
+              .map(m => ({ role: m.role, content: m.content })),
+          }),
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (!data.reply) throw new Error('Leere Antwort');
+        history.push({ role: 'assistant', content: data.reply });
+      } catch (e) {
+        console.warn('Chat-Fehler', e);
+        history.push({
+          role: 'assistant',
+          content: 'Gerade keine Verbindung zu Markus — probier es gleich nochmal.',
+          error: true,
+        });
+      }
+      store.set('chat', history.slice(-40));
+      sendBtn.disabled = false;
+      if (currentView === 'markus') { renderLog(); }
+    }
+
+    sendBtn.addEventListener('click', send);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+    });
+
+    renderLog();
+    renderStarters();
+  }
+
   // ---------- View: Woche (Tabellen-Ansicht) ----------
 
   function viewWoche() {
@@ -369,7 +489,7 @@
 
   // ---------- Navigation ----------
 
-  const views = { heute: viewHeute, checkin: viewCheckin, woche: viewWoche };
+  const views = { heute: viewHeute, checkin: viewCheckin, markus: viewMarkus, woche: viewWoche };
   let currentView = 'heute';
 
   document.querySelectorAll('.tab').forEach(tab => {

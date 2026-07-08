@@ -147,6 +147,18 @@ html, body {
 .todo-check.done { background: var(--good); border-color: var(--good); }
 li.done .todo-text { text-decoration: line-through; color: var(--ink-muted); }
 
+/* ---------- Fuel ---------- */
+
+.fuel-why { color: var(--ink-2); font-size: 0.9rem; margin: 0 0 10px; line-height: 1.5; }
+.fuel-list { list-style: none; margin: 0; padding: 0; }
+.fuel-list li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hairline);
+  line-height: 1.45;
+  font-size: 0.95rem;
+}
+.fuel-list li:last-child { border-bottom: none; }
+
 /* ---------- Check-in ---------- */
 
 .checkin-step { text-align: center; padding: 8px 0; }
@@ -210,11 +222,55 @@ li.done .todo-text { text-decoration: line-through; color: var(--ink-muted); }
 }
 .btn.primary { background: var(--accent); color: #fff; }
 .btn.ghost { background: none; color: var(--ink-muted); }
+.btn:disabled { opacity: 0.5; cursor: default; }
 
 .done-screen { text-align: center; padding: 40px 0; }
 .done-screen .big { font-size: 3rem; }
 .done-screen h2 { font-size: 1.3rem; margin: 12px 0 6px; }
 .done-screen p { color: var(--ink-2); margin: 0; }
+
+/* ---------- Chat (Markus) ---------- */
+
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0 8px;
+}
+.msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  overflow-wrap: break-word;
+}
+.msg.user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.msg.bot {
+  align-self: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+.msg.typing { color: var(--ink-muted); }
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  margin-top: 12px;
+  position: sticky;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 86px);
+  background: var(--page);
+  padding-top: 6px;
+}
+.chat-input-row .text-input { flex: 1; }
+.chat-input-row .btn { padding: 13px 18px; flex: none; }
 
 /* ---------- Woche (Tabellen-Ansicht) ---------- */
 
@@ -258,7 +314,7 @@ li.done .todo-text { text-decoration: line-through; color: var(--ink-muted); }
   align-items: center;
   gap: 2px;
   cursor: pointer;
-  padding: 4px 18px;
+  padding: 4px 12px;
 }
 .tab[aria-selected="true"] { color: var(--accent); font-weight: 600; }
 .tab-icon { font-size: 1.25rem; }
