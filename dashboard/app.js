@@ -92,7 +92,7 @@
   // Briefing laden: n8n-Webhook → Tages-Cache → Demo-Fallback
   async function loadBriefing() {
     const cached = store.get('briefing2-' + todayKey(), null);
-    if (cached) return cached;
+    if (cached && (cached.recovery != null || cached.fuel)) return cached;
     if (!CFG.briefingUrl) return { ...MOCK_BRIEFING, demo: true };
     try {
       const res = await fetch(CFG.briefingUrl);
