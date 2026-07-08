@@ -104,7 +104,7 @@
         sleepHours: b.sleepHours ?? null,
         sleepGoal: b.sleepGoal ?? 8.5,
         strainYesterday: b.strainYesterday ?? null,
-        focus: store.get('focus', MOCK_BRIEFING.focus),
+        focus: b.focus || store.get('focus', MOCK_BRIEFING.focus),
         fuel: (b.fuel && Array.isArray(b.fuel.meals) && b.fuel.meals.length) ? b.fuel : null,
         text: b.text.length ? b.text : ['Kein Briefing-Text erhalten.'],
         todos: Array.isArray(b.todos)
@@ -113,6 +113,7 @@
         from: b.from || 'Markus',
         demo: false,
       };
+      if (b.focus) store.set('focus', b.focus);
       // Nur cachen, wenn wirklich Daten drin sind — sonst beim nächsten Öffnen neu versuchen
       if (briefing.recovery != null || briefing.fuel) {
         store.set('briefing2-' + todayKey(), briefing);
@@ -145,6 +146,73 @@
         console.warn('Check-in konnte nicht gesendet werden', e);
       }
     }
+  }
+
+  // ---------- Einkaufsliste ----------
+
+  async function einkaufApi(payload) {
+    if (!CFG.einkaufUrl) return null;
+    try {
+      if (payload) {
+        const res = await fetch(CFG.einkaufUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return true;
+      }
+      const res = await fetch(CFG.einkaufUrl);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      return Array.isArray(data.items) ? data.items : [];
+    } catch (e) {
+      console.warn('Einkaufsliste nicht erreichbar', e);
+      return null;
+    }
+  }
+
+  function renderEinkauf(items) {
+    const ul = document.getElementById('einkauf-list');
+    if (!ul) return;
+    ul.replaceChildren();
+    if (!items.length) {
+      ul.appendChild(el('<li style="color:var(--ink-muted)">Liste ist leer — unten ergänzen oder Markus im Chat bitten.</li>'));
+      return;
+    }
+    items.forEach(it => {
+      const li = el(`
+        <li>
+          <button class="todo-check" aria-label="${esc(it.artikel)} abhaken"></button>
+          <span class="todo-text">${esc(it.artikel)}${it.quelle && it.quelle.indexOf('Markus') === 0 ? ' <small style="color:var(--ink-muted)">· von Markus</small>' : ''}</span>
+        </li>`);
+      li.querySelector('button').addEventListener('click', async () => {
+        li.remove();
+        await einkaufApi({ action: 'done', id: it.id });
+      });
+      ul.appendChild(li);
+    });
+  }
+
+  async function initEinkauf() {
+    const card = document.getElementById('einkauf-card');
+    if (!card) return;
+    const items = await einkaufApi(null);
+    if (items === null) return;
+    card.style.display = '';
+    renderEinkauf(items);
+    const input = document.getElementById('einkauf-input');
+    const addBtn = document.getElementById('einkauf-add');
+    async function add() {
+      const artikel = input.value.trim();
+      if (!artikel) return;
+      input.value = '';
+      await einkaufApi({ action: 'add', artikel: artikel });
+      const fresh = await einkaufApi(null);
+      if (fresh) renderEinkauf(fresh);
+    }
+    addBtn.addEventListener('click', add);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); add(); } });
   }
 
   // ---------- Render-Helfer ----------
@@ -229,8 +297,19 @@
           <h2>Heute erledigen</h2>
           <ul class="todo-list" id="todos"></ul>
         </section>` : ''}
+
+        <section class="card" id="einkauf-card" style="display:none">
+          <h2>Einkaufsliste</h2>
+          <ul class="todo-list" id="einkauf-list"></ul>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <input class="text-input" id="einkauf-input" placeholder="Artikel hinzufügen …" style="padding:10px 12px">
+            <button class="btn primary" id="einkauf-add" style="padding:10px 16px" aria-label="Hinzufügen">+</button>
+          </div>
+        </section>
       </div>
     `));
+
+    initEinkauf();
 
     const doneMap = store.get('todos-' + todayKey(), {});
     const ul = document.getElementById('todos');
@@ -329,6 +408,27 @@
         },
       },
     ];
+
+    const isSunday = new Date().toLocaleDateString('en-US', { weekday: 'short', timeZone: CFG.timezone || undefined }) === 'Sun';
+    if (isSunday) {
+      steps.push({
+        title: 'Sonntag: Was ist dein Fokus für nächste Woche?',
+        render(box, next) {
+          const input = el('<textarea class="text-input" rows="2" placeholder="z.B. Aufschlag stabilisieren"></textarea>');
+          const row = el(`<div class="btn-row">
+            <button class="btn ghost">Fokus behalten</button>
+            <button class="btn primary">Setzen</button>
+          </div>`);
+          row.children[0].addEventListener('click', next);
+          row.children[1].addEventListener('click', () => {
+            answers.focus = input.value.trim();
+            if (answers.focus) store.set('focus', answers.focus);
+            next();
+          });
+          box.append(input, row);
+        },
+      });
+    }
 
     let i = 0;
     function renderStep() {

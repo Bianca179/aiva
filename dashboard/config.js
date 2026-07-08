@@ -6,5 +6,6 @@ window.MATCHPLAN_CONFIG = {
   briefingUrl: 'https://aiva179.app.n8n.cloud/webhook/matchplan-briefing',
   checkinUrl: 'https://aiva179.app.n8n.cloud/webhook/matchplan-checkin',
   chatUrl: 'https://aiva179.app.n8n.cloud/webhook/matchplan-chat',
+  einkaufUrl: 'https://aiva179.app.n8n.cloud/webhook/matchplan-einkauf',
   timezone: 'America/Los_Angeles',
 };

@@ -1,5 +1,5 @@
 /* Matchplan Service Worker — App-Shell aus dem Cache, Rest aus dem Netz */
-const CACHE = 'matchplan-v2';
+const CACHE = 'matchplan-v3';
 const SHELL = [
   '.',
   'index.html',
