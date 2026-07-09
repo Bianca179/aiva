@@ -91,8 +91,8 @@
 
   // Briefing laden: n8n-Webhook → Tages-Cache → Demo-Fallback
   async function loadBriefing() {
-    const cached = store.get('briefing2-' + todayKey(), null);
-    if (cached && (cached.recovery != null || cached.fuel)) return cached;
+    const cached = store.get('briefing3-' + todayKey(), null);
+    if (cached && cached.recovery != null) return cached;
     if (!CFG.briefingUrl) return { ...MOCK_BRIEFING, demo: true };
     try {
       const res = await fetch(CFG.briefingUrl);
@@ -114,9 +114,10 @@
         demo: false,
       };
       if (b.focus) store.set('focus', b.focus);
+      if (b.eveningQuestion) store.set('eq-' + todayKey(), b.eveningQuestion);
       // Nur cachen, wenn wirklich Daten drin sind — sonst beim nächsten Öffnen neu versuchen
-      if (briefing.recovery != null || briefing.fuel) {
-        store.set('briefing2-' + todayKey(), briefing);
+      if (briefing.recovery != null) {
+        store.set('briefing3-' + todayKey(), briefing);
       }
       return briefing;
     } catch (e) {
@@ -341,7 +342,7 @@
     const answers = {};
     // Frage rotiert nach Tag im Jahr, damit sie pro Abend fix ist
     const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 864e5);
-    const question = QUESTIONS[dayOfYear % QUESTIONS.length];
+    const question = store.get('eq-' + todayKey(), null) || QUESTIONS[dayOfYear % QUESTIONS.length];
 
     const steps = [
       {
@@ -562,8 +563,38 @@
 
   // ---------- View: Woche (Tabellen-Ansicht) ----------
 
-  function viewWoche() {
-    const rows = MOCK_WEEK.map(d => `
+  async function viewWoche() {
+    app.replaceChildren(el(`
+      <div>
+        <header class="greeting"><h1>Deine Woche</h1>
+          <p class="date">Wird geladen …</p>
+        </header>
+      </div>
+    `));
+
+    let days = null;
+    if (CFG.wocheUrl) {
+      try {
+        const res = await fetch(CFG.wocheUrl);
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.days) && data.days.length) days = data.days;
+        }
+      } catch (e) { console.warn('Woche nicht erreichbar', e); }
+    }
+    if (currentView !== 'woche') return;
+
+    const real = days != null;
+    const list = real
+      ? days.map(d => ({
+          day: new Date(d.datum + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'short' }),
+          mood: d.stimmung != null ? (MOODS[d.stimmung - 1] || {}).emoji : null,
+          felt: d.gefuehlt,
+          recovery: d.recovery,
+        }))
+      : MOCK_WEEK;
+
+    const rows = list.map(d => `
       <tr>
         <td>${esc(d.day)}</td>
         <td>${d.mood ?? '–'}</td>
@@ -573,7 +604,7 @@
 
     app.replaceChildren(el(`
       <div>
-        <div class="demo-banner">Beispieldaten — echte Wochen-Ansicht folgt mit deinen Check-ins</div>
+        ${real ? '' : '<div class="demo-banner">Beispieldaten — echte Wochen-Ansicht füllt sich mit deinen Check-ins</div>'}
         <header class="greeting"><h1>Deine Woche</h1>
           <p class="date">Gefühl vs. Messung — wo liegen sie auseinander?</p>
         </header>
@@ -583,8 +614,9 @@
             <thead><tr><th>Tag</th><th>Stimmung</th><th class="num">Gefühlt</th><th class="num">Recovery</th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
-          <p class="week-hint">Mittwoch: gefühlt 8, gemessen 52 % — an solchen Tagen entscheidet
-          Disziplin, nicht Gefühl. Genau dafür ist diese Ansicht da.</p>
+          <p class="week-hint">${real
+            ? 'Wo „gefühlt" und Recovery weit auseinanderliegen, lohnt ein zweiter Blick — genau dafür ist diese Ansicht da.'
+            : 'Mittwoch: gefühlt 8, gemessen 52 % — an solchen Tagen entscheidet Disziplin, nicht Gefühl.'}</p>
         </section>
       </div>
     `));
