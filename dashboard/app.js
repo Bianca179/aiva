@@ -12,67 +12,67 @@
     sleepHours: 7.4,
     sleepGoal: 8.5,
     strainYesterday: 14.2,
-    focus: 'Aufschlag stabilisieren',
-    memory: 'Mehr Schlaf vor Matchtagen',
+    focus: 'Stabilize the serve',
+    memory: 'More sleep before match days',
     fuel: {
-      why: 'Mitteltag mit Training am Nachmittag — solide Carbs, viel Protein zur Regeneration.',
+      why: 'Mid-load day with afternoon practice — solid carbs, plenty of protein for recovery.',
       meals: [
-        'Frühstück: Porridge mit Banane, Walnüssen und Joghurt',
-        'Lunch: Reis-Bowl mit Hähnchen, Avocado und Brokkoli',
-        'Dinner: Pasta mit Lachs und Spinat — früh essen, Match morgen',
+        'Breakfast: porridge with banana, walnuts and yogurt',
+        'Lunch: rice bowl with chicken, avocado and broccoli',
+        'Dinner: pasta with salmon and spinach — eat early, match tomorrow',
       ],
     },
     text: [
-      'Recovery bei 61 % — solide, aber kein Tag für Limit. Techniktraining voll mitnehmen, beim Konditionsteil einen Gang rausnehmen.',
-      'Du hast gestern gesagt: „Mehr Schlaf vor Matchtagen." Morgen ist Match — heute 22:30 Schluss, dann bist du bei ~8,5 h.',
+      'Recovery at 61% — solid, but not a day to redline. Go all in on technique work, ease off a notch during conditioning.',
+      'You said yesterday: "More sleep before match days." Match is tomorrow — lights out at 10:30pm gets you ~8.5 h.',
     ],
     todos: [
-      { id: 't1', text: 'Videoanalyse Aufschlag (10 Min, Link von Coach)' },
-      { id: 't2', text: 'Essay-Gliederung an Professor schicken' },
-      { id: 't3', text: 'Saiten nachbestellen' },
+      { id: 't1', text: 'Serve video analysis (10 min, link from coach)' },
+      { id: 't2', text: 'Send essay outline to professor' },
+      { id: 't3', text: 'Reorder strings' },
     ],
     from: 'Markus & Peter',
   };
 
   const MOCK_WEEK = [
-    { day: 'Mo', mood: '🙂', felt: 7, recovery: 78 },
-    { day: 'Di', mood: '😐', felt: 5, recovery: 44 },
-    { day: 'Mi', mood: '🙂', felt: 8, recovery: 52 },
-    { day: 'Do', mood: '😄', felt: 8, recovery: 81 },
-    { day: 'Fr', mood: '😐', felt: 6, recovery: 63 },
-    { day: 'Sa', mood: '🙂', felt: 7, recovery: 70 },
-    { day: 'So', mood: null, felt: null, recovery: 61 },
+    { day: 'Mon', mood: '🙂', felt: 7, recovery: 78 },
+    { day: 'Tue', mood: '😐', felt: 5, recovery: 44 },
+    { day: 'Wed', mood: '🙂', felt: 8, recovery: 52 },
+    { day: 'Thu', mood: '😄', felt: 8, recovery: 81 },
+    { day: 'Fri', mood: '😐', felt: 6, recovery: 63 },
+    { day: 'Sat', mood: '🙂', felt: 7, recovery: 70 },
+    { day: 'Sun', mood: null, felt: null, recovery: 61 },
   ];
 
   // Rotierender Fragen-Pool (siehe PROTOKOLL.md §3b)
   const QUESTIONS = [
-    'Was war heute dein bester Move — auf oder neben dem Platz?',
-    'Wo bist du heute übers Pflichtprogramm hinaus?',
-    'Was hat heute Energie gezogen?',
-    'Was würde morgen leichter machen?',
-    'Worauf freust du dich morgen?',
+    'What was your best move today — on or off the court?',
+    'Where did you go beyond the required program today?',
+    'What drained your energy today?',
+    'What would make tomorrow easier?',
+    'What are you looking forward to tomorrow?',
   ];
 
   const MOODS = [
-    { emoji: '😖', label: 'Mies' },
-    { emoji: '😐', label: 'Geht so' },
+    { emoji: '😖', label: 'Rough' },
+    { emoji: '😐', label: 'Meh' },
     { emoji: '🙂', label: 'Okay' },
-    { emoji: '😄', label: 'Gut' },
+    { emoji: '😄', label: 'Good' },
     { emoji: '🔥', label: 'On fire' },
   ];
 
   const CHAT_STARTERS = [
-    'Was koch ich heute Abend?',
-    'Mach mir eine Einkaufsliste für die Woche',
-    'Was esse ich vor dem Match morgen?',
+    'What should I cook tonight?',
+    'Make me a grocery list for the week',
+    'What should I eat before the match tomorrow?',
   ];
 
   // ---------- Status-Logik (Whoop-Konvention; Farbe nie ohne Icon+Label) ----------
 
   function recoveryStatus(pct) {
-    if (pct >= 67) return { cls: 'good', icon: '✔', label: 'Grün — kann Vollgas' };
-    if (pct >= 34) return { cls: 'warning', icon: '◐', label: 'Gelb — dosiert' };
-    return { cls: 'critical', icon: '⚠', label: 'Rot — Regeneration' };
+    if (pct >= 67) return { cls: 'good', icon: '✔', label: 'Green — full gas' };
+    if (pct >= 34) return { cls: 'warning', icon: '◐', label: 'Yellow — pace yourself' };
+    return { cls: 'critical', icon: '⚠', label: 'Red — recover' };
   }
 
   // ---------- Persistenz (localStorage; Check-ins zusätzlich POST an n8n) ----------
@@ -128,7 +128,7 @@
 
   function fmtNum(v, suffix) {
     if (v == null) return '–';
-    return String(v).replace('.', ',') + (suffix || '');
+    return String(v) + (suffix || '');
   }
 
   async function submitCheckin(data) {
@@ -178,14 +178,14 @@
     if (!ul) return;
     ul.replaceChildren();
     if (!items.length) {
-      ul.appendChild(el('<li style="color:var(--ink-muted)">Liste ist leer — unten ergänzen oder Markus im Chat bitten.</li>'));
+      ul.appendChild(el('<li style="color:var(--ink-muted)">List is empty — add something below or ask Markus in the chat.</li>'));
       return;
     }
     items.forEach(it => {
       const li = el(`
         <li>
-          <button class="todo-check" aria-label="${esc(it.artikel)} abhaken"></button>
-          <span class="todo-text">${esc(it.artikel)}${it.quelle && it.quelle.indexOf('Markus') === 0 ? ' <small style="color:var(--ink-muted)">· von Markus</small>' : ''}</span>
+          <button class="todo-check" aria-label="Mark ${esc(it.artikel)} done"></button>
+          <span class="todo-text">${esc(it.artikel)}${it.quelle && it.quelle.indexOf('Markus') === 0 ? ' <small style="color:var(--ink-muted)">· from Markus</small>' : ''}</span>
         </li>`);
       li.querySelector('button').addEventListener('click', async () => {
         li.remove();
@@ -236,8 +236,8 @@
     app.replaceChildren(el(`
       <div>
         <header class="greeting">
-          <h1>Servus ${esc(CFG.name || '')} 👋</h1>
-          <p class="date">Briefing wird geladen …</p>
+          <h1>Hey ${esc(CFG.name || '')} 👋</h1>
+          <p class="date">Loading your briefing …</p>
         </header>
       </div>
     `));
@@ -245,22 +245,22 @@
     const b = await loadBriefing();
     if (currentView !== 'heute') return;
     const rs = b.recovery != null ? recoveryStatus(b.recovery) : null;
-    const dateStr = new Date().toLocaleDateString('de-DE', {
+    const dateStr = new Date().toLocaleDateString('en-US', {
       weekday: 'long', day: 'numeric', month: 'long',
       timeZone: CFG.timezone || undefined,
     });
 
     app.replaceChildren(el(`
       <div>
-        ${b.demo ? '<div class="demo-banner">Demo-Modus — Beispieldaten, Verbindung zu Markus noch nicht aktiv</div>' : ''}
+        ${b.demo ? '<div class="demo-banner">Demo mode — sample data, connection to Markus not active yet</div>' : ''}
         <header class="greeting">
-          <h1>Servus ${esc(CFG.name || '')} 👋</h1>
+          <h1>Hey ${esc(CFG.name || '')} 👋</h1>
           <p class="date">${esc(dateStr)} · Irvine</p>
-          <span class="focus-chip">🎯 Dein Wochenfokus: <strong>${esc(b.focus)}</strong></span>
+          <span class="focus-chip">🎯 Weekly focus: <strong>${esc(b.focus)}</strong></span>
         </header>
 
         <section class="card">
-          <h2>Dein Körper heute</h2>
+          <h2>Your body today</h2>
           <div class="stats">
             <div class="stat">
               <div class="value">${b.recovery != null ? b.recovery + '<small> %</small>' : '–'}</div>
@@ -269,11 +269,11 @@
             </div>
             <div class="stat">
               <div class="value">${fmtNum(b.sleepHours)}<small>${b.sleepHours != null ? ' h' : ''}</small></div>
-              <div class="label">Schlaf (Ziel ${fmtNum(b.sleepGoal)} h)</div>
+              <div class="label">Sleep (goal ${fmtNum(b.sleepGoal)} h)</div>
             </div>
             <div class="stat">
               <div class="value">${fmtNum(b.strainYesterday)}</div>
-              <div class="label">Strain gestern</div>
+              <div class="label">Strain yesterday</div>
             </div>
           </div>
         </section>
@@ -288,23 +288,23 @@
 
         ${b.fuel ? `
         <section class="card">
-          <h2>Fuel heute</h2>
+          <h2>Today's fuel</h2>
           ${b.fuel.why ? `<p class="fuel-why">${esc(b.fuel.why)}</p>` : ''}
           <ul class="fuel-list">${b.fuel.meals.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
         </section>` : ''}
 
         ${b.todos.length ? `
         <section class="card">
-          <h2>Heute erledigen</h2>
+          <h2>To do today</h2>
           <ul class="todo-list" id="todos"></ul>
         </section>` : ''}
 
         <section class="card" id="einkauf-card" style="display:none">
-          <h2>Einkaufsliste</h2>
+          <h2>Grocery list</h2>
           <ul class="todo-list" id="einkauf-list"></ul>
           <div style="display:flex;gap:8px;margin-top:10px">
-            <input class="text-input" id="einkauf-input" placeholder="Artikel hinzufügen …" style="padding:10px 12px">
-            <button class="btn primary" id="einkauf-add" style="padding:10px 16px" aria-label="Hinzufügen">+</button>
+            <input class="text-input" id="einkauf-input" placeholder="Add item …" style="padding:10px 12px">
+            <button class="btn primary" id="einkauf-add" style="padding:10px 16px" aria-label="Add">+</button>
           </div>
         </section>
       </div>
@@ -318,7 +318,7 @@
       const li = el(`
         <li class="${doneMap[todo.id] ? 'done' : ''}">
           <button class="todo-check ${doneMap[todo.id] ? 'done' : ''}"
-                  aria-label="${esc(todo.text)} abhaken">${doneMap[todo.id] ? '✓' : ''}</button>
+                  aria-label="Mark ${esc(todo.text)} done">${doneMap[todo.id] ? '✓' : ''}</button>
           <span class="todo-text">${esc(todo.text)}</span>
         </li>`);
       li.querySelector('button').addEventListener('click', () => {
@@ -346,7 +346,7 @@
 
     const steps = [
       {
-        title: 'Wie war der Tag?',
+        title: 'How was your day?',
         render(box, next) {
           const row = el('<div class="emoji-row"></div>');
           MOODS.forEach((m, i) => {
@@ -363,7 +363,7 @@
         },
       },
       {
-        title: 'Wie fit fühlst du dich?',
+        title: 'How fit do you feel?',
         render(box, next) {
           const row = el('<div class="scale-row"></div>');
           for (let i = 1; i <= 10; i++) {
@@ -377,10 +377,10 @@
       {
         title: question,
         render(box, next) {
-          const input = el('<textarea class="text-input" rows="2" placeholder="Eine Zeile reicht …"></textarea>');
+          const input = el('<textarea class="text-input" rows="2" placeholder="One line is enough …"></textarea>');
           const row = el(`<div class="btn-row">
-            <button class="btn ghost">Überspringen</button>
-            <button class="btn primary">Weiter</button>
+            <button class="btn ghost">Skip</button>
+            <button class="btn primary">Next</button>
           </div>`);
           row.children[0].addEventListener('click', next);
           row.children[1].addEventListener('click', () => {
@@ -392,13 +392,13 @@
         },
       },
       {
-        title: 'Brauchst du was?',
+        title: 'Need anything?',
         render(box, next) {
-          const hint = el('<p style="color:var(--ink-muted);font-size:0.85rem;margin:-10px 0 14px">Landet direkt bei den Richtigen — wird erledigt.</p>');
-          const input = el('<textarea class="text-input" rows="2" placeholder="Saiten, Termin, Ruhe … was auch immer"></textarea>');
+          const hint = el('<p style="color:var(--ink-muted);font-size:0.85rem;margin:-10px 0 14px">Goes straight to the right people — it gets done.</p>');
+          const input = el('<textarea class="text-input" rows="2" placeholder="Strings, an appointment, some quiet … whatever it is"></textarea>');
           const row = el(`<div class="btn-row">
-            <button class="btn ghost">Nö, passt</button>
-            <button class="btn primary">Abschicken</button>
+            <button class="btn ghost">Nah, all good</button>
+            <button class="btn primary">Send</button>
           </div>`);
           row.children[0].addEventListener('click', next);
           row.children[1].addEventListener('click', () => {
@@ -413,12 +413,12 @@
     const isSunday = new Date().toLocaleDateString('en-US', { weekday: 'short', timeZone: CFG.timezone || undefined }) === 'Sun';
     if (isSunday) {
       steps.push({
-        title: 'Sonntag: Was ist dein Fokus für nächste Woche?',
+        title: "Sunday: what's your focus for next week?",
         render(box, next) {
-          const input = el('<textarea class="text-input" rows="2" placeholder="z.B. Aufschlag stabilisieren"></textarea>');
+          const input = el('<textarea class="text-input" rows="2" placeholder="e.g. stabilize the serve"></textarea>');
           const row = el(`<div class="btn-row">
-            <button class="btn ghost">Fokus behalten</button>
-            <button class="btn primary">Setzen</button>
+            <button class="btn ghost">Keep current focus</button>
+            <button class="btn primary">Set it</button>
           </div>`);
           row.children[0].addEventListener('click', next);
           row.children[1].addEventListener('click', () => {
@@ -455,10 +455,10 @@
     app.replaceChildren(el(`
       <div class="done-screen">
         <div class="big">${data.moodEmoji || '🎾'}</div>
-        <h2>${already ? 'Check-in für heute ist drin.' : 'Fertig. Keine 60 Sekunden.'}</h2>
+        <h2>${already ? "Today's check-in is already in." : 'Done. Under 60 seconds.'}</h2>
         <p>${data.request
-          ? 'Deine Anfrage ist raus — du hörst dazu.'
-          : 'Morgen früh weiß dein Briefing Bescheid.'}</p>
+          ? "Your request is out — you'll hear back."
+          : 'Your briefing will know by tomorrow morning.'}</p>
       </div>
     `));
   }
@@ -470,13 +470,13 @@
       <div>
         <header class="greeting">
           <h1>Markus 💬</h1>
-          <p class="date">Rezepte, Einkaufsliste, Fuel-Fragen — er kennt deine Whoop-Daten.</p>
+          <p class="date">Recipes, grocery list, fuel questions — he knows your Whoop data.</p>
         </header>
         <div class="chat-log" id="chat-log"></div>
         <div id="chat-starters"></div>
         <div class="chat-input-row">
-          <textarea class="text-input" id="chat-input" rows="1" placeholder="Schreib Markus …"></textarea>
-          <button class="btn primary" id="chat-send" aria-label="Senden">➤</button>
+          <textarea class="text-input" id="chat-input" rows="1" placeholder="Message Markus …"></textarea>
+          <button class="btn primary" id="chat-send" aria-label="Send">➤</button>
         </div>
       </div>`);
     app.replaceChildren(wrap);
@@ -491,7 +491,7 @@
     function renderLog() {
       log.replaceChildren();
       if (!history.length) {
-        log.appendChild(el('<div class="msg bot">Servus! Was brauchst du — Rezept, Einkaufsliste oder kurz durchsprechen, wie du heute isst?</div>'));
+        log.appendChild(el('<div class="msg bot">Hey! What do you need — a recipe, the grocery list, or a quick word on how to eat today?</div>'));
       }
       history.forEach(m => {
         log.appendChild(el(`<div class="msg ${m.role === 'user' ? 'user' : 'bot'}">${esc(m.content).replace(/\n/g, '<br>')}</div>`));
@@ -520,7 +520,7 @@
       renderLog();
       renderStarters();
 
-      const typing = el('<div class="msg bot typing">Markus tippt …</div>');
+      const typing = el('<div class="msg bot typing">Markus is typing …</div>');
       log.appendChild(typing);
       window.scrollTo(0, document.body.scrollHeight);
       sendBtn.disabled = true;
@@ -543,7 +543,7 @@
         console.warn('Chat-Fehler', e);
         history.push({
           role: 'assistant',
-          content: 'Gerade keine Verbindung zu Markus — probier es gleich nochmal.',
+          content: "Can't reach Markus right now — try again in a bit.",
           error: true,
         });
       }
@@ -566,8 +566,8 @@
   async function viewWoche() {
     app.replaceChildren(el(`
       <div>
-        <header class="greeting"><h1>Deine Woche</h1>
-          <p class="date">Wird geladen …</p>
+        <header class="greeting"><h1>Your week</h1>
+          <p class="date">Loading …</p>
         </header>
       </div>
     `));
@@ -587,7 +587,7 @@
     const real = days != null;
     const list = real
       ? days.map(d => ({
-          day: new Date(d.datum + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'short' }),
+          day: new Date(d.datum + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short' }),
           mood: d.stimmung != null ? (MOODS[d.stimmung - 1] || {}).emoji : null,
           felt: d.gefuehlt,
           recovery: d.recovery,
@@ -604,19 +604,19 @@
 
     app.replaceChildren(el(`
       <div>
-        ${real ? '' : '<div class="demo-banner">Beispieldaten — echte Wochen-Ansicht füllt sich mit deinen Check-ins</div>'}
-        <header class="greeting"><h1>Deine Woche</h1>
-          <p class="date">Gefühl vs. Messung — wo liegen sie auseinander?</p>
+        ${real ? '' : '<div class="demo-banner">Sample data — the real week view fills up with your check-ins</div>'}
+        <header class="greeting"><h1>Your week</h1>
+          <p class="date">Feel vs. measurement — where do they split?</p>
         </header>
         <section class="card">
-          <h2>Stimmung · Gefühlt fit (1–10) · Whoop-Recovery</h2>
+          <h2>Mood · Felt fitness (1–10) · Whoop recovery</h2>
           <table class="week-table">
-            <thead><tr><th>Tag</th><th>Stimmung</th><th class="num">Gefühlt</th><th class="num">Recovery</th></tr></thead>
+            <thead><tr><th>Day</th><th>Mood</th><th class="num">Felt</th><th class="num">Recovery</th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
           <p class="week-hint">${real
-            ? 'Wo „gefühlt" und Recovery weit auseinanderliegen, lohnt ein zweiter Blick — genau dafür ist diese Ansicht da.'
-            : 'Mittwoch: gefühlt 8, gemessen 52 % — an solchen Tagen entscheidet Disziplin, nicht Gefühl.'}</p>
+            ? 'Where "felt" and recovery are far apart, take a second look — that is exactly what this view is for.'
+            : 'Wednesday: felt 8, measured 52% — on days like that, discipline decides, not feel.'}</p>
         </section>
       </div>
     `));
