@@ -181,6 +181,17 @@ Ausdrücklich: Es darf **nicht nach Coaching anmuten**.
 Spitznamen, keine Verniedlichungen, nirgends (App, Briefings, Agenten-Prompts).
 Begründung Bianca: Spitznamen verändern die Identität. Gilt verbindlich für alle Texte.
 
+**Sprachregel 2 (Bianca, 2026-07-18):** Alles, was Lenard sieht, ist **auf Englisch** —
+App-Oberfläche, Briefings, Chat-Antworten. (Umgesetzt: App komplett übersetzt,
+Briefing-Prompt auf Englisch.)
+
+**Format-Regel für n8n-Workflows (Bianca, 2026-07-18, verbindlich):** Workflows müssen
+**übersichtlich** sein — Bianca muss sich darin zurechtfinden. Künftig gilt:
+- Pro Funktion/Route EINE saubere Zeile, Fluss immer links → rechts.
+- Über jeder Route eine Sticky Note als Überschrift (was macht diese Zeile?).
+- Einheitliche Node-Namen mit Routen-Präfix, kein Kuddelmuddel auf der Fläche.
+- TODO: Bestehenden Matchplan-Workflow nach diesem Format aufräumen, sobald alles läuft.
+
 **Fragen-Pool (Biancas Fragen, entschult formuliert — rotierend):**
 
 - „Was war heute dein bester Move — auf oder neben dem Platz?" *(„für deine Zukunft getan")*
@@ -276,6 +287,23 @@ Design (Entwurf, privatsphäre-konform):
          Lenard meldet sich EINMAL an. n8n erneuert die Token danach automatisch — genau
          das, was der Langdock-Integration fehlt.
       3. Claude baut dann den täglichen SYNC-Workflow (Whoop-API → `whoop_daten`).
+
+- [x] **Whoop-Direktanbindung LIVE (2026-07-18 abends):**
+      - Whoop-Developer-App angelegt, OAuth2-Credential „Whoop OAuth2" in n8n verbunden
+        (Stolperstein gelöst: Redirect-URI muss `https://oauth.n8n.cloud/oauth2/callback`
+        sein — n8n-Cloud nutzt eine zentrale Callback-Adresse).
+      - Statt täglichem Sync: **Live-Abruf bei jedem App-Öffnen** (Biancas Wunsch).
+        Drei Nodes im Matchplan-Workflow: Whoop Recovery/Sleep/Cycle (live),
+        **API-Version v2** (v1 ist abgeschaltet → war der 404-Fehler).
+      - **Erster Erfolg im Testlauf:** echte Werte fließen — Recovery 74 %, Strain 11.3,
+        HRV 52 ms, Ruhepuls 54. 🎉
+      - Briefing-Prompt auf Englisch umgestellt (Markus bekommt die Zahlen fertig serviert,
+        Aktions-Aufrufe verboten — löst das Langdock-API-Problem endgültig).
+      - App komplett auf Englisch übersetzt und gepusht.
+- [ ] **Letzte 2 Klicks (Bianca):** Credential „Whoop OAuth2" am Node „Whoop Sleep (live)",
+      Credential „Header Auth account" am Node „Markus aufrufen (Langdock)" → Publish
+      → Claude macht den Abschlusstest. (Tipp: Nodes per Strg+F im Editor suchen.)
+- [ ] Danach: Workflow nach neuer Format-Regel aufräumen; Netlify-Link an Lenard.
 - [ ] Prototyp Lenard zeigen → er entscheidet, welche Module dazukommen (E-Mail/Kalender)
 - [ ] Phase 2 bauen (persönliche Assistenz), danach über Lerncoach entscheiden
 - [ ] Selbstverbesserungs-Schleife mit Helga (wöchentliches Feedbackgespräch, n8n)
