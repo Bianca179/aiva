@@ -300,10 +300,17 @@ Design (Entwurf, privatsphäre-konform):
       - Briefing-Prompt auf Englisch umgestellt (Markus bekommt die Zahlen fertig serviert,
         Aktions-Aufrufe verboten — löst das Langdock-API-Problem endgültig).
       - App komplett auf Englisch übersetzt und gepusht.
-- [ ] **Letzte 2 Klicks (Bianca):** Credential „Whoop OAuth2" am Node „Whoop Sleep (live)",
-      Credential „Header Auth account" am Node „Markus aufrufen (Langdock)" → Publish
-      → Claude macht den Abschlusstest. (Tipp: Nodes per Strg+F im Editor suchen.)
-- [ ] Danach: Workflow nach neuer Format-Regel aufräumen; Netlify-Link an Lenard.
+- [x] **🏆 KOMPLETTER DURCHLAUF ERFOLGREICH (2026-07-18, 22:09):**
+      Briefing-Webhook liefert das volle englische Briefing mit echten Live-Daten:
+      Recovery 74 %, Schlaf 7,2 h, Strain 11.3, inkl. Abendfrage und Fuel-Plan von Markus.
+      Letzter Knoten war die Langdock-Authentifizierung — gelöst, als Bianca am
+      Markus-Node die **Bearer-Auth** mit dem Langdock-Key setzte.
+      (Merker: Das Header-Credential heißt inzwischen „Langdock API", nicht mehr
+      „Header Auth account".)
+- [ ] Workflow nach neuer Format-Regel aufräumen (Zeilen-Layout, Sticky Notes).
+- [ ] Netlify-Link an Lenard geben — der erste Wow-Moment.
+- [ ] Später: Helgas Feedbackschleife (Selbstverbesserung) bauen; Phase 2 (Peter/E-Mail)
+      nach Lenards Feedback.
 - [ ] Prototyp Lenard zeigen → er entscheidet, welche Module dazukommen (E-Mail/Kalender)
 - [ ] Phase 2 bauen (persönliche Assistenz), danach über Lerncoach entscheiden
 - [ ] Selbstverbesserungs-Schleife mit Helga (wöchentliches Feedbackgespräch, n8n)
