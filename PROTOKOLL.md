@@ -246,8 +246,36 @@ Design (Entwurf, privatsphäre-konform):
          `antwort` (Text), `anfrage` (Text); (b) Workflows → „Import from File" →
          `n8n/matchplan-workflow.json` → prüfen, ob die Credentials (Header Auth, Airtable)
          zugeordnet sind → aktivieren.
-- [ ] Test nach Aktivierung: Liefert Markus über die API echte Whoop-Werte? (Claude ruft
-      den Briefing-Webhook auf und prüft die Antwort.)
+- [x] **Test & Diagnose (2026-07-18):** Workflow lief, aber Briefing lieferte keine Daten.
+      **Ursache gefunden:** Die Langdock-Agent-API **führt Agenten-Aktionen nicht aus** —
+      Markus versucht `whoop_get_recovery` aufzurufen, die API gibt nur den Aktionswunsch
+      zurück und bricht ab. Zusätzlich berichtet Bianca: Die Whoop-Integration in Langdock
+      **deaktiviert sich immer wieder** (Token laufen ab, kein automatischer Refresh).
+- [x] **Neue Architektur „Whoop direkt" (2026-07-18, umgesetzt):**
+      Whoop-Daten kommen künftig NICHT mehr über Langdock, sondern direkt per Whoop-API
+      in n8n (OAuth2 mit automatischem Token-Refresh = dauerhaft stabil):
+      - Data Table **`whoop_daten`** angelegt (datum, recovery, schlaf_stunden, strain, hrv, rhr).
+      - Briefing-Route umgebaut: Node „Whoop-Werte lesen" → Werte werden Markus **fertig in
+        den Prompt gelegt**; Markus darf keine Aktionen mehr aufrufen, er formuliert nur.
+      - Der erweiterte Prompt der Parallel-Session (Wochenfokus, eveningQuestion,
+        Fuel/Ernährung) blieb dabei vollständig erhalten; Chat-Route wieder korrekt
+        an den Markus-Node angeschlossen. Version veröffentlicht.
+- [ ] ⚠️ **1 Handgriff für Bianca (30 Sek):** Beim Node-Neuaufbau konnte der Credential
+      nicht per API gesetzt werden (Sicherheitsregel für HTTP-Request-Nodes). In n8n:
+      Workflow „ORCH - Matchplan - v1" öffnen → Node **„Markus aufrufen (Langdock)"**
+      doppelklicken → Credential **„Header Auth account"** auswählen → speichern →
+      **publish**. Danach laufen Briefing UND Chat.
+- [ ] **Whoop-Sync einrichten (für echte Zahlen):**
+      1. Auf **developer.whoop.com** (mit Lenards Whoop-Login) eine App anlegen.
+         Redirect-URI: `https://aiva179.app.n8n.cloud/rest/oauth2-credential/callback`
+         Scopes: `read:recovery read:cycles read:sleep read:profile offline`
+      2. In n8n einen **OAuth2-API-Credential** „Whoop OAuth2" anlegen:
+         Auth-URL `https://api.prod.whoop.com/oauth/oauth2/auth`,
+         Token-URL `https://api.prod.whoop.com/oauth/oauth2/token`,
+         Client-ID/Secret aus der Whoop-App, Scopes wie oben → „Connect" →
+         Lenard meldet sich EINMAL an. n8n erneuert die Token danach automatisch — genau
+         das, was der Langdock-Integration fehlt.
+      3. Claude baut dann den täglichen SYNC-Workflow (Whoop-API → `whoop_daten`).
 - [ ] Prototyp Lenard zeigen → er entscheidet, welche Module dazukommen (E-Mail/Kalender)
 - [ ] Phase 2 bauen (persönliche Assistenz), danach über Lerncoach entscheiden
 - [ ] Selbstverbesserungs-Schleife mit Helga (wöchentliches Feedbackgespräch, n8n)
