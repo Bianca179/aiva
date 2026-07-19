@@ -314,8 +314,9 @@ Design (Entwurf, privatsphäre-konform):
 - [x] **Mental-Coach-Chat vorbereitet (2026-07-18):** Chat-Tab hat jetzt einen Umschalter
       Markus 💬 / Coach 🧠 (getrennte Verläufe, eigene Gesprächsstarter, englisch).
       Workflow-Chat-Route ist mehragentenfähig (agent-Parameter).
-- [ ] **OFFEN — von Bianca:** Mental-Coach-Agent in Langdock mit dem API-Key teilen,
-      Agent-ID (aus der Langdock-URL) an Claude geben + Name des Coaches.
+- [ ] **OFFEN — von Bianca:** Der Mental-Coach existierte bisher nur als separate
+      OpenAI-App. Bianca holt den Prompt und erstellt den Agenten neu in Langdock,
+      teilt ihn mit dem API-Key und gibt Claude die Agent-ID + den Namen.
       Claude trägt die ID dann in n8n ein (Platzhalter COACH_AGENT_ID_HIER in
       „Chat vorbereiten") und in die Airtable-Registry.
 - [ ] Prototyp Lenard zeigen → er entscheidet, welche Module dazukommen (E-Mail/Kalender)
