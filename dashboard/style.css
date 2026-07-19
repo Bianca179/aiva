@@ -272,6 +272,22 @@ li.done .todo-text { text-decoration: line-through; color: var(--ink-muted); }
 .chat-input-row .text-input { flex: 1; }
 .chat-input-row .btn { padding: 13px 18px; flex: none; }
 
+/* ---------- Chat: Agent-Umschalter ---------- */
+
+.agent-toggle { display: flex; gap: 8px; margin-top: 12px; }
+.agent-toggle .btn {
+  padding: 9px 16px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-2);
+}
+.agent-toggle .btn[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
 /* ---------- Woche (Tabellen-Ansicht) ---------- */
 
 .week-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }

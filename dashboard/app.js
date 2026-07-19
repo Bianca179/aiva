@@ -67,6 +67,29 @@
     'What should I eat before the match tomorrow?',
   ];
 
+  const COACH_STARTERS = [
+    'Big match coming up — help me get my head right',
+    'I keep losing focus mid-match',
+    'Quick reset after a rough day',
+  ];
+
+  const CHAT_AGENTS = {
+    markus: {
+      name: 'Markus',
+      icon: '💬',
+      tagline: 'Recipes, grocery list, fuel questions — he knows your Whoop data.',
+      greeting: 'Hey! What do you need — a recipe, the grocery list, or a quick word on how to eat today?',
+      starters: CHAT_STARTERS,
+    },
+    coach: {
+      name: 'Coach',
+      icon: '🧠',
+      tagline: 'Your mental game — matches, pressure, focus. Stays between the two of you.',
+      greeting: "Hey Lenard. What's on your mind — the next match, the last one, or something else entirely?",
+      starters: COACH_STARTERS,
+    },
+  };
+
   // ---------- Status-Logik (Whoop-Konvention; Farbe nie ohne Icon+Label) ----------
 
   function recoveryStatus(pct) {
@@ -463,35 +486,51 @@
     `));
   }
 
-  // ---------- View: Markus (Chat) ----------
+  // ---------- View: Chat (Markus & Coach) ----------
 
   function viewMarkus() {
+    const agentKey = CHAT_AGENTS[store.get('chatAgent', 'markus')] ? store.get('chatAgent', 'markus') : 'markus';
+    const A = CHAT_AGENTS[agentKey];
+
     const wrap = el(`
       <div>
         <header class="greeting">
-          <h1>Markus 💬</h1>
-          <p class="date">Recipes, grocery list, fuel questions — he knows your Whoop data.</p>
+          <h1>${A.name} ${A.icon}</h1>
+          <p class="date">${esc(A.tagline)}</p>
+          <div class="agent-toggle" role="tablist" aria-label="Chat partner">
+            ${Object.entries(CHAT_AGENTS).map(([k, a]) => `
+              <button class="btn" data-agent="${k}" aria-pressed="${k === agentKey}">${a.icon} ${esc(a.name)}</button>`).join('')}
+          </div>
         </header>
         <div class="chat-log" id="chat-log"></div>
         <div id="chat-starters"></div>
         <div class="chat-input-row">
-          <textarea class="text-input" id="chat-input" rows="1" placeholder="Message Markus …"></textarea>
+          <textarea class="text-input" id="chat-input" rows="1" placeholder="Message ${esc(A.name)} …"></textarea>
           <button class="btn primary" id="chat-send" aria-label="Send">➤</button>
         </div>
       </div>`);
     app.replaceChildren(wrap);
+
+    wrap.querySelectorAll('.agent-toggle button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        store.set('chatAgent', btn.dataset.agent);
+        viewMarkus();
+      });
+    });
 
     const log = wrap.querySelector('#chat-log');
     const startersBox = wrap.querySelector('#chat-starters');
     const input = wrap.querySelector('#chat-input');
     const sendBtn = wrap.querySelector('#chat-send');
 
-    const history = store.get('chat', []);
+    // Verlauf pro Agent; alter Markus-Verlauf ('chat') wird übernommen
+    const histKey = 'chat-' + agentKey;
+    const history = store.get(histKey, null) ?? (agentKey === 'markus' ? store.get('chat', []) : []);
 
     function renderLog() {
       log.replaceChildren();
       if (!history.length) {
-        log.appendChild(el('<div class="msg bot">Hey! What do you need — a recipe, the grocery list, or a quick word on how to eat today?</div>'));
+        log.appendChild(el(`<div class="msg bot">${esc(A.greeting)}</div>`));
       }
       history.forEach(m => {
         log.appendChild(el(`<div class="msg ${m.role === 'user' ? 'user' : 'bot'}">${esc(m.content).replace(/\n/g, '<br>')}</div>`));
@@ -503,7 +542,7 @@
       startersBox.replaceChildren();
       if (history.length) return;
       const row = el('<div class="btn-row" style="flex-wrap:wrap;margin-top:10px"></div>');
-      CHAT_STARTERS.forEach(s => {
+      A.starters.forEach(s => {
         const btn = el(`<button class="btn ghost" style="border:1px solid var(--border);font-size:0.85rem;padding:9px 14px">${esc(s)}</button>`);
         btn.addEventListener('click', () => { input.value = s; send(); });
         row.appendChild(btn);
@@ -516,40 +555,41 @@
       if (!text || sendBtn.disabled) return;
       input.value = '';
       history.push({ role: 'user', content: text });
-      store.set('chat', history.slice(-40));
+      store.set(histKey, history.slice(-40));
       renderLog();
       renderStarters();
 
-      const typing = el('<div class="msg bot typing">Markus is typing …</div>');
+      const typing = el(`<div class="msg bot typing">${esc(A.name)} is typing …</div>`);
       log.appendChild(typing);
       window.scrollTo(0, document.body.scrollHeight);
       sendBtn.disabled = true;
 
       try {
-        if (!CFG.chatUrl) throw new Error('Kein Chat-Webhook konfiguriert');
+        if (!CFG.chatUrl) throw new Error('No chat webhook configured');
         const res = await fetch(CFG.chatUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            agent: agentKey,
             messages: history.filter(m => !m.error).slice(-12)
               .map(m => ({ role: m.role, content: m.content })),
           }),
         });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
-        if (!data.reply) throw new Error('Leere Antwort');
+        if (!data.reply) throw new Error('Empty reply');
         history.push({ role: 'assistant', content: data.reply });
       } catch (e) {
-        console.warn('Chat-Fehler', e);
+        console.warn('Chat error', e);
         history.push({
           role: 'assistant',
-          content: "Can't reach Markus right now — try again in a bit.",
+          content: `Can't reach ${A.name} right now — try again in a bit.`,
           error: true,
         });
       }
-      store.set('chat', history.slice(-40));
+      store.set(histKey, history.slice(-40));
       sendBtn.disabled = false;
-      if (currentView === 'markus') { renderLog(); }
+      if (currentView === 'markus' && store.get('chatAgent', 'markus') === agentKey) { renderLog(); }
     }
 
     sendBtn.addEventListener('click', send);

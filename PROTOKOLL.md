@@ -311,6 +311,13 @@ Design (Entwurf, privatsphäre-konform):
 - [ ] Netlify-Link an Lenard geben — der erste Wow-Moment.
 - [ ] Später: Helgas Feedbackschleife (Selbstverbesserung) bauen; Phase 2 (Peter/E-Mail)
       nach Lenards Feedback.
+- [x] **Mental-Coach-Chat vorbereitet (2026-07-18):** Chat-Tab hat jetzt einen Umschalter
+      Markus 💬 / Coach 🧠 (getrennte Verläufe, eigene Gesprächsstarter, englisch).
+      Workflow-Chat-Route ist mehragentenfähig (agent-Parameter).
+- [ ] **OFFEN — von Bianca:** Mental-Coach-Agent in Langdock mit dem API-Key teilen,
+      Agent-ID (aus der Langdock-URL) an Claude geben + Name des Coaches.
+      Claude trägt die ID dann in n8n ein (Platzhalter COACH_AGENT_ID_HIER in
+      „Chat vorbereiten") und in die Airtable-Registry.
 - [ ] Prototyp Lenard zeigen → er entscheidet, welche Module dazukommen (E-Mail/Kalender)
 - [ ] Phase 2 bauen (persönliche Assistenz), danach über Lerncoach entscheiden
 - [ ] Selbstverbesserungs-Schleife mit Helga (wöchentliches Feedbackgespräch, n8n)
