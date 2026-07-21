@@ -82,10 +82,10 @@
       starters: CHAT_STARTERS,
     },
     coach: {
-      name: 'Coach',
+      name: 'Sam',
       icon: '🧠',
-      tagline: 'Your mental game — matches, pressure, focus. Stays between the two of you.',
-      greeting: "Hey Lenard. What's on your mind — the next match, the last one, or something else entirely?",
+      tagline: 'Sam Menton — your mental game: matches, pressure, focus. Stays between the two of you.',
+      greeting: "Hey Lenard, Sam here. What's on your mind — the next match, the last one, or something else entirely?",
       starters: COACH_STARTERS,
     },
   };
