@@ -154,22 +154,28 @@
     return String(v) + (suffix || '');
   }
 
+  // Sendet den Check-in; gibt true zurück, wenn der Server ihn als "heute schon erledigt" ablehnt.
   async function submitCheckin(data) {
     const all = store.get('checkins', {});
     all[todayKey()] = data;
     store.set('checkins', all);
     if (CFG.checkinUrl) {
       try {
-        await fetch(CFG.checkinUrl, {
+        const res = await fetch(CFG.checkinUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ date: todayKey(), ...data }),
         });
+        if (res.ok) {
+          const out = await res.json().catch(() => ({}));
+          if (out && out.already) return true;
+        }
       } catch (e) {
         // Offline oder Webhook down: Eintrag bleibt lokal erhalten.
         console.warn('Check-in konnte nicht gesendet werden', e);
       }
     }
+    return false;
   }
 
   // ---------- Einkaufsliste ----------
@@ -457,8 +463,10 @@
     let i = 0;
     function renderStep() {
       if (i >= steps.length) {
-        submitCheckin(answers);
         renderCheckinDone(answers, false);
+        submitCheckin(answers).then(already => {
+          if (already) renderCheckinDone(answers, true);
+        });
         return;
       }
       const step = steps[i];

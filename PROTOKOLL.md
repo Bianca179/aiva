@@ -307,6 +307,11 @@ Design (Entwurf, privatsphäre-konform):
       Markus-Node die **Bearer-Auth** mit dem Langdock-Key setzte.
       (Merker: Das Header-Credential heißt inzwischen „Langdock API", nicht mehr
       „Header Auth account".)
+- [x] **Check-in einmal pro Tag serverseitig erzwungen (2026-07-21):** Der Workflow prüft
+      vor dem Speichern per Data-Table-Lookup (Spalte `datum`), ob für heute schon ein
+      Eintrag existiert. Falls ja → Ablehnung (`{ok:false, already:true}`), kein zweiter
+      Eintrag. Die App zeigt dann „Today's check-in is already in." statt „Done." — greift
+      auch geräteübergreifend / nach Neuinstallation (lokaler Schutz war nur pro Browser).
 - [ ] Workflow nach neuer Format-Regel aufräumen (Zeilen-Layout, Sticky Notes).
 - [ ] Netlify-Link an Lenard geben — der erste Wow-Moment.
 - [ ] Später: Helgas Feedbackschleife (Selbstverbesserung) bauen; Phase 2 (Peter/E-Mail)
