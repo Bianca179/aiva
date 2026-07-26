@@ -121,6 +121,27 @@ Stufe-1-Scope ist auch in Donnas Registry-Zeile (`recWAmi8Jwk2DGp0Y`) hinterlegt
 
 ---
 
+## 9 · Update 22.07.2026 (Nachtrag)
+
+**Erreichbarkeits-Regel bestätigt:** Eine Agentin ist via Slack ansprechbar, wenn ihre Registry-Zeile BEIDES hat — Slack-Kanal-ID UND Langdock-Agent-ID — und der Bot (`U0996QVDBAR`) im Kanal ist (Bot ist überall Mitglied, kein Problem).
+
+**Jetzt live ansprechbar (10):** Donna, aurea, Ophra, Petra, Dagobert Duck, Harvey Specter, Gaia, Future Me, Helga, **Elena** (ID `db53ae9d-6ded-4700-96f4-09c33c318074` heute nachgetragen).
+
+**Kanal vorhanden, aber Langdock-ID FEHLT (12 — noch nicht erreichbar):** Constanze (`C0BF4UV31MK`, CCO — für Marketing zuerst nötig!), Petterson (`C0BFA5UKX6D`), Offerta (`C0BF4UU3V0V`), Findus (`C0BFC05PYSG`), Nova (`C0BG2J08Z2L`), Podcast Producer (`C0BF682EHDL`), Kira (`C0BF682HGDU`), Ina (`C0BF683LKLN`), Paula (`C0BFA5TTY1F`), Vera (`C0BF88D3U82`), Soreia (`C0BF88CEG2W`), Qualitaetia (`C0BF88DTWQ2`). → Freischalten = nur ID eintragen. **Qualitaetia NICHT** ins Kernteam-Routing (JUMIS-Kundin, separater Kontext).
+
+**Dirigent v2 robuster gemacht (no_text-Fix):** Donnas Langdock-Agent geriet zeitweise in **Werkzeug-Schleifen** (nur reasoning + tool-calls, `messages:[]`, keine Textantwort) → Slack „no_text" → Lauf brach ab → Donna schwieg intermittierend. Neuer Knoten **„Antwort aufbereiten"** (zwischen Langdock und Antwort im Thread) liest Text robust (messages[].content ODER result[].content[].text) und postet bei leerem Ergebnis eine Rückmeldung statt abzustürzen; leere Antworten werden nicht ins Gedächtnis geschrieben. Getestet (leer + normal), published.
+> **ROOT CAUSE bleibt Langdock:** Donnas fremder „Philipp/daily-briefing"-Skill/Tools lösen die Schleifen aus. Bianca muss den Skill in Langdock entfernen — dann finished Donna wieder zuverlässig mit Text.
+
+**OFFENE BEOBACHTUNGEN (in Ruhe anschauen, noch NICHT gelöst):**
+- ⚠️ **Morgenpost liefert „immer den gleichen Text"** (Bianca 22.07.) — Ursache noch nicht diagnostiziert. Kandidaten: leere/duplizierte Inbox-Ergebnisse, Klassifikations-Output identisch, oder stündliche Läufe posten Gleiches. Nächste Session gezielt debuggen (echte Morgenpost-Execution ansehen: `YG0GEWgHdxkqfkVR`).
+- ⚠️ **Donna-Zuverlässigkeit** hängt am Langdock-Skill-Cleanup (s.o.).
+
+**Linni:** Bianca tauscht gerade die Credentials in Linni (`11UxePeldz86cqxp`). Erinnerung: Linni-Workflow ist Vorlagen-Kopie mit Guardrail-Verletzung — nicht scharf schalten ohne Freigabe-Gate; besser neu/schlank aufsetzen.
+
+**Gedächtnis-Fix-Detail:** „Gedächtnis vorbereiten" liest Antwort jetzt aus „Antwort aufbereiten" (nicht mehr direkt aus Langdock).
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
