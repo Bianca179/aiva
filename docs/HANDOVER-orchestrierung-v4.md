@@ -140,6 +140,22 @@ Stufe-1-Scope ist auch in Donnas Registry-Zeile (`recWAmi8Jwk2DGp0Y`) hinterlegt
 
 **Gedächtnis-Fix-Detail:** „Gedächtnis vorbereiten" liest Antwort jetzt aus „Antwort aufbereiten" (nicht mehr direkt aus Langdock).
 
+### ENTSCHEIDUNG 22.07.: Single Source of Truth = Airtable (eigene Basis)
+
+Bianca will eine SSOT für **To-dos, OKRs, Kontakte, Projekte, Produkte, Vorhaben** — bisher Notion, wird kaum noch genutzt. **Entscheidung: Airtable, in einer EIGENEN neuen Basis** („Steuerzentrale"), getrennt von der Agenten-Basis `app9r4BK5FJTU219P` (Registry/Logbuch/Präzedenzfälle/Gedächtnis), verknüpft bzw. per n8n angebunden.
+
+Begründung: Die Agentinnen (Donna, Ophra, aurea) lesen/schreiben Airtable bereits nativ über n8n — eine SSOT nützt nur, wenn die Agentinnen sie bedienen können. Ophras Freitags-OKR-Runde und Donnas To-do-/Ideenmanagement brauchen echte Daten an einem Ort. Relationale Daten = Airtable-Stärke. Notion kann ausgemustert werden.
+
+**Geplantes Schema (im neuen Fenster bauen):**
+- **Projekte** (Herzstück, alles hängt dran)
+- **To-dos** → Link Projekt + OKR · Status, Priorität, Fällig, Quick-Win?, Owner (Bianca/Agent)
+- **OKRs** → Objective + Key Results, Quartal, Fortschritt · Ophra pflegt
+- **Kontakte** → Link Projekt + Sales-Funnel
+- **Produkte/Angebote** → an Angebotsarchitektur-v1 andocken
+- **Vorhaben/Ideen** → Inbox für Donnas Ideenmanagement
+
+**AUSNAHME Buch:** Bianca schreibt ihr erstes Buch. Manuskript/Prosa **NICHT** in Airtable (Fließtext in Zellen = Qual), sondern **Google Docs** (Drive ist bereits angebunden). In Airtable nur als *Projekt*-Zeile (+ optional Kapitel-Tabelle mit Status) und Link-Feld aufs Doc. Airtable = operative Steuerzentrale, Docs = Schreibwerkstatt.
+
 ---
 
 ## 8 · Referenzen
