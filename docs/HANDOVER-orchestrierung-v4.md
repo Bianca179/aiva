@@ -160,6 +160,35 @@ Begründung: Die Agentinnen (Donna, Ophra, aurea) lesen/schreiben Airtable berei
 
 ---
 
+## 10 · Update 27.07.2026 (Morgenpost-Fix, SSOT „Steuerzentrale", Marketingteam-Start)
+
+**Morgenpost „immer der gleiche Text" — diagnostiziert und gefixt.** Executions vom 26./27.07. geprüft (Klassifikation, Dedup-Label `Label_2`, Slack-Versand): technisch alles sauber, Inhalte variierten korrekt je Mail-Batch, keine einzige Fehler-Execution seit dem Credential-Fix. **Echte Ursache stand in Biancas eigener Reflexion vom 23.07.** (geladen im Morgenpost-Run vom 24.07., Abschnitt „Aus deiner gestrigen Reflexion"): „Donnas Antworten und Briefings in Slack sind zu lange und immer dieselben Worte." Konkreter Treiber: der Code in „Briefing bauen" hängte an **jede** Nachricht denselben hartcodierten Schlusssatz („Fokus-Tipp: Erst die persönlichen, dann Entwürfe freigeben. Ein Block, kein Hin und Her.") — wortgleich, unabhängig vom Inhalt. **Bianca-Entscheidung 27.07.: Morgenpost bleibt bei Donna** (ihre Reflexion vom 23.07 hatte noch „Aurea macht die Morgenpost" vorgeschlagen — das ist überholt: „Donna ist meine Executive Assistant, orchestriert Kalender/Mails/To-dos"). **Fix:** Fokus-Tipp-Zeile aus „Briefing bauen" entfernt, Rest der Logik unverändert. Published, aktive Version `2f81b82e-4e7d-4192-8bd4-c00dd8daa2fe`.
+
+### SSOT „Steuerzentrale" gebaut (nicht „SSOT" genannt — Kollisionsgefahr!)
+⚠️ Im Account existiert bereits eine Basis **namens „SSOT"** (`app2lmhCxLhMkdfmN`) — das ist aber das komplette Philipp-Dicke-Recruiting-System (Mandates/Persons/Funnel/Bewertungskriterien/Logbook/Akquise-Pipeline…), NICHT Biancas eigene Steuerzentrale. Um Verwechslung auszuschließen, heißt Biancas neue Basis bewusst **„Steuerzentrale"**.
+
+- **Basis-ID:** `appqscSUAbAqQGMpk` (Workspace AIVa)
+- **Projekte** (`tblrEiq8TU41vbwfr`, Herzstück) — Beschreibung, Status, Bereich (Kernteam/Orchestrierung · Marketing · Buch · Privat · Sonstiges), Start/Ziel-Datum, Dokument-Link (fürs Buch-Manuskript in Google Docs)
+- **OKRs** (`tblcMMxoHoGiaUdZO`) + **Key Results** (`tblJqMFNWCOilvUoB`) — zweistufig wie im Philipp-SSOT, Ophra pflegt
+- **To-dos** (`tblM729OMi3huDFXl`) — Link Projekt + Key Results, Status/Priorität/Fällig/Quick-Win/Owner (Bianca/Donna/aurea/Ophra/Agent)
+- **Kontakte** (`tblNDQZsFwjluKZMo`) — Link Projekt, Sales-Funnel-Status
+- **Produkte** (`tblNRHkpgTfWHo82Y`) — Link Projekt, Angebotsarchitektur-Link
+- **Vorhaben** (`tblVQ3zZ7M47TjUO5`) — Ideen-Inbox, Link Projekt (optional)
+
+Alle Links stehen, Basis ist leer (keine Testdaten). **Offen:** n8n-Anbindung an Donna/Ophra (welcher Flow liest/schreibt was, wann) — noch nicht gebaut, Bianca-Entscheidung nötig.
+
+### Marketingteam-Start
+- **Constance/Constanze → umbenannt in „CC Top"** (Bianca-Entscheidung 27.07.: „CC" = Content Creatorin, „Top" = führt die Content-Einheit auf oberster Ebene — nicht mehr „Chief Content Officer"). Registry-Zeile `rec17io3O7jW90Kam`: Name geändert, Langdock-Agent-ID `ce0d3a4d-705b-41af-a586-86f559bd4ca1` gesetzt. **Prompt v3.0 destilliert** aus den vorhandenen v1.0/v2.0-Stellenbeschreibungen (v2 war bereits eine Verfeinerung von v1, keine inhaltlichen Widersprüche) — nur Name/Titel/Naming-Note umgestellt, Rolle/Scope/Boundaries/Skills inhaltlich unverändert. Jetzt offizielle „Stellenbeschreibung".
+- **Max** (`recpuJq4MSNRV1nRP`) und **Linni** (`recJptXj7mbaZ6oYo`) hatten bereits korrekte Langdock-Agent-IDs (`1fa670a1-...` bzw. `1835c388-...`) — vorher schon gesetzt, nur bestätigt.
+- **Voca** (`recBqdxuLuJHN8Nl8`) hatte noch keine Langdock-Agent-ID — jetzt `94095850-022f-48c3-aee9-9c64857076bb` gesetzt.
+- **A2A aktiv** für CC Top, Max, Linni, Voca angehakt (Delegation entlang Berichtslinie → CC Top, Hop-Limit 2 — gleiches Muster wie Donna/aurea).
+- **Neue Slack-Kanäle:** `#max` (`C0BLV0B32JC`), `#voca` (`C0BKUCWGR35`) angelegt und in Registry hinterlegt.
+- ⚠️ **Architektur-Fund zu Linni:** Kanal `#linni` ließ sich NICHT anlegen (`name_taken`) — Linni hat bereits einen **eigenen Slack-Bot-User** (`U0ANKK4QAHF`), mit dem Bianca seit 14.07. direkt per DM spricht, NICHT über einen Kanal. Das ist ein Sonderfall: alle anderen Kernteam-/Marketing-Agentinnen (Donna, aurea, Max, CC Top, Ophra) haben KEINEN eigenen Bot-User, sondern laufen über den EINEN gemeinsamen Dirigent-Bot mit `sendAsUser`-Anzeigenamen-Override — kein echter Slack-User, der direkt angeschrieben werden kann. **Offene Bianca-Entscheidung:** (a) Linnis Sonderweg (eigener Bot pro Agentin) generalisieren — aufwändig, braucht pro Agentin ein eigenes Slack-App-Setup über api.slack.com (nicht per MCP-Tool machbar), oder (b) im Dirigenten ein DM-Routing bauen (Mention-Erkennung am Nachrichtenanfang, Lookup in Registry, Antwort mit sendAsUser im selben DM-Thread) — reine n8n-Änderung, deutlich schlanker. Bianca hat sich noch nicht entschieden.
+- **Redaktionsplan-Basis** (`appdluooiLRvhNMm2`) geprüft: bestehende „Imported table" wirkt wie Fremd-Vorlage (Feld „Kanal" nur Option „Instagram", Feld „Status Philip"), enthält aber bereits ein „Go von Charlie Checker"-Häkchen — passt zum Kritiker-Gate-Pattern aus `MULTIAGENT-ARCHITEKTUR-PATTERNS.md`, aber **noch nicht geprüft, ob dieses Häkchen tatsächlich als Blocker verdrahtet ist oder nur ein Status-Feld ist** (genau die zentrale Fehlerlehre aus dem Patterns-Dokument — Tool haben ≠ als Gate verdrahtet). Bianca baut den Redaktionsplan gerade parallel selbst um, gemeinsame Durchsicht später.
+- **Neue Anforderung (noch nicht gebaut): LinkedIn-DMs versenden.** Bianca möchte, dass das Marketingteam LinkedIn-Direktnachrichten an echte Personen verschicken kann. In der Registry wurde **kein Agent gefunden, der eingehende LinkedIn-Antworten überwacht**. Zweck/Scope (Kaltakquise? Antworten auf Kommentare? Networking-Pflege?) noch ungeklärt — braucht wegen direkter Personenansprache zwingend ein Freigabe-Gate pro Nachricht (noch strenger als beim LinkedIn-Post-Gate). Bianca baut parallel, gemeinsame Durchsicht später.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
