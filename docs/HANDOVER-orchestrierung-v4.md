@@ -138,6 +138,8 @@ Stufe-1-Scope ist auch in Donnas Registry-Zeile (`recWAmi8Jwk2DGp0Y`) hinterlegt
 
 **Linni:** Bianca tauscht gerade die Credentials in Linni (`11UxePeldz86cqxp`). Erinnerung: Linni-Workflow ist Vorlagen-Kopie mit Guardrail-Verletzung — nicht scharf schalten ohne Freigabe-Gate; besser neu/schlank aufsetzen.
 
+**→ Vollständige Architektur-Analyse von Linni (140 Nodes) + daraus abgeleitete Bauprinzipien für ALLE künftigen Agenten:** siehe **`docs/MULTIAGENT-ARCHITEKTUR-PATTERNS.md`**. Enthält 7 übernehmenswerte Patterns (LLM-Fallback, persistentes Gedächtnis, Default-Zweige, Retry, Kritiker-Agent, Kanal-Umschaltung, Stop-and-Error) + die zentrale Fehlerlehre („Qualitäts-Tool haben ≠ als Gate verdrahten" — Linnis LinkedIn-Autopost hat trotz vorhandenem Kritiker-Agenten KEINE Freigabe-Kette) + Checkliste für jeden neuen Workflow. **Vor dem Bau des Marketingteams lesen.**
+
 **Gedächtnis-Fix-Detail:** „Gedächtnis vorbereiten" liest Antwort jetzt aus „Antwort aufbereiten" (nicht mehr direkt aus Langdock).
 
 ### ENTSCHEIDUNG 22.07.: Single Source of Truth = Airtable (eigene Basis)
