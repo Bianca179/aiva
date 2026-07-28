@@ -189,6 +189,63 @@ Alle Links stehen, Basis ist leer (keine Testdaten). **Offen:** n8n-Anbindung an
 
 ---
 
+## 11 · Update 28.07.2026 (Donna-Pilot nativ, Marketing-Team komplett architektiert)
+
+**Kontext:** Bianca geht am 13.08.2026 auf den Camino (Flug Madrid, danach Camino Inglés) — will das digitale Team vorher live UND getestet haben, nicht erst am Abreisetag fertig. Daraus die heutige Session-Priorität: Donna + mindestens ein Team wirklich fertig, nicht nur geplant.
+
+### Grundsatzentscheidung: Architektur-Fork aufgelöst
+Nach Diskussion (native n8n-Agenten vs. Langdock-gehostete Agenten) die Regel gefunden, die den ganzen Tag getragen hat: **Gedächtnis/eigener Workflow braucht es nur bei echten Beziehungen (Donna ↔ Bianca), nicht bei abgeschlossenen Aufgaben** (Linni schreibt einen Post = stateless Auftrag, kein Gedächtnis nötig). Damit: Donna bleibt der Leuchtturm für „nativ + eigener Bot", die meisten anderen Rollen laufen als **Sub-Agenten-Werkzeuge innerhalb EINES Orchestrierungs-Workflows** (Linni-„Manni"-Muster: ein Agent, mehrere `agentTool`-Sub-Agenten, kein Langdock beteiligt). Community-Screenshots von Bianca bestätigten unabhängig: Langdock-Agent lässt sich NICHT in den n8n-Sprachmodell-Slot einhängen (anderes Antwortformat) — nur per HTTP-Request als Blackbox aufrufbar. Erklärt auch das alte Dirigent-Muster.
+
+**Individuelle Slack-Bots:** Bianca hat klar entschieden (nicht zum ersten Mal gesagt, diesmal verstanden): **jede Agentin, mit der man wirklich redet, bekommt einen eigenen Slack-Bot**, keine geteilte Bot-Identität mehr. Aufwand ist ihr bewusst und akzeptiert. Beleg per Kanal-Mitgliedschaft (nicht nur Namenssuche, die war unzuverlässig): `#donna`/`#aurea` haben nur EINEN Bot-User (`U0996QVDBAR`), der sich per `sendAsUser` verkleidet — nur Linni hat wirklich einen eigenen (`U0ANKK4QAHF`).
+
+**Postgres erneut geprüft, erneut tot:** Credential `o0Fa9onWOQK9XPJH` zeigt auf `127.0.0.1:5432` — „Connection refused", exakt derselbe Fehler wie im Schwesterprojekt. Entscheidung: kein Postgres-Gedächtnis vorerst. Kurzzeit = RAM-Puffer, Langzeit = Airtable-Logbuch/Kondensat (portabel, kein neuer Infrastruktur-Punkt, der kaputtgehen kann).
+
+### Donna-Pilot (`ORCH - Donna - v1`, `J22CV0Ovkjj9Zd6f`) — technisch fertig, wartet auf Biancas Slack-Bot
+Bereits vorhandener, nie aktivierter nativer Agent (Claude Sonnet, RAM-Memory, Kalender/Gmail/Logbuch/Registry-Tools) gefunden und fertiggestellt:
+- **Steuerzentrale-Werkzeuge ergänzt:** Projekte durchsuchen/anlegen, To-do anlegen, Vorhaben anlegen — schließt die Lücke von heute Morgen, wo Langdock-Donna nur lesen, nicht schreiben konnte.
+- **Prompt v3.0:** echte Registry-Stellenbeschreibung (Conscious-Operating-System-Queen, 8-Punkte-Aufgaben, Fokus-Schutz, Rhythmen) + technisches Gerüst der alten v2.0 (Stufe-1/2, Zeeg-Link, Slack-Formatregeln) verschmolzen. Notion-Referenzen durch Steuerzentrale ersetzt.
+- **Fehlt noch (Biancas Teil):** eigene Slack-App (Checkliste als To-dos im Projekt „Donna-Rollout (nativ, eigener Bot)" in der Steuerzentrale hinterlegt, Owner Bianca).
+- Nie live getestet (bewusst — Workflow hat kaputte Nebenzweige im alten Chat-Teil, die den echten Test nicht betreffen).
+
+### Linni-Workflow (`11UxePeldz86cqxp`) — zwei echte Bugs gefunden und gefixt
+1. **Cross-Base-Mismatch:** „Search LinkedIn Posts for Today" las aus der fremden Vorlagen-Basis `LinkedIn Posts Manni`, „Update Status to Posted" schrieb in Biancas eigene `LinkedIn Posts Linni` — zwei verschiedene Basen, hätte nie funktioniert. Beide zeigen jetzt auf **Steuerzentrale/Redaktionsplan**.
+2. **Schein-Freigabe-Gate:** Filter stand auf `Status = "Ready"`, ein Wert, den auch der Agent selbst hätte setzen können. Jetzt `Status = "Freigegeben"` — ein Wort, das nur Bianca von Hand einträgt.
+3. **Offen:** „Post to LinkedIn" hat noch eine festverdrahtete fremde Personen-ID (`3csPv-h--Z`) — braucht Biancas echte LinkedIn-URN.
+4. Nebenbefund: der Chat-Agent-Teil („Manni", ~140 Nodes gesamt) hat mehrere vorbestehende, unabhängige Fehler (getrennte Model-Nodes ohne Verbindung, Slack/Telegram-Nodes mit fehlenden Pflichtfeldern) — betrifft NICHT die Posting-Kette, aber noch nicht bereinigt.
+
+### Marketing-Team — strukturell komplett, zwei neue Workflows
+**Hierarchie final** (Registry `app9r4BK5FJTU219P`, Reports-an korrigiert — Max reportete vorher fälschlich an CC Top, jetzt umgekehrt):
+```
+Max (Marketing Lead) ── Findus (News) ── Trend-Scout (Trends, neu)
+                    └── CC Top (Content-Governance)
+                         ├── Linni (LinkedIn) · Ina (Instagram) · Soreia (Newsletter/Substack)
+                         ├── Podcast Producer · Vera (Video-Prompts) · Voca (Voice of Brand Sheriff)
+                         └── Nora · Claudia · Selma (Zielgruppen-Feedback-Personas, max. 3-5 Runden, 20 als Notbremse)
+```
+**Leandra** aktiviert (Langdock-ID `b3cfa80e-6246-45fd-bbd5-aa2b4eac27f3`, Kanal `#leandra` `C0BKV12HWD9`). Sam Sales/Soreia noch ohne Langdock-ID (müssen in Langdock angelegt werden, Biancas Teil).
+
+**Neue Airtable-Tabelle „Redaktionsplan"** in der Steuerzentrale (`tbld1fEJeD29wy4PT`, nicht die alte separate Basis) — eine Referenz für alle Kanäle. Pipeline-Status: `Idee → Wartet auf Themenwahl → Ausgewählt → Entwurf → Nora-Feedback → Überarbeitung → Wartet auf Freigabe → Freigegeben → Geplant → Gepostet`. Feld „CC Top Empfehlung" für die Vorauswahl-Begründung. Wichtig aus der alten Linni-Vorlage übernommen: nur das ERSTE Bild im Visual-Feld wird gepostet.
+
+**`ORCH - Marketing Recherche - v1`** (`dXHZnY0KaS9iNgSo`, inaktiv): Findus (News) + Trend-Scout (Trends) als zwei native Agenten mit Google-Suche (SerpAPI — Credential fehlt noch, Bianca), jeden Montag 08:00, schreiben Funde als „Idee" in den Redaktionsplan. Danach macht **CC Top eine Vorauswahl** (eigener Agent-Schritt, strukturierter Output) und setzt Status auf „Wartet auf Themenwahl" mit kurzer Empfehlung — **erst Bianca wählt manuell aus** (Status → „Ausgewählt"), bevor die teure Produktion anläuft. Diese Stufe kam erst nach Rückfrage von Bianca rein („ich möchte das Thema auswählen, nicht dass alles automatisch durchläuft") — wichtige Lücke, die vorher fehlte.
+
+**`ORCH - Marketing Produktion - v1`** (`9pi1p59HQWc6ASXJ`, inaktiv): täglich 09:00, sucht Redaktionsplan-Zeilen mit Status „Ausgewählt". **CC Top orchestriert** als Hauptagent mit 8 Sub-Agenten-Werkzeugen (Linni/Ina/Soreia/Podcast Producer/Vera als Kanal-Ausführende, Nora/Claudia/Selma als Zielgruppen-Feedback) — schreibt am Ende Status „Wartet auf Freigabe" zurück, NIE „Freigegeben" selbst. 21 Nodes, alle Prompts aus den echten Registry-Stellenbeschreibungen übernommen (nicht neu erfunden), Anthropic direkt (kein Langdock).
+
+**Noch fehlend, analog zu Linni gebraucht:** eigene „Freigegeben → Posten"-Workflows für Instagram/Newsletter/Podcast/Video — blockiert auf Plattform-Zugänge, die Bianca noch besorgt.
+
+### Erkannte, noch offene Strukturlücken (Biancas eigener Einwand, berechtigt)
+1. **Skills nicht faktorisiert:** Alle Sub-Agenten-Prompts heute wurden als vollständige Einzeltexte geschrieben statt aus dem vorhandenen Skills-Katalog (Airtable, Team-Basis) zusammengesetzt. „Feedbackgespräche führen" sollte ein Skill sein, den JEDE Agentin hat, nicht nur Helga (die führt sie, hat aber selbst noch keinen eigenen Workflow, der ihr overhaupt Arbeit gibt — sie existiert schon, Langdock-ID + Kanal, nur ungenutzt).
+2. **Prompts liegen fest im n8n-Workflow, nicht dynamisch aus Airtable gezogen** — Helga könnte sonst Prompts pflegen, ohne n8n anzufassen. Geplante Lösung (noch nicht gebaut): Kernpersönlichkeit (Stellenbeschreibung) + zutreffende Skills zur Laufzeit aus Airtable zusammensetzen.
+3. **Templates ohne Zuhause:** Post-Vorlagen/Angebots-Vorlagen sollen als neue Tabellen in die Steuerzentrale, Design/Branding-Assets nach Google Drive (Airtable nur Link, wie beim Buchmanuskript) — noch nicht gebaut.
+4. **Zentrales Unternehmenswissen (Branding/Tonalität) für alle Agenten:** Entscheidung gegen Langdock-Wissensdatenbank (Lock-in) UND gegen eigene Vektor-Datenbank (zu groß für Biancas tatsächliche Dokumentenmenge, außerdem dieselbe Postgres-Abhängigkeit, die schon zweimal gescheitert ist). Empfehlung: kleines „Markenkern"-Dokument direkt in jeden Prompt einbinden, kein Suchsystem nötig. Noch nicht gebaut.
+5. Repo für Skills (Biancas ursprünglicher Wunsch von Session-Beginn): Airtable bleibt die lebendige Quelle, Repo wird periodischer versionierter Export — noch nicht gebaut.
+
+### Bewusst NICHT angefasst
+**Sales-Team:** Bianca explizit „noch nicht, lass uns teamweise arbeiten" — Leandra wurde nur aktiviert, weil sie schon vorher in Bearbeitung war, kein Produktions-Workflow für Sales gebaut.
+
+**Nächste Session:** Skills-Katalog + dynamisches Prompt-Pulling nachziehen (Bianca wollte das vor weiterem Bauen klären), dann Templates-Struktur, dann Sales-Team nach demselben Muster wie Marketing.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
