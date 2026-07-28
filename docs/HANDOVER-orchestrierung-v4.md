@@ -242,6 +242,11 @@ Max (Marketing Lead) ── Findus (News) ── Trend-Scout (Trends, neu)
 ### Bewusst NICHT angefasst
 **Sales-Team:** Bianca explizit „noch nicht, lass uns teamweise arbeiten" — Leandra wurde nur aktiviert, weil sie schon vorher in Bearbeitung war, kein Produktions-Workflow für Sales gebaut.
 
+### Nachtrag selben Tages: Morgenpost-Feinschliff + neuer Kalender-Wächter
+- **Morgenpost-Titel zeitabhängig gemacht:** hieß bisher immer „Morgenpost", auch nachmittags bei den stündlichen Läufen. Jetzt: „Morgenpost" nur vor 9 Uhr, sonst „Update HH:mm Uhr".
+- **Neuer Workflow „ORCH - Kalender-Wächter - v1"** (`SxSYRyWaqH9tc58u`, **aktiv**): Auslöser war ein Beinahe-Fehler — eine kurzfristige Zeeg-Kundenbuchung wurde nicht rechtzeitig bemerkt, weil Bianca/Donna den Kalender nur zu ihren zwei täglichen Check-in-Zeitpunkten aktiv anschauen. Stündlich (Minute :07) prüft der neue Workflow den Google Kalender auf Termine, die in der letzten Stunde neu **angelegt** wurden (gefiltert auf `created`, nicht nur `updated`, damit reine Verschiebungen nicht jedes Mal eine Nachricht auslösen) und schickt bei Fund sofort eine Slack-DM an Bianca. Kein Zeeg-Zugriff nötig — arbeitet rein über den bestehenden Google-Kalender.
+- Zwei reguläre Stufe-1-E-Mail-Entwürfe angelegt (Antwort an Weingut Pardellerhof + neue Anfrage an Weingut Gruberhof, beide im Kontext von Biancas Buch-Unterkunftssuche) — Routinearbeit, nicht architekturrelevant, nur der Vollständigkeit halber erwähnt.
+
 **Nächste Session:** Skills-Katalog + dynamisches Prompt-Pulling nachziehen (Bianca wollte das vor weiterem Bauen klären), dann Templates-Struktur, dann Sales-Team nach demselben Muster wie Marketing.
 
 ---
