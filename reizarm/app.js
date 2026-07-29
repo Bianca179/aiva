@@ -1,3 +1,7 @@
+// Öffentliches Einreichungsformular (Airtable Form-View, ohne Account nutzbar).
+// Nach dem Anlegen des Form-Views in Airtable hier den Share-Link eintragen.
+const SUBMISSION_FORM_URL = "";
+
 const CRITERIA = [
   { key: "light", label: "Licht" },
   { key: "noise", label: "Geräusche" },
@@ -32,6 +36,7 @@ async function init() {
   buildCityFilter();
   buildCategoryFilter();
   buildCriteriaFilters();
+  setupSubmissionLink();
 
   document.getElementById("filter-city").addEventListener("change", (e) => {
     state.city = e.target.value;
@@ -41,6 +46,15 @@ async function init() {
   document.getElementById("filter-reset").addEventListener("click", resetFilters);
 
   render();
+}
+
+function setupSubmissionLink() {
+  const link = document.getElementById("submit-place-link");
+  if (SUBMISSION_FORM_URL) {
+    link.href = SUBMISSION_FORM_URL;
+  } else {
+    link.remove();
+  }
 }
 
 function buildCityFilter() {

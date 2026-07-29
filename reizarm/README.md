@@ -34,7 +34,39 @@ z. B. "ruhiger Tisch hinten links" oder "Kopfhörer werden nicht schräg angesch
 - `app.js` – Lädt `data/places.json`, rendert Karte (Leaflet/OpenStreetMap) und Liste, Filterlogik
 - `data/places.json` – Die eigentlichen Ortsdaten
 
-## Einen Ort hinzufügen
+## Ort vorschlagen (für Besucher:innen, ohne GitHub-Account)
+
+Der "Ort vorschlagen"-Button auf der Seite führt zu einem öffentlichen
+Airtable-Formular. Jede:r kann dort ohne Account eine eigene Erfahrung
+eintragen – Bewertung pro Kriterium, Adresse, Tipps.
+
+Einreichungen landen zunächst in der Airtable-Base **"reizarm
+Einreichungen"** (Tabelle `Orte`, Status `Neu`) und erscheinen **nicht**
+automatisch auf der Karte. Ein:e Kurator:in prüft neue Einträge, setzt den
+Status auf `Geprüft`/`Abgelehnt` und übernimmt geprüfte Orte manuell nach
+dem Schema unten in `data/places.json` (Status dann `Übernommen`). Das ist
+bewusst kein Vollautomatismus, damit keine ungeprüften/falschen
+Reiz-Bewertungen live gehen.
+
+### Setup des Formulars (einmalig, in der Airtable-Oberfläche)
+
+Die Base samt Tabelle und allen Feldern ist bereits angelegt – nur der
+öffentliche Form-View fehlt noch, weil das Erstellen von Formularen über
+die verfügbare API nicht möglich ist:
+
+1. Base "reizarm Einreichungen" → Tabelle `Orte` öffnen.
+2. Über dem Grid auf **"+"** neben den View-Reitern klicken → **Form** wählen.
+3. Das Feld `Status` im Formular-Editor ausblenden (nicht für Einreichende
+   gedacht, bleibt leer = entspricht `Neu`).
+4. Oben rechts **"Share form"** → Link kopieren.
+5. Den Link in `app.js` bei `SUBMISSION_FORM_URL` eintragen (oder mir
+   geben, dann trage ich ihn ein) – der Button erscheint dann automatisch
+   auf der Seite (er ist ausgeblendet, solange die URL leer ist).
+
+### Direkter Weg für technische Beitragende
+
+Wer mit Git/GitHub vertraut ist, kann Orte weiterhin direkt per Pull
+Request eintragen – siehe Schema unten.
 
 `data/places.json` ist ein Array von Objekten nach diesem Schema:
 
@@ -74,7 +106,8 @@ bitte durch echte, geprüfte Orte ersetzen bzw. ergänzen.
 ## Roadmap
 
 - [x] MVP: statische Seite, Karte, Filter, Stuttgart-Startdaten (Platzhalter)
+- [x] Airtable-Base für öffentliche Einreichungen ohne Account
+- [ ] Form-View in Airtable einrichten und Link in `app.js` eintragen
 - [ ] Echte Stuttgart-Orte recherchieren und eintragen
-- [ ] Einfacher Einreichungsweg für Vorschläge ohne PR (z. B. Formular)
 - [ ] Ausweitung auf weitere deutsche/europäische Städte
 - [ ] Mobile-Optimierung / PWA
