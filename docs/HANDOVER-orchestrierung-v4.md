@@ -142,6 +142,23 @@ Stufe-1-Scope ist auch in Donnas Registry-Zeile (`recWAmi8Jwk2DGp0Y`) hinterlegt
 
 **Gedächtnis-Fix-Detail:** „Gedächtnis vorbereiten" liest Antwort jetzt aus „Antwort aufbereiten" (nicht mehr direkt aus Langdock).
 
+### ENTSCHEIDUNG 22.07. (Nachtrag 29.07.): Echte DMs = 7 eigene Slack-Apps
+
+Bianca will DMs zu Donna, Linni, aurea, Gaia, Soreia, Petra, Dagobert Duck senden (nicht nur Kanäle). Slack bindet eine DM an eine ECHTE Bot-Identität — der `sendAsUser`-Trick des Kanal-Dirigenten funktioniert in DMs nicht. Entscheidung (bewusst gegen die einfachere Alternative "eine DM + @Mention-Routing"): **7 eigene Slack-Apps**, eine pro Agentin.
+
+**Gebaut (29.07.):**
+- Registry-Feld **„Slack App ID"** (`fld5nA3LMMuCLQZKw`, Team-Tabelle) — nicht-sensibler Routing-Schlüssel, KEIN Bot-Token in Airtable (Sicherheitsentscheidung: Tokens gehören in n8n-Credentials, nicht in Airtable-Klartext).
+- **ORCH - DM-Dirigent - v1** (`t9Gz9uYuRA07o0ut`), Webhook `/slack-dm-dirigent`, AKTIV. Empfang → nur `channel_type=im` + kein Bot-Echo → Registry → Agent über „Slack App ID" (`api_app_id` aus dem Event) auflösen → Gedächtnis (gleiche Tabelle wie Kanal-Dirigent, Kanal-Feld = DM-Channel-ID) → Langdock-Aufruf → robuste Antwortaufbereitung (gleicher no_text-Fix wie Kanal-Dirigent). Getestet (simuliert), published.
+- **Versand ist PLATZHALTER** — NoOp-Node mit TODO-Notiz. Jede Agentin braucht ihre eigene Slack-App + Bot-Token, bevor ihr Zweig fertig verdrahtet werden kann (n8n-Credential pro Agentin + eigener HTTP-Node `chat.postMessage`, gesteuert per Switch auf `agentName`).
+
+**Nächste Schritte (iterativ, wie beim Langdock-ID-Sammeln):**
+1. Bianca legt EINE Slack-App an (Pilot: Donna) nach der Anleitung im Sticky-Note des Workflows.
+2. Bianca schickt App-ID + Bot-Token.
+3. Claude legt n8n-Credential an, ergänzt Switch-Zweig für Donna, testet End-to-End, trägt App-ID in Registry ein.
+4. Wiederholen für Linni, aurea, Gaia, Soreia, Petra, Dagobert Duck.
+
+**Offene Datenpunkte:** Linni hat noch keine Langdock-Agent-ID in der Registry (Zeile existiert, Status „inaktiv", Kanal+ID fehlen) — vor dem DM-Test nachtragen. Soreia hat Kanal, aber noch keine Langdock-ID (aus der 12er-Liste oben).
+
 ### ENTSCHEIDUNG 22.07.: Single Source of Truth = Airtable (eigene Basis)
 
 Bianca will eine SSOT für **To-dos, OKRs, Kontakte, Projekte, Produkte, Vorhaben** — bisher Notion, wird kaum noch genutzt. **Entscheidung: Airtable, in einer EIGENEN neuen Basis** („Steuerzentrale"), getrennt von der Agenten-Basis `app9r4BK5FJTU219P` (Registry/Logbuch/Präzedenzfälle/Gedächtnis), verknüpft bzw. per n8n angebunden.
