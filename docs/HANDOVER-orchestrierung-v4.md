@@ -177,6 +177,97 @@ Begründung: Die Agentinnen (Donna, Ophra, aurea) lesen/schreiben Airtable berei
 
 ---
 
+## 10 · Update 27.07.2026 (Morgenpost-Fix, SSOT „Steuerzentrale", Marketingteam-Start)
+
+**Morgenpost „immer der gleiche Text" — diagnostiziert und gefixt.** Executions vom 26./27.07. geprüft (Klassifikation, Dedup-Label `Label_2`, Slack-Versand): technisch alles sauber, Inhalte variierten korrekt je Mail-Batch, keine einzige Fehler-Execution seit dem Credential-Fix. **Echte Ursache stand in Biancas eigener Reflexion vom 23.07.** (geladen im Morgenpost-Run vom 24.07., Abschnitt „Aus deiner gestrigen Reflexion"): „Donnas Antworten und Briefings in Slack sind zu lange und immer dieselben Worte." Konkreter Treiber: der Code in „Briefing bauen" hängte an **jede** Nachricht denselben hartcodierten Schlusssatz („Fokus-Tipp: Erst die persönlichen, dann Entwürfe freigeben. Ein Block, kein Hin und Her.") — wortgleich, unabhängig vom Inhalt. **Bianca-Entscheidung 27.07.: Morgenpost bleibt bei Donna** (ihre Reflexion vom 23.07 hatte noch „Aurea macht die Morgenpost" vorgeschlagen — das ist überholt: „Donna ist meine Executive Assistant, orchestriert Kalender/Mails/To-dos"). **Fix:** Fokus-Tipp-Zeile aus „Briefing bauen" entfernt, Rest der Logik unverändert. Published, aktive Version `2f81b82e-4e7d-4192-8bd4-c00dd8daa2fe`.
+
+### SSOT „Steuerzentrale" gebaut (nicht „SSOT" genannt — Kollisionsgefahr!)
+⚠️ Im Account existiert bereits eine Basis **namens „SSOT"** (`app2lmhCxLhMkdfmN`) — das ist aber das komplette Philipp-Dicke-Recruiting-System (Mandates/Persons/Funnel/Bewertungskriterien/Logbook/Akquise-Pipeline…), NICHT Biancas eigene Steuerzentrale. Um Verwechslung auszuschließen, heißt Biancas neue Basis bewusst **„Steuerzentrale"**.
+
+- **Basis-ID:** `appqscSUAbAqQGMpk` (Workspace AIVa)
+- **Projekte** (`tblrEiq8TU41vbwfr`, Herzstück) — Beschreibung, Status, Bereich (Kernteam/Orchestrierung · Marketing · Buch · Privat · Sonstiges), Start/Ziel-Datum, Dokument-Link (fürs Buch-Manuskript in Google Docs)
+- **OKRs** (`tblcMMxoHoGiaUdZO`) + **Key Results** (`tblJqMFNWCOilvUoB`) — zweistufig wie im Philipp-SSOT, Ophra pflegt
+- **To-dos** (`tblM729OMi3huDFXl`) — Link Projekt + Key Results, Status/Priorität/Fällig/Quick-Win/Owner (Bianca/Donna/aurea/Ophra/Agent)
+- **Kontakte** (`tblNDQZsFwjluKZMo`) — Link Projekt, Sales-Funnel-Status
+- **Produkte** (`tblNRHkpgTfWHo82Y`) — Link Projekt, Angebotsarchitektur-Link
+- **Vorhaben** (`tblVQ3zZ7M47TjUO5`) — Ideen-Inbox, Link Projekt (optional)
+
+Alle Links stehen, Basis ist leer (keine Testdaten). **Offen:** n8n-Anbindung an Donna/Ophra (welcher Flow liest/schreibt was, wann) — noch nicht gebaut, Bianca-Entscheidung nötig.
+
+### Marketingteam-Start
+- **Constance/Constanze → umbenannt in „CC Top"** (Bianca-Entscheidung 27.07.: „CC" = Content Creatorin, „Top" = führt die Content-Einheit auf oberster Ebene — nicht mehr „Chief Content Officer"). Registry-Zeile `rec17io3O7jW90Kam`: Name geändert, Langdock-Agent-ID `ce0d3a4d-705b-41af-a586-86f559bd4ca1` gesetzt. **Prompt v3.0 destilliert** aus den vorhandenen v1.0/v2.0-Stellenbeschreibungen (v2 war bereits eine Verfeinerung von v1, keine inhaltlichen Widersprüche) — nur Name/Titel/Naming-Note umgestellt, Rolle/Scope/Boundaries/Skills inhaltlich unverändert. Jetzt offizielle „Stellenbeschreibung".
+- **Max** (`recpuJq4MSNRV1nRP`) und **Linni** (`recJptXj7mbaZ6oYo`) hatten bereits korrekte Langdock-Agent-IDs (`1fa670a1-...` bzw. `1835c388-...`) — vorher schon gesetzt, nur bestätigt.
+- **Voca** (`recBqdxuLuJHN8Nl8`) hatte noch keine Langdock-Agent-ID — jetzt `94095850-022f-48c3-aee9-9c64857076bb` gesetzt.
+- **A2A aktiv** für CC Top, Max, Linni, Voca angehakt (Delegation entlang Berichtslinie → CC Top, Hop-Limit 2 — gleiches Muster wie Donna/aurea).
+- **Neue Slack-Kanäle:** `#max` (`C0BLV0B32JC`), `#voca` (`C0BKUCWGR35`) angelegt und in Registry hinterlegt.
+- ⚠️ **Architektur-Fund zu Linni:** Kanal `#linni` ließ sich NICHT anlegen (`name_taken`) — Linni hat bereits einen **eigenen Slack-Bot-User** (`U0ANKK4QAHF`), mit dem Bianca seit 14.07. direkt per DM spricht, NICHT über einen Kanal. Das ist ein Sonderfall: alle anderen Kernteam-/Marketing-Agentinnen (Donna, aurea, Max, CC Top, Ophra) haben KEINEN eigenen Bot-User, sondern laufen über den EINEN gemeinsamen Dirigent-Bot mit `sendAsUser`-Anzeigenamen-Override — kein echter Slack-User, der direkt angeschrieben werden kann. **Offene Bianca-Entscheidung:** (a) Linnis Sonderweg (eigener Bot pro Agentin) generalisieren — aufwändig, braucht pro Agentin ein eigenes Slack-App-Setup über api.slack.com (nicht per MCP-Tool machbar), oder (b) im Dirigenten ein DM-Routing bauen (Mention-Erkennung am Nachrichtenanfang, Lookup in Registry, Antwort mit sendAsUser im selben DM-Thread) — reine n8n-Änderung, deutlich schlanker. Bianca hat sich noch nicht entschieden.
+- **Redaktionsplan-Basis** (`appdluooiLRvhNMm2`) geprüft: bestehende „Imported table" wirkt wie Fremd-Vorlage (Feld „Kanal" nur Option „Instagram", Feld „Status Philip"), enthält aber bereits ein „Go von Charlie Checker"-Häkchen — passt zum Kritiker-Gate-Pattern aus `MULTIAGENT-ARCHITEKTUR-PATTERNS.md`, aber **noch nicht geprüft, ob dieses Häkchen tatsächlich als Blocker verdrahtet ist oder nur ein Status-Feld ist** (genau die zentrale Fehlerlehre aus dem Patterns-Dokument — Tool haben ≠ als Gate verdrahtet). Bianca baut den Redaktionsplan gerade parallel selbst um, gemeinsame Durchsicht später.
+- **Neue Anforderung (noch nicht gebaut): LinkedIn-DMs versenden.** Bianca möchte, dass das Marketingteam LinkedIn-Direktnachrichten an echte Personen verschicken kann. In der Registry wurde **kein Agent gefunden, der eingehende LinkedIn-Antworten überwacht**. Zweck/Scope (Kaltakquise? Antworten auf Kommentare? Networking-Pflege?) noch ungeklärt — braucht wegen direkter Personenansprache zwingend ein Freigabe-Gate pro Nachricht (noch strenger als beim LinkedIn-Post-Gate). Bianca baut parallel, gemeinsame Durchsicht später.
+
+---
+
+## 11 · Update 28.07.2026 (Donna-Pilot nativ, Marketing-Team komplett architektiert)
+
+**Kontext:** Bianca geht am 13.08.2026 auf den Camino (Flug Madrid, danach Camino Inglés) — will das digitale Team vorher live UND getestet haben, nicht erst am Abreisetag fertig. Daraus die heutige Session-Priorität: Donna + mindestens ein Team wirklich fertig, nicht nur geplant.
+
+### Grundsatzentscheidung: Architektur-Fork aufgelöst
+Nach Diskussion (native n8n-Agenten vs. Langdock-gehostete Agenten) die Regel gefunden, die den ganzen Tag getragen hat: **Gedächtnis/eigener Workflow braucht es nur bei echten Beziehungen (Donna ↔ Bianca), nicht bei abgeschlossenen Aufgaben** (Linni schreibt einen Post = stateless Auftrag, kein Gedächtnis nötig). Damit: Donna bleibt der Leuchtturm für „nativ + eigener Bot", die meisten anderen Rollen laufen als **Sub-Agenten-Werkzeuge innerhalb EINES Orchestrierungs-Workflows** (Linni-„Manni"-Muster: ein Agent, mehrere `agentTool`-Sub-Agenten, kein Langdock beteiligt). Community-Screenshots von Bianca bestätigten unabhängig: Langdock-Agent lässt sich NICHT in den n8n-Sprachmodell-Slot einhängen (anderes Antwortformat) — nur per HTTP-Request als Blackbox aufrufbar. Erklärt auch das alte Dirigent-Muster.
+
+**Individuelle Slack-Bots:** Bianca hat klar entschieden (nicht zum ersten Mal gesagt, diesmal verstanden): **jede Agentin, mit der man wirklich redet, bekommt einen eigenen Slack-Bot**, keine geteilte Bot-Identität mehr. Aufwand ist ihr bewusst und akzeptiert. Beleg per Kanal-Mitgliedschaft (nicht nur Namenssuche, die war unzuverlässig): `#donna`/`#aurea` haben nur EINEN Bot-User (`U0996QVDBAR`), der sich per `sendAsUser` verkleidet — nur Linni hat wirklich einen eigenen (`U0ANKK4QAHF`).
+
+**Postgres erneut geprüft, erneut tot:** Credential `o0Fa9onWOQK9XPJH` zeigt auf `127.0.0.1:5432` — „Connection refused", exakt derselbe Fehler wie im Schwesterprojekt. Entscheidung: kein Postgres-Gedächtnis vorerst. Kurzzeit = RAM-Puffer, Langzeit = Airtable-Logbuch/Kondensat (portabel, kein neuer Infrastruktur-Punkt, der kaputtgehen kann).
+
+### Donna-Pilot (`ORCH - Donna - v1`, `J22CV0Ovkjj9Zd6f`) — technisch fertig, wartet auf Biancas Slack-Bot
+Bereits vorhandener, nie aktivierter nativer Agent (Claude Sonnet, RAM-Memory, Kalender/Gmail/Logbuch/Registry-Tools) gefunden und fertiggestellt:
+- **Steuerzentrale-Werkzeuge ergänzt:** Projekte durchsuchen/anlegen, To-do anlegen, Vorhaben anlegen — schließt die Lücke von heute Morgen, wo Langdock-Donna nur lesen, nicht schreiben konnte.
+- **Prompt v3.0:** echte Registry-Stellenbeschreibung (Conscious-Operating-System-Queen, 8-Punkte-Aufgaben, Fokus-Schutz, Rhythmen) + technisches Gerüst der alten v2.0 (Stufe-1/2, Zeeg-Link, Slack-Formatregeln) verschmolzen. Notion-Referenzen durch Steuerzentrale ersetzt.
+- **Fehlt noch (Biancas Teil):** eigene Slack-App (Checkliste als To-dos im Projekt „Donna-Rollout (nativ, eigener Bot)" in der Steuerzentrale hinterlegt, Owner Bianca).
+- Nie live getestet (bewusst — Workflow hat kaputte Nebenzweige im alten Chat-Teil, die den echten Test nicht betreffen).
+
+### Linni-Workflow (`11UxePeldz86cqxp`) — zwei echte Bugs gefunden und gefixt
+1. **Cross-Base-Mismatch:** „Search LinkedIn Posts for Today" las aus der fremden Vorlagen-Basis `LinkedIn Posts Manni`, „Update Status to Posted" schrieb in Biancas eigene `LinkedIn Posts Linni` — zwei verschiedene Basen, hätte nie funktioniert. Beide zeigen jetzt auf **Steuerzentrale/Redaktionsplan**.
+2. **Schein-Freigabe-Gate:** Filter stand auf `Status = "Ready"`, ein Wert, den auch der Agent selbst hätte setzen können. Jetzt `Status = "Freigegeben"` — ein Wort, das nur Bianca von Hand einträgt.
+3. **Offen:** „Post to LinkedIn" hat noch eine festverdrahtete fremde Personen-ID (`3csPv-h--Z`) — braucht Biancas echte LinkedIn-URN.
+4. Nebenbefund: der Chat-Agent-Teil („Manni", ~140 Nodes gesamt) hat mehrere vorbestehende, unabhängige Fehler (getrennte Model-Nodes ohne Verbindung, Slack/Telegram-Nodes mit fehlenden Pflichtfeldern) — betrifft NICHT die Posting-Kette, aber noch nicht bereinigt.
+
+### Marketing-Team — strukturell komplett, zwei neue Workflows
+**Hierarchie final** (Registry `app9r4BK5FJTU219P`, Reports-an korrigiert — Max reportete vorher fälschlich an CC Top, jetzt umgekehrt):
+```
+Max (Marketing Lead) ── Findus (News) ── Trend-Scout (Trends, neu)
+                    └── CC Top (Content-Governance)
+                         ├── Linni (LinkedIn) · Ina (Instagram) · Soreia (Newsletter/Substack)
+                         ├── Podcast Producer · Vera (Video-Prompts) · Voca (Voice of Brand Sheriff)
+                         └── Nora · Claudia · Selma (Zielgruppen-Feedback-Personas, max. 3-5 Runden, 20 als Notbremse)
+```
+**Leandra** aktiviert (Langdock-ID `b3cfa80e-6246-45fd-bbd5-aa2b4eac27f3`, Kanal `#leandra` `C0BKV12HWD9`). Sam Sales/Soreia noch ohne Langdock-ID (müssen in Langdock angelegt werden, Biancas Teil).
+
+**Neue Airtable-Tabelle „Redaktionsplan"** in der Steuerzentrale (`tbld1fEJeD29wy4PT`, nicht die alte separate Basis) — eine Referenz für alle Kanäle. Pipeline-Status: `Idee → Wartet auf Themenwahl → Ausgewählt → Entwurf → Nora-Feedback → Überarbeitung → Wartet auf Freigabe → Freigegeben → Geplant → Gepostet`. Feld „CC Top Empfehlung" für die Vorauswahl-Begründung. Wichtig aus der alten Linni-Vorlage übernommen: nur das ERSTE Bild im Visual-Feld wird gepostet.
+
+**`ORCH - Marketing Recherche - v1`** (`dXHZnY0KaS9iNgSo`, inaktiv): Findus (News) + Trend-Scout (Trends) als zwei native Agenten mit Google-Suche (SerpAPI — Credential fehlt noch, Bianca), jeden Montag 08:00, schreiben Funde als „Idee" in den Redaktionsplan. Danach macht **CC Top eine Vorauswahl** (eigener Agent-Schritt, strukturierter Output) und setzt Status auf „Wartet auf Themenwahl" mit kurzer Empfehlung — **erst Bianca wählt manuell aus** (Status → „Ausgewählt"), bevor die teure Produktion anläuft. Diese Stufe kam erst nach Rückfrage von Bianca rein („ich möchte das Thema auswählen, nicht dass alles automatisch durchläuft") — wichtige Lücke, die vorher fehlte.
+
+**`ORCH - Marketing Produktion - v1`** (`9pi1p59HQWc6ASXJ`, inaktiv): täglich 09:00, sucht Redaktionsplan-Zeilen mit Status „Ausgewählt". **CC Top orchestriert** als Hauptagent mit 8 Sub-Agenten-Werkzeugen (Linni/Ina/Soreia/Podcast Producer/Vera als Kanal-Ausführende, Nora/Claudia/Selma als Zielgruppen-Feedback) — schreibt am Ende Status „Wartet auf Freigabe" zurück, NIE „Freigegeben" selbst. 21 Nodes, alle Prompts aus den echten Registry-Stellenbeschreibungen übernommen (nicht neu erfunden), Anthropic direkt (kein Langdock).
+
+**Noch fehlend, analog zu Linni gebraucht:** eigene „Freigegeben → Posten"-Workflows für Instagram/Newsletter/Podcast/Video — blockiert auf Plattform-Zugänge, die Bianca noch besorgt.
+
+### Erkannte, noch offene Strukturlücken (Biancas eigener Einwand, berechtigt)
+1. **Skills nicht faktorisiert:** Alle Sub-Agenten-Prompts heute wurden als vollständige Einzeltexte geschrieben statt aus dem vorhandenen Skills-Katalog (Airtable, Team-Basis) zusammengesetzt. „Feedbackgespräche führen" sollte ein Skill sein, den JEDE Agentin hat, nicht nur Helga (die führt sie, hat aber selbst noch keinen eigenen Workflow, der ihr overhaupt Arbeit gibt — sie existiert schon, Langdock-ID + Kanal, nur ungenutzt).
+2. **Prompts liegen fest im n8n-Workflow, nicht dynamisch aus Airtable gezogen** — Helga könnte sonst Prompts pflegen, ohne n8n anzufassen. Geplante Lösung (noch nicht gebaut): Kernpersönlichkeit (Stellenbeschreibung) + zutreffende Skills zur Laufzeit aus Airtable zusammensetzen.
+3. **Templates ohne Zuhause:** Post-Vorlagen/Angebots-Vorlagen sollen als neue Tabellen in die Steuerzentrale, Design/Branding-Assets nach Google Drive (Airtable nur Link, wie beim Buchmanuskript) — noch nicht gebaut.
+4. **Zentrales Unternehmenswissen (Branding/Tonalität) für alle Agenten:** Entscheidung gegen Langdock-Wissensdatenbank (Lock-in) UND gegen eigene Vektor-Datenbank (zu groß für Biancas tatsächliche Dokumentenmenge, außerdem dieselbe Postgres-Abhängigkeit, die schon zweimal gescheitert ist). Empfehlung: kleines „Markenkern"-Dokument direkt in jeden Prompt einbinden, kein Suchsystem nötig. Noch nicht gebaut.
+5. Repo für Skills (Biancas ursprünglicher Wunsch von Session-Beginn): Airtable bleibt die lebendige Quelle, Repo wird periodischer versionierter Export — noch nicht gebaut.
+
+### Bewusst NICHT angefasst
+**Sales-Team:** Bianca explizit „noch nicht, lass uns teamweise arbeiten" — Leandra wurde nur aktiviert, weil sie schon vorher in Bearbeitung war, kein Produktions-Workflow für Sales gebaut.
+
+### Nachtrag selben Tages: Morgenpost-Feinschliff + neuer Kalender-Wächter
+- **Morgenpost-Titel zeitabhängig gemacht:** hieß bisher immer „Morgenpost", auch nachmittags bei den stündlichen Läufen. Jetzt: „Morgenpost" nur vor 9 Uhr, sonst „Update HH:mm Uhr".
+- **Neuer Workflow „ORCH - Kalender-Wächter - v1"** (`SxSYRyWaqH9tc58u`, **aktiv**): Auslöser war ein Beinahe-Fehler — eine kurzfristige Zeeg-Kundenbuchung wurde nicht rechtzeitig bemerkt, weil Bianca/Donna den Kalender nur zu ihren zwei täglichen Check-in-Zeitpunkten aktiv anschauen. Stündlich (Minute :07) prüft der neue Workflow den Google Kalender auf Termine, die in der letzten Stunde neu **angelegt** wurden (gefiltert auf `created`, nicht nur `updated`, damit reine Verschiebungen nicht jedes Mal eine Nachricht auslösen) und schickt bei Fund sofort eine Slack-DM an Bianca. Kein Zeeg-Zugriff nötig — arbeitet rein über den bestehenden Google-Kalender.
+- Zwei reguläre Stufe-1-E-Mail-Entwürfe angelegt (Antwort an Weingut Pardellerhof + neue Anfrage an Weingut Gruberhof, beide im Kontext von Biancas Buch-Unterkunftssuche) — Routinearbeit, nicht architekturrelevant, nur der Vollständigkeit halber erwähnt.
+
+**Nächste Session:** Skills-Katalog + dynamisches Prompt-Pulling nachziehen (Bianca wollte das vor weiterem Bauen klären), dann Templates-Struktur, dann Sales-Team nach demselben Muster wie Marketing.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
