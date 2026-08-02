@@ -268,6 +268,22 @@ Max (Marketing Lead) ── Findus (News) ── Trend-Scout (Trends, neu)
 
 ---
 
+## 12 · Update 29.07.2026 (DM-Dirigent + Zusammenführung mit der 27./28.07-Session)
+
+**Ausgangslage:** Diese Session lief parallel zur 27./28.07-Session (Donna-Pilot nativ, Marketingteam) und wusste davon nichts, bis der Git-Push kollidierte. Sauber gemerged, nichts verloren — aber dadurch entstand ein Abgleichsbedarf, weil Bianca in DIESER Session „Donna, Linni, Petra, Dagobert Duck, Gaia per DM ansprechen" wollte, ohne von der bereits getroffenen Donna-Grundsatzentscheidung (Abschnitt 11) zu wissen.
+
+**Gebaut (vor dem Abgleich):** Registry-Feld „Slack App ID" (`fld5nA3LMMuCLQZKw`) + **ORCH - DM-Dirigent - v1** (`t9Gz9uYuRA07o0ut`, aktiv, Webhook `/slack-dm-dirigent`) — generischer Langdock-DM-Router (Empfang → Registry → Gedächtnis → Langdock → robuste Antwort), Versand-Zweig pro Agentin noch Platzhalter. Getestet, funktioniert technisch.
+
+**Abgleich mit Abschnitt 11 ergibt DREI verschiedene Fälle für die 5 gewünschten DM-Agentinnen:**
+
+1. **Donna → NICHT über den DM-Dirigent.** Sie hat bereits einen eigenen, technisch fertigen nativen Workflow `ORCH - Donna - v1` (`J22CV0Ovkjj9Zd6f`, inaktiv) mit echten Schreibrechten (Kalender, Gmail-Entwürfe, Steuerzentrale, Logbuch) — das kann der generische Langdock-DM-Dirigent nicht leisten. Ihre künftige eigene Slack-App gehört an DIESEN Workflow (Slack-Trigger-Node „Slack Trigger (@Donna)"), nicht an den DM-Dirigenten. **Fund beim Prüfen (29.07.):** Der Trigger steht nur auf `app_mention` — für reines DM-Verhalten sollte zusätzlich `message.im` abonniert werden, sonst reagiert Donna in der DM nur auf explizites „@Donna", nicht auf normale Nachrichten. Vor Go-Live nachbessern.
+2. **Linni → braucht KEINE neue Slack-App.** Sie hat bereits eine eigene (Bot-User `U0ANKK4QAHF`, seit 14.07. von Bianca direkt per DM angeschrieben) UND bereits ein n8n-Credential dafür (`Linni`, ID `798kHnNrNsTiWDAu`, slackApi). **Offene Entscheidung (Bianca):** Läuft ihr Chat künftig über den Chat-Agent-Teil („Manni") im alten Linni-Workflow (`11UxePeldz86cqxp`, gerade in Bearbeitung — Credentials werden getauscht, laut Abschnitt 11 hat dieser Teil aber „mehrere vorbestehende, unabhängige Fehler") ODER wird sie in den neuen DM-Dirigenten eingehängt (sauberer, hat Gedächtnis + no_text-Fix, braucht nur ihre Slack-App-ID in der Registry + das bestehende Credential im Versand-Zweig)? **Empfehlung: DM-Dirigent** — der alte Chat-Teil ist nicht das, was für die Kernbeziehung gebraucht wird, und die Fehler dort sind nicht trivial. Falls Bianca gerade den Slack-Bot-Token in Linnis altem Workflow ändert: den NEUEN Token danach an Claude geben, damit das „Linni"-Credential aktuell bleibt.
+3. **Petra, Dagobert Duck, Gaia → wie ursprünglich geplant.** Kein Konflikt mit der anderen Session gefunden. Neue eigene Slack-App pro Agentin (Anleitung im Sticky-Note des DM-Dirigenten), dann Versand-Zweig ergänzen. Diese drei sind reine „abgeschlossene Aufgaben"-Charaktere im Sinne der Abschnitt-11-Regel — der DM-Dirigent mit Airtable-Gedächtnis ist architektonisch konsistent mit der dort getroffenen Postgres-Absage (Langzeit-Gedächtnis = Airtable, nicht Postgres).
+
+**Nicht mehr offen, weil in Abschnitt 11 schon entschieden:** Individuelle Slack-Bots sind die generelle Linie (nicht mehr `sendAsUser`-Sharing) — deckt sich mit Biancas „7 eigene Slack-Apps"-Wahl in dieser Session. Kein Widerspruch, nur Donna und Linni sind Sonderfälle mit eigener Vorgeschichte.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
