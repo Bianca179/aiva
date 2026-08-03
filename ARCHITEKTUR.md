@@ -96,21 +96,20 @@ Der Prototyp war die Blaupause.
 
 ---
 
-## 5. WICHTIGE Entscheidung fürs B2B-Modell: Was sieht die Akademie?
+## 5. B2B-Modell: ENTSCHIEDEN (Bianca, 2026-07-22)
 
-Es gibt eine echte Spannung:
-- Unser **Grundprinzip:** Der Athlet besitzt seine Daten (Lenards Logbuch ist Lenards).
-- Das **B2B-Interesse:** Die Akademie zahlt und will vielleicht Fortschritt/Adhärenz sehen.
+**Die Akademie ist der Vertriebskanal, NICHT der Datenempfänger.** Bianca verschenkt ~10
+Lizenzen an Athleten (über den Mouratoglou-Kanal) **gegen Feedback** — ein klassischer
+Design-Partner-Pilot. Die Akademie „steht nicht dahinter" und braucht kein Dashboard.
 
-Optionen (zu entscheiden):
-- **A — Athlet-privat, Akademie sieht nur Aggregat/„nutzt aktiv ja/nein".** Schützt Vertrauen,
-  leichter verkaufbar an die Athleten, DSGVO-freundlich. (Meine Empfehlung.)
-- **B — Athlet gibt einzelne Dinge frei (Opt-in).** Z. B. „Coach darf meine Wochenstimmung sehen."
-- **C — Akademie sieht alles.** Stärkstes B2B-Verkaufsargument, aber untergräbt das Vertrauen
-  der Athleten und unser Prinzip. Würde ich vermeiden.
+→ Damit fällt die ganze Spannung weg: **Athlet-privat, Punkt.** Kein Akademie-Einblick,
+kein Aggregat-View, nichts zu bauen. Unser Grundprinzip „der Athlet besitzt seine Daten"
+bleibt zu 100 % erhalten — technisch die einfachste und vertrauenswürdigste Variante.
+(Ein optionaler Athlet-gibt-frei-Modus kann später kommen, ist für den Piloten aber unnötig.)
 
-→ **Vorschlag:** Modell A als Standard, B als Opt-in. So bleibt „der Athlet ist in Führung"
-auch im Bezahlprodukt wahr — und genau das ist Teil des Markenversprechens.
+**Folge für den Pilot-Aufbau:** Es braucht nur eine schlanke **Einladungs-/Lizenz-Mechanik**
+(Bianca erzeugt 10 Zugangs-Codes/Einladungen, Athlet meldet sich an, verbindet sein Whoop).
+Keine komplexe Organisations-/Rollen-Ebene. Das hält das erste Fundament klein.
 
 ---
 
@@ -132,9 +131,28 @@ verkauft besser als jede Architektur-Folie.
 
 ---
 
-## 7. Offene Punkte / Entscheidungen für Bianca
+## 6b. Fitness-Coach braucht eine Knowledge Base (Merker für später)
 
-- [ ] B2B-Datenmodell: A / B / C aus §5 wählen (Empfehlung: A + Opt-in B).
+Hinweis Bianca (2026-07-22): Der neue **Fitness-/Stretching-Coach braucht eine Wissensbasis**
+(Übungsbibliothek, Dehnprotokolle o. ä.). In **Langdock ist das jetzt kein Problem** — dort
+hängt man Dokumente direkt an den Agenten. Für die spätere eigene Architektur muss das
+nachgebaut werden:
+
+- **Im Zielstack (Supabase):** Wissensbasis als **RAG** — Dokumente in Chunks, Embeddings in
+  **pgvector** (Supabase-Postgres kann das nativ). Bei jeder Coach-Frage die passenden
+  Wissens-Schnipsel dazuladen, dann an Claude.
+- **Wichtig fürs Konzept:** Markus/Sam brauchen (bisher) keine KB — ihr Wissen steckt im Prompt
+  + Whoop-Daten. Der Fitness-Coach ist der **erste Agent mit eigener Wissensbasis** → das RAG-
+  Modul ist ein neuer Baustein, den wir beim Fundament-Bau einplanen. Kein Blocker jetzt.
+
+---
+
+## 7. Offene Punkte / Entscheidungen
+
+- [x] **B2B-Datenmodell entschieden (2026-07-22):** Athlet-privat, Akademie = Kanal, kein
+      Dashboard. 10 Freilizenzen an Athleten gegen Feedback (Pilot).
+- [x] **Fundament wird gemeinsam mit Claude Code gebaut** (Bianca bestätigt).
+- [ ] Knowledge Base / RAG für den Fitness-Coach im Fundament-Bau einplanen (§6b).
+- [ ] Einladungs-/Lizenz-Mechanik für die 10 Pilot-Plätze (schlank halten).
 - [ ] Whoop-Developer-Stufe fürs Nutzer-Limit prüfen (Formular), sobald >Handvoll Nutzer.
-- [ ] Wer baut das Fundament: gemeinsam mit Claude Code (machbar) oder zusätzlich ein Entwickler.
-- [ ] Preislogik grob festlegen (pro Athlet / Akademie-Paket) — kommt aus dem Mouratoglou-Gespräch.
+- [ ] Preislogik grob festlegen — kommt aus dem Mouratoglou-/Athleten-Feedback.
