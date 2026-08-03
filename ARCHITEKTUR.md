@@ -113,6 +113,43 @@ Keine komplexe Organisations-/Rollen-Ebene. Das hält das erste Fundament klein.
 
 ---
 
+## 5b. Der Whoop-Engpass = warum der Pilot NICHT auf dem Prototyp läuft (Bianca, 2026-07-22)
+
+Klar erkannt von Bianca: Der aktuelle Stack hat **genau EINE Whoop-Verbindung** — eine
+OAuth2-Zugangsdaten im n8n-Workflow, gebunden an **Lenards** Konto. (Nicht Markus hält sie,
+sondern der Workflow; Markus bekommt die Zahlen serviert. Für das Skalierungsproblem egal.)
+
+**Konsequenz:** Jeder weitere Athlet mit eigenen Live-Daten = eine weitere Whoop-Zugangsdaten
+= Workflow duplizieren. 10 Athleten → 10 Kopien. **Nicht machbar/wartbar.**
+
+Bewertete Wege:
+- **A — Klonen pro Athlet.** 10× alles. Funktioniert theoretisch, operativ ein Albtraum,
+  fehleranfällig. ❌
+- **B — Pro-Nutzer-Tokens von Hand in n8n verwalten** (eigener OAuth-Callback + Token-Refresh
+  in Code-Nodes, Tokens in einer Tabelle). Technisch möglich, aber man baut damit ein halbes
+  Backend IN n8n hinein — fragile Wegwerf-Plumbing. ❌
+- **C — Das echte Fundament bauen (Supabase, Whoop-OAuth pro Nutzer).** Jeder Athlet meldet
+  sich an, klickt „Connect Whoop", autorisiert SEIN Konto, Token wird pro Nutzer gespeichert.
+  Ein Code, N Nutzer. ✅ **Das ist der Weg.**
+
+**Wichtig — der Pilot ist FREI, also trimmt sich das Fundament:** Kein Stripe nötig. Der
+Pilot-Bau ist eng gefasst: **Login + Whoop-OAuth pro Nutzer + die Briefing/Chat-Logik
+(aus n8n portiert) + 10 Einladungs-Codes.** Ein gut umrissenes erstes Projekt — kein Monster.
+
+**Trennung, die alles auflöst:**
+- **DEMO bei Mouratoglou** → läuft auf dem **Prototyp / Lenards Konto**. Zeigt die Magie live.
+  Holt die Zusage. Kein Umbau nötig.
+- **PILOT (10 Athleten, eigenes Whoop)** → braucht das **Fundament (C)**. Wird nach der Zusage
+  gebaut.
+
+→ Der Prototyp **demonstriert**, das Fundament **pilotiert**. Beides nicht vermischen.
+
+⚠️ **Whoop-App-Freigabe:** Um 10 echte fremde Nutzer zu verbinden, muss die Whoop-Developer-App
+i. d. R. über den Sandbox-/Personal-Status hinaus **freigeschaltet** werden (Formular bei Whoop).
+Teil der Pilot-Vorbereitung.
+
+---
+
 ## 6. Wann bauen? (Reihenfolge, nicht Technik)
 
 **Jetzt NICHT umbauen.** Der aktuelle Langdock/n8n-Stack reicht, um bei Mouratoglou zu
