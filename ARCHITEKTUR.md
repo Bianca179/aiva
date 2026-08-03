@@ -144,9 +144,18 @@ Pilot-Bau ist eng gefasst: **Login + Whoop-OAuth pro Nutzer + die Briefing/Chat-
 
 → Der Prototyp **demonstriert**, das Fundament **pilotiert**. Beides nicht vermischen.
 
-⚠️ **Whoop-App-Freigabe:** Um 10 echte fremde Nutzer zu verbinden, muss die Whoop-Developer-App
-i. d. R. über den Sandbox-/Personal-Status hinaus **freigeschaltet** werden (Formular bei Whoop).
-Teil der Pilot-Vorbereitung.
+**KORREKTUR (Bianca, 2026-07-22) — keine Whoop-App-Freigabe nötig:** Wir verbinden KEINE
+fremden Nutzer über eine App. **Jeder Athlet verbindet sein EIGENES Whoop-Konto selbst**
+(eigene Developer-App/API-Zugangsdaten, autorisiert mit seinem eigenen Account) — so wie
+Lenard es gemacht hat, nur pro Athlet. Damit gibt es keine „Fremdnutzer" und keinen
+Produktions-Freigabe-Gate. Meine frühere Freigabe-Warnung war falsch und ist gestrichen.
+
+**Was dadurch NICHT wegfällt:** Jeder Athlet hat trotzdem seinen eigenen Token. Das System
+muss pro Athlet den richtigen Token speichern und beim App-Öffnen den passenden wählen.
+Der jetzige n8n-Aufbau hat nur EIN festes Zugangsdaten-Feld → kann das nicht ohne Klonen.
+Die einzige echte Anforderung ist also ein **schlanker Pro-Athlet-Token-Speicher + Auswahl**
+— genau das liefert das kleine Fundament (Supabase). Es geht NICHT um Whoop-Freigabe,
+sondern um „welcher Token gehört zu wem".
 
 ---
 
