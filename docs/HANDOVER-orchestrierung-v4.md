@@ -12,7 +12,7 @@
 | Workflow | ID | Trigger | Zweck |
 |---|---|---|---|
 | **ORCH - Dirigent - v2** | `SpWLJA34XuMpI6qs` | Webhook `/slack-dirigent` | Herzstück: Kanal→Registry→Langdock, **Gedächtnis**, **A2A**, Identität (sendAsUser) |
-| **ORCH - Donna Morgenpost - v1** | `YG0GEWgHdxkqfkVR` | tgl. 07:00 + stündl. 9–17 | Inbox-Triage, Entwürfe, Termine + gestrige Reflexion, Briefing-DM |
+| ~~ORCH - Donna Morgenpost - v1~~ | `YG0GEWgHdxkqfkVR` | tgl. 07:00 + stündl. 9–17 | **05.08. DEAKTIVIERT** — war entgegen der Sticky-Note-Doku live, siehe Abschnitt 13 |
 | **ORCH - Donna Wochenreview - v1** | `4GBtzm8U2GwYW5aj` | Fr 16:00 | Wochenrückblick + Planung nächste Woche, DM an Bianca |
 | **ORCH - aurea Lexware-Sync - v1** | `m6VbW9Mj7f6QrZXT` | Mo–Fr 07:30 | Offene Forderungen/Verbindlichkeiten aus Lexware → Lagebild in #aurea (nur lesend) |
 | **ORCH - Donna Rechnungen → Lexware - v1** | `yWMtiz2SLUfmK1yi` | Mo–Fr 8/13/18 | Rechnungen aus Gmail-Label an Lexware weiterleiten (PDF), Dublettenschutz |
@@ -313,6 +313,18 @@ Max (Marketing Lead) ── Findus (News) ── Trend-Scout (Trends, neu)
 - [ ] Bestätigung: sind die zwei forensisch gefundenen Fälle (03.08. Nevermann, 31.07. KP-recht/Hutter-Dublette) 2 der 3 gemeldeten Vorfälle? Was war der dritte?
 - [ ] Liefen diese drei Vorfälle über den Slack-Kanal `#donna` (= Langdock-Donna)? Falls ja: **Bianca muss selbst in Langdock nachsehen**, ob Donnas dortiger Agent ein Gmail-Send-Tool/Skill hat, und es entfernen bzw. gaten — dort habe ich keinen Zugriff.
 - [ ] Nach Klärung: vollständiges Audit aller 70 Workflows auf ungegateten Mailversand fortsetzen (bisher nur Donna-bezogene Workflows geprüft; separate Kundenkontexte JUMIS/PD/CENTCOM nicht Teil dieser Prüfung, da anderer Scope).
+
+### Nachtrag 05.08. (selben Tages): Bianca korrigiert — nicht Slack, sondern Morgenpost. Wahrscheinlicher Root Cause gefunden und deaktiviert.
+
+Bianca stellte klar: **kein Slack-Bezug** bei den Vorfällen, und die Antworten kamen schneller raus, als sie überhaupt hätte reagieren können. Die zwei tatsächlich gemeinten Fälle: **KP-Recht** (bereits forensisch identifiziert, 31.07.) und **Weingut Morandell** (neu genannt, noch nicht einzeln verifiziert).
+
+**Fund:** `ORCH - Donna Morgenpost - v1` (`YG0GEWgHdxkqfkVR`) stand entgegen der eigenen Canvas-Sticky-Note („INAKTIV bis QS + GO") tatsächlich auf **`active: true`** — lief seit mind. 20.–28.07. **täglich 07:00 + stündlich 9–17 Uhr vollautomatisch**, ganz ohne Slack-Interaktion und ohne jede Wartezeit für Bianca. Der Workflow ruft pro ungelesener Mail direkt per HTTP denselben Langdock-Agenten auf, der auch `#donna` bedient (Agent-ID `0b904a65-...`), mit dem Auftrag, NUR ein JSON `{kategorie, entwurf}` zurückzugeben; n8n selbst erzeugt aus der Antwort nur einen Gmail-**Entwurf** (`drafts.create`), nie einen Send-Call.
+
+**Warum das trotzdem die plausibelste Erklärung ist:** n8n selbst kann hier technisch nicht senden (nur Draft-Endpoint verdrahtet) — aber genau derselbe Langdock-Donna-Agent, der laut Abschnitt 9 bereits nachweislich zu unvorhersehbarem Tool-Verhalten neigt („Werkzeug-Schleifen"), wurde hier vollkommen unbeaufsichtigt, stündlich, ohne Sticky-Note-Wahrheit und ohne jedes Freigabe-Gate mit echten Kunden-Mails gefüttert. Passt exakt auf Biancas Beschreibung: kein Slack, keine Reaktionszeit möglich. Ob der tatsächliche Versand technisch über ein Langdock-seitiges Gmail-Tool lief (das der Agent während des vermeintlich reinen Klassifikations-Calls selbst ausgelöst hat) bleibt letztlich nur in Langdock nachprüfbar — aber unabhängig vom genauen Mechanismus ist diese Automatik ein klarer Verstoß gegen Human-in-the-Loop und wurde deshalb sofort gestoppt, nicht erst nach abschließendem Beweis.
+
+**Sofortmaßnahme:** Workflow per `unpublish_workflow` deaktiviert, `active: false` bestätigt. Execution-Log geprüft (40 Läufe 31.07.–03.08., alle 5–40 Sek. kurz, stündlich pünktlich) — Timing liefert keinen eindeutigen Sekunden-genauen Beweis für die exakten Versandzeitpunkte, aber untermauert, dass der Workflow durchgehend lief und pro Stunde mind. einmal Donnas Langdock-Agent unbeaufsichtigt mit echten Mail-Inhalten aufrief.
+
+**Nächster Schritt vor Reaktivierung:** Bevor dieser Workflow je wieder aktiviert wird, muss (a) die Sticky-Note-Doku künftig mit dem echten `active`-Status abgeglichen werden (Ursache für die Fehleinschätzung: Workflow wurde am 28.07. fertiggestellt, aber offenbar zwischenzeitlich versehentlich published, ohne dass die QS-Gate-Freigabe je erteilt wurde), und (b) der `Donna klassifiziert`-Call entweder auf einen Langdock-Agenten ohne Tool-Zugriff umgestellt werden, oder die komplette Kette braucht ein echtes Freigabe-Gate vor jedem Versand — nicht nur vor dem Entwurf.
 
 ---
 
