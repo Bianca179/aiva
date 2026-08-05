@@ -284,6 +284,38 @@ Max (Marketing Lead) ── Findus (News) ── Trend-Scout (Trends, neu)
 
 ---
 
+## 13 · Update 05.08.2026 (Incident: Donna-Mailversand ohne Freigabe)
+
+**Meldung Bianca:** Donna habe dreimal ungefragt Mails beantwortet und tatsächlich versendet, ohne dass Bianca sie je gesehen hat. **Klarstellung von Bianca:** der 13-Mail-„Kaminabend"-Batch (28.07., 14:31–14:32 UTC) war ein Fehlalarm meinerseits — der war wissentlich/gewollt von Bianca versendet. Die eigentlichen drei Vorfälle sind unabhängig davon.
+
+**Bianca-Grundsatzentscheidung (verbindlich, in Prompt übernommen):** Donna DARF grundsätzlich Mails versenden — aber ausschließlich nach Freigabe oder auf ausdrücklichen Wunsch von Bianca. Niemals eigenständig. Immer Human-in-the-Loop.
+
+**Forensik (Gmail-Sent-Suche, Fingerabdruck `aimeetseva@gmail.com` als Absender statt Biancas üblichem Alias `bianca@enderlin.info`):**
+- 03.08., 08:52 UTC: automatisierte Antwort an Nevermann@economia-s.de ("Re: Rückfrage PDF").
+- 31.07., 10:22:39 + 10:23:32 UTC (53 Sek. Abstand, Dublette): zwei Antworten im KP-recht.de/Hutter-Thread.
+- Dritter Vorfall bislang nicht zweifelsfrei identifiziert — **Bianca-Bestätigung offen**, siehe Abschnitt „Offen" unten.
+- Execution-Logs lieferten keinen direkten Beweis (`search_executions` auf `J22CV0Ovkjj9Zd6f` und global: 0 Treffer) — vermutlich weil manuelle Testläufe standardmäßig nicht geloggt werden (`saveManualExecutions`). Beweisführung daher zirkumstanziell über Zeitkorrelation + Absender-Fingerabdruck.
+
+**Root Cause: NICHT abschließend geklärt.** Zwei Kandidaten:
+1. Testläufe von `ORCH - Donna - v1` (`J22CV0Ovkjj9Zd6f`) während der Entwicklung (28.07., Abschnitt 11) — die gespeicherte Version war/ist Entwurf-only, aber ohne Execution-Log nicht auszuschließen, dass zwischenzeitlich eine Version mit Sendezugriff lief.
+2. Donnas **Langdock-Agent** (Channel-Dirigent, `#donna`, Agent-ID `0b904a65-5692-445a-8d84-65815fba5aa1`) hat dort ggf. ein eigenes, für mich unsichtbares Gmail-Send-Tool/Skill konfiguriert — Langdock-Konfiguration liegt außerhalb meines Zugriffs.
+   → Bereits in Abschnitt 6 als offener Punkt vermerkt: „Donnas fremden Philipp/daily-briefing-Skill entfernen" — dieselbe Kategorie Problem (fremde/unsichtbare Tools in Langdock).
+
+**Sofortmaßnahmen umgesetzt (n8n-seitig):**
+1. **Alte Telegram-„Donna"** (`08Ujzde2NU7wRtzI`, war `active:true`, 21 Nodes, ungegateter `$fromAI`-Mailversand, 0 Executions je) — `saveManualExecutions:true` gesetzt, dann **deaktiviert/unpublished**. Bestehende Validierungswarnungen (fehlende Node-Parameter) sind vorbestehend und nicht behoben, da der Workflow ohnehin stillgelegt ist.
+2. **`ORCH - Donna - v1`** (`J22CV0Ovkjj9Zd6f`, weiterhin `active:false`, QS-Gate offen) strukturell gehärtet:
+   - Neuer, gesonderter Tool-Node **„E-Mail senden (NUR nach Freigabe)"** (`gmailTool`, `resource: message`, `operation: send`, `sendTo`/`subject`/`message` per `$fromAI`) als `ai_tool` an den Agenten gehängt — getrennt vom bestehenden reinen Entwurf-Tool „E-Mail-Entwurf anlegen".
+   - System-Prompt auf **v3.1** angehoben mit neuem, höchstpriorisiertem `<EmailRule>`-Block: Entwurf ist Standardfall/immer erlaubt; Versand nur bei eindeutiger, AKTUELLER Freigabeformulierung („sende das", „jetzt senden" etc.) mit expliziter Liste NICHT ausreichender Formulierungen („passt", „ok", „ja" ohne Sendebezug); absolute Ausnahme (nie senden, auch mit Freigabe) bei Angeboten/Geld/Recht/uninitiierten privaten Themen; Vorfall-Narrativ direkt im Prompt verankert, damit die Regel als Vertrauensfrage behandelt wird, nicht als Formalität.
+   - Sticky-Note-Dokumentation im Canvas aktualisiert (v1.1), damit die In-Workflow-Doku nicht veraltet neben dem neuen Verhalten steht.
+   - **Wichtig: dieser Workflow ist weiterhin inaktiv** (QS-Gate). Die Härtung ist somit vorsorglich für den künftigen Go-Live, behebt aber NICHT zwangsläufig den Mechanismus, der die drei realen Vorfälle verursacht hat, falls dieser stattdessen in Langdock liegt.
+
+**Offen (Bianca-Antwort nötig, bevor Incident als geschlossen gilt):**
+- [ ] Bestätigung: sind die zwei forensisch gefundenen Fälle (03.08. Nevermann, 31.07. KP-recht/Hutter-Dublette) 2 der 3 gemeldeten Vorfälle? Was war der dritte?
+- [ ] Liefen diese drei Vorfälle über den Slack-Kanal `#donna` (= Langdock-Donna)? Falls ja: **Bianca muss selbst in Langdock nachsehen**, ob Donnas dortiger Agent ein Gmail-Send-Tool/Skill hat, und es entfernen bzw. gaten — dort habe ich keinen Zugriff.
+- [ ] Nach Klärung: vollständiges Audit aller 70 Workflows auf ungegateten Mailversand fortsetzen (bisher nur Donna-bezogene Workflows geprüft; separate Kundenkontexte JUMIS/PD/CENTCOM nicht Teil dieser Prüfung, da anderer Scope).
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
