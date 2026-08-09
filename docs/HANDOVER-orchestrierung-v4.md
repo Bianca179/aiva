@@ -369,6 +369,35 @@ Biancas Ziel „regelmäßig mit Bild posten". Statt des nie gebauten „Visual 
 
 ---
 
+## 15 · Sales-/Leads-Team „Sam Sales" (09.08., zwei High-Ticket-Produkte)
+
+Ziel Biancas: zwei ~25k-Produkte per **LinkedIn-Kaltakquise** verkaufen — **Retreat „Identitätsshift"** (Führungskräfte/Unternehmerinnen unter Druck) und **Research-Team** (digitales Team für Boutique-Headhunter; „ein sprechendes, fleißiges CRM, das operative Arbeit abnimmt"). Preis wird im Outreach NIE genannt. Kaltakquise über Kontakte-Tabelle + LinkedIn. Kanal: LinkedIn-DM via Unipile. **Nie autonom senden — nur was Bianca freigibt.**
+
+### 15.1 Datenmodell (Airtable Kontakte `tblNDQZsFwjluKZMo`, Base `appqscSUAbAqQGMpk`)
+Bestehend: Name `fldEdGUrDFjztkMq8`, Firma `fld4nbGdMqwM4r262`, Rolle `fld6cwF1bTC6fUfcb`, Notizen `fldvuJaafLLtl3bGb`, Sales-Funnel-Status `fldHRpSSOKWM6pZ07` (Neu/Kontaktiert/Im Gespräch/Angebot/Kunde/Verloren), LinkedIn Member ID `fldAPZeXTNFnr6xCQ` (= Unipile `provider_id`).
+Neu angelegt für die Akquise:
+- **Akquise-Status** `fld6yi9TC8mjxtE8A` (singleSelect): Anschreiben → Entwurf – Wartet auf Freigabe → Freigegeben → **Vernetzungsanfrage gesendet** (via typecast erzeugt) → Gesendet / Übersprungen.
+- **Akquise-Produkt** `fldp1mjiTL0iAkJ7N`: Retreat (Identitätsshift) / Research-Team (Boutique-Headhunter).
+- **LinkedIn-Nachricht (Entwurf)** `fldo35fmK4PapiXCz` (multilineText), **LinkedIn Profil-URL** `fldwjMJvwNh09Jdsf` (url).
+- **A/B-Test-Felder (09.08.):** `Akquise-Variante` `fldG4ZiCBhcaqFOPC` (A – mit Notiz / B – ohne Notiz), `Angenommen am` `fldY2ov9YbIiu3NWj` (date), `Notiz gesendet` `fldE8cOQqptcneO5p` (checkbox), `Antwort erhalten` `fldJkF84z4IxArMJ6` (checkbox, vorerst manuell).
+
+### 15.2 Pipeline (3 Workflows, alle in Biancas Projekt)
+1. **WF1 `ORCH - Sam Sales Akquise-Entwuerfe - v2` (`jtpl5UP0IvsESOCn`, INAKTIV bis Unipile-Key):** täglich 07:30. Kontakte mit Status=Anschreiben + URL → Public-ID aus URL → **Unipile-Profil holen** (`GET /api/v1/users/{id}` → `provider_id`) → **echte Posts holen** (`GET /api/v1/users/{provider_id}/posts`) → Code baut Recherche-Brief → **Sam Sales** (Claude Sonnet 4.6, temp 0.6) schreibt Opener mit echtem Bezug → speichert Entwurf + provider_id in „LinkedIn Member ID" + Status „Entwurf – Wartet auf Freigabe". Bei fehlenden Posts: Fallback ohne Erfinden. Alter Sam v1 (`wNnLu853uBF1NxeO`) **archiviert**.
+2. **WF2 `ORCH - Sam Sales Versand - v1` (`UHpsLw9QOhAA6wLE`, gebaut):** täglich 10:00. Zwei Arme (fan-out): **Arm A** (`LEFT(Variante,1)='A'`, limit 5/Tag) → `POST /api/v1/users/invite` **mit** `message`=Opener; bei Fehler (Free-Notiz-Limit) **Auto-Fallback** auf invite **ohne** Notiz (`onError:continueErrorOutput` → Fallback-Node), setzt `Notiz gesendet` true/false. **Arm B** (`LEFT(Variante,1)!='A'`, limit 5/Tag) → invite ohne Notiz. Beide → Status „Vernetzungsanfrage gesendet" + Sales-Funnel „Kontaktiert".
+3. **WF3 `ORCH - Sam Sales Vernetzt-Check - v1` (`UOBCmmA27mOOdQOs`, gebaut):** alle 4 h. Status=„Vernetzungsanfrage gesendet" → `GET /users/{memberId}` → wenn `network_distance='DISTANCE_1'` (angenommen): **Arm B** → Opener als **DM** (`POST /api/v1/chats`, multipart `account_id/attendees_ids/text`); **Arm A** → nur markieren (Opener war schon die Notiz). Beide → Status „Gesendet" + Sales-Funnel „Im Gespräch" + `Angenommen am`.
+
+### 15.3 Sam-Prompt = Biancas Vertriebskonzept (Doc „Research-Team")
+Sams System-Prompt trägt jetzt das volle Research-Team-Konzept. **Oberste Direktive = Biancas eiserne Regel:** „Der Outreach ist die Produktdemo — würde ein Headhunter merken, dass das KI ist? Wenn ja: nicht senden." → verbotene Buzzwords (KI, digital, Effizienz, Automatisierung, Tool, Lösung, Skalierung), kein Verkäufer-Sprech, keine Superlative/Emojis, nie Preis/Angebot/Call. Trigger-Aufhänger (offene Researcher-Stelle / lange offene Mandate / Post über Arbeitslast) + Bestands-Frage als Öffner. Retreat-Block ist Platzhalter (Feinschliff folgt von Bianca).
+
+### 15.4 A/B-Test-Design (mit Bianca festgelegt)
+Bianca: Free-Account, kein Sales Navigator, sendet ~10 Anfragen/Tag. Aufteilung **5/Tag Arm A (mit Notiz, Top-Leads) + 5/Tag Arm B (ohne Notiz → DM nach Annahme)**. Auto-Fallback A→B falls LinkedIn Notizen drosselt (zeigt echtes Notiz-Limit). Messung: Annahmequote + Antwortquote je Arm.
+
+### 15.5 BLOCKER + Offenes
+- **🛑 Unipile `401 invalid_credentials`:** Der API-Key der Credential „Unipile" (`Xq9Itk6yLBjpzvel`) wird abgelehnt — blockiert Recherche UND Senden (und vermutlich auch den Posting-Workflow, gleiche Credential!). **Bianca erneuert den Key**, dann: WF1 retesten → WF1/WF2/WF3 aktiv schalten. WF1 bewusst inaktiv gelassen, damit keine Entwürfe ohne Recherche/provider_id entstehen.
+- Später (Biancas 4 Auflagen): **Trigger-Monitoring-Agent** (offene Stellen/Alt-Mandate/LinkedIn-Signale) → liefert Sam scharfe Aufhänger; Kontaktliste 27→225 + Prio-A-Merkmale; Referenz-Zitat; Demo-Material anonymisieren. `Antwort erhalten` automatisieren (Inbox-Polling) ist eigener Build.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
