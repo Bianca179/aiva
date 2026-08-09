@@ -402,6 +402,34 @@ Bianca: Free-Account, kein Sales Navigator, sendet ~10 Anfragen/Tag. Aufteilung 
 
 ---
 
+## 16 · Leandra — Inbound Empfang & Qualifizierung (09.08.)
+
+Zweites Sales-Motion neben Sam (Sam = Outbound-Kalt). **Leandra = Inbound:** Website-Formular → Lead qualifizieren → A/B/C routen. Eigene Persona (nicht Sam, um Rollen sauber zu halten).
+
+### 16.1 Produkte & Routing (mit Bianca festgelegt)
+Produkte: Retreats, Workshops, kleine Bots. Regeln (Vorrang: Firmengröße zuerst):
+- **A** (Angebot/Produktlink, vorerst *Entwurf zu Biancas Freigabe*): Bot · Einfacher Workshop · Panel/Keynote
+- **B** (Anruf/Klärung): 90-Min-Workshop · unklare Anfragen
+- **C** (Mail an Bianca + Gesprächsvorbereitung): Retreat · Inhouse · Tagesworkshop · **Firmengröße ≥ 20 → immer C** (überschreibt A/B)
+
+### 16.2 Bausteine
+- **Airtable-Tabelle „Leads (Inbound)"** `tblmDGs9lgCdivqpE` (Base appqscSUAbAqQGMpk): Name/E-Mail/Telefon/Firma/Firmengröße/Anliegen/Nachricht + Lead-Spur (A/B/C) + Lead-Status (Neu / Entwurf – Wartet auf Freigabe / Freigegeben / Anruf offen / C – Rückruf vorbereitet / Erledigt) + Angebot-Entwurf, Gesprächsvorbereitung, Qualifizierungs-Notiz.
+- **Workflow `ORCH - Empfang & Qualifizierung (Leandra) - v1` (`sGGeiWqO1BJMxhJe`, AKTIV):**
+  - Trigger: **Webhook POST `https://aiva179.app.n8n.cloud/webhook/lead-eingang`** (responseNode → sofort `{status:ok}`).
+  - „Lead qualifizieren" (Code, defensive Feld-Fallbacks + Firmengröße-Range-Parsing „20+"/„6-19" + Anliegen-Mapping) setzt Spur deterministisch.
+  - „Lead speichern" (Airtable create) → Switch A/B/C:
+    - **A** → Status „Entwurf – Wartet auf Freigabe" + Slack-DM an Bianca (via **Donna** `K59QwGFIa6Oqk2gm`).
+    - **B** → Status „Anruf offen" + Slack-DM (Donna).
+    - **C** → **Leandra-Agent** (Claude Sonnet 4.6, `Claude (Leandra)`) erzeugt Gesprächsvorbereitung (Kurzprofil, Enneagramm-**Hypothese**, Bedarf, 3–5 Call-Fragen, Angebots-Passung, Eröffnungssatz; erfindet keine Fakten) → speichert + **Gmail an bianca@enderlin.info** (`Gmail account` AoEYEWFBZ9zCOhcK).
+- **Live getestet (echter POST via n8n→n8n, Proxy blockt lokalen curl):** B-Spur (leerer Body → Donna-DM ok:true) und **C-Spur** (Musterwerk-AG-Lead → hochwertige Prep gespeichert + Mail) beide erfolgreich. Testdaten + `TMP - Leandra C-Test` aufgeräumt.
+
+### 16.3 Offen (Leandra)
+- **Formular anbinden:** Onepage-Formular muss an die Webhook-URL POSTen (Felder: name, email, telefon, firma, firmengroesse, anliegen, nachricht). Onepage-MCP war in der Session nicht erreichbar (Connector neu autorisieren, dann direkt verdrahtbar).
+- **A-Inhalte fehlen:** echte Angebote/Produktlinks (Bots / einfacher Workshop / Keynote) → dann schreibt Leandra echte Angebots-Entwürfe + separater **A-Versand-Workflow** (nach Freigabe Mail an Kunde).
+- **Telefonassistent:** Phase 1 = Leandra bereitet vor + meldet, Mensch ruft an. Phase 2 = echter Voice-Anrufbot (eigenes Projekt, Voice-Dienst nötig).
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
