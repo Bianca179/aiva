@@ -328,6 +328,47 @@ Bianca stellte klar: **kein Slack-Bezug** bei den Vorfällen, und die Antworten 
 
 ---
 
+## 14 · Update 09.08.2026 (Donna DM live, Marketing-Team aktiv, LinkedIn-Bild-Kette gebaut & live)
+
+Große Session. Vier Blöcke: Donna endlich per DM live, Marketing-Produktion getestet + Spezialistinnen aktiviert, ehrliche Linni-Klärung, und die komplette LinkedIn-Bild-→-Post-Kette (Magnific) gebaut, getestet und scharf geschaltet.
+
+### 14.1 Sicherheit / Morgenpost endgültig entschärft
+- **Zwei** Workflows heißen „ORCH - Donna Morgenpost - v1" (`YG0GEWgHdxkqfkVR` UND `P2t3h2YIrYg5jvtj`). **Beide `active:false`** — kein autonomer Mailversand mehr. Doppelung ist Aufräum-Kosmetik, kein Risiko.
+- Alte Telegram-„Donna" (`08Ujzde2NU7wRtzI`): bleibt deaktiviert.
+
+### 14.2 Donna — nativ, per DM LIVE (`ORCH - Donna - v1`, `J22CV0Ovkjj9Zd6f`, aktiv)
+- **Architektur-Wechsel:** Der n8n-`slackTrigger` verifizierte sich nicht in Slack („wird nicht grün"). Ersetzt durch das **bewährte Plain-Webhook-Muster** (wie beim Dirigenten): neuer Webhook `Slack Events (DM)` Pfad **`/donna-dm`** + `Challenge beantworten` (RespondToWebhook, echot `body.challenge`) → verifiziert sich zuverlässig grün. IF `Kein Bot-Echo` filtert auf echte DMs (`body.event.channel_type='im'`, Text vorhanden, kein Bot/Subtype) → Endlosschleifen-Schutz.
+- **Slack-App-Fund (wichtig):** Donna-DM ging erst, nachdem Bianca in der Slack-App **App Home → Messages Tab AN + „Allow users to send messages" angehakt** hat (das war der „senden nicht möglich"-Blocker). Profilbild/Name setzt Bianca in Basic Information/App Home.
+- Credential: Slack „Donna" (`K59QwGFIa6Oqk2gm`, slackApi). Agent-Text/Memory/Antwort lesen `body.event.*`.
+- **Mail-Versand bleibt gegated** (EmailRule v3.1, gesondertes Send-Tool). Getestet: echte DM kam an, Donna antwortet. **Offen:** Antwortlänge kürzen (Ein-Zeilen-Prompt-Tweak, bewusst verschoben).
+
+### 14.3 Marketing-Produktion getestet + abnahmebereit (`9pi1p59HQWc6ASXJ`, inaktiv, Schedule)
+- **2 echte Bugs gefixt:** (a) Status-Werte „Ausgewählt"/„Wartet auf Themenwahl" existierten nicht als Select-Optionen → Übergabe Recherche→Produktion war tot; jetzt angelegt. (b) `JSON.parse` direkt in Airtable-Ausdrücken war fragil → neuer Code-Node **„Ergebnis parsen"** mit robustem `###META###`-Format (Text pur + Meta-Zeile), fällt bei Fehlparse auf Original + Status „Überarbeitung" zurück.
+- Zwei echte Testläufe: CC Top orchestriert, Nora/Claudia geben echtes Zielgruppen-Feedback, freigabereifer LinkedIn-Entwurf landet auf „Wartet auf Freigabe". Funktioniert.
+
+### 14.4 Kanal-Spezialistinnen aktiviert (Delegation live)
+- **Aktiviert:** Ina (`ZToSb9K4kbu3olf6`), Soreia (`UBv3GFZnIBZ5Sc7V`), Podcast Producer (`3a8YdcWUtj2cMRbc`), **Linni** (`11UxePeldz86cqxp`). Alle draft-level (schreiben nur Redaktionsplan), sicher.
+- Soreia/Podcast Default-Status beim Anlegen von „Freigegeben" auf „Entwurf" korrigiert (Guardrail).
+- **Linni-Klärung (Korrektur alter HANDOVER-Annahme):** Linnis Workflow **postet NICHT selbst auf LinkedIn** und hat **keine** hartcodierte fremde Personen-ID mehr. Ihr 08:34-Schedule verschiebt nur Airtable-Datensätze (erzeugt „LinkedIn Posts"-Slot, Status „Geplant"). Das echte Posten macht `ORCH-LinkedIn-Veröffentlichen` via Unipile.
+
+### 14.5 LinkedIn-Bild-Kette (Magnific) — GEBAUT, GETESTET, LIVE
+Biancas Ziel „regelmäßig mit Bild posten". Statt des nie gebauten „Visual Studio" (eigene Webseite, siehe Uploads SESSIONVERLAUF/ANFORDERUNGENPROTOKOLL) nur den benötigten Baustein in n8n gebaut.
+- **Bild-Engine:** Freepik/Magnific **Seedream v4.5 Edit**: `POST https://api.freepik.com/v1/ai/text-to-image/seedream-v4-5-edit`, Auth-Header `x-freepik-api-key`, Body `{prompt, reference_images:[URL…]}`, async (Submit→`task_id`→Poll `.../{task_id}`→`data.generated[0]`). Credential in n8n: **„Magnific"** (`t9f0U4Bre7cxVZFP`, httpHeaderAuth).
+- **5 Referenzbilder** aus Biancas Drive-Ordner `1dm45V7sF0Nggzxfc6-AZ_-wWPLE2zVg_`, „für alle mit Link" freigegeben, als `https://lh3.googleusercontent.com/d/<ID>`-URLs übergeben (funktioniert). Selber Ansatz wie das alte fal.ai (Seedream edit mit Referenzen) — nur Anbieter getauscht.
+- **Neuer Workflow `ORCH - LinkedIn Bild erzeugen - v1` (`sxqFjkGedC1ph17C`, AKTIV, 08:40):** findet „LinkedIn Posts"-Slots Status=Geplant ohne Visual → Magnific → schreibt Bild ins Airtable-Attachment `Visual` (Airtable speichert eigene Kopie, Magnific-Link ist nur ~1h gültig). Prompt aktuell aus Slot-Titel = Platzhalter, **Feinschliff später** (Bianca ok).
+- **`ORCH - LinkedIn Veröffentlichen - v1` (`NINDaWVJOWJuCvrA`, AKTIV, 08:45):** postet Text (aus Redaktionsplan) + Bild (aus `LinkedIn Posts.Visual`) via **Unipile** (`account_id tsvsLWt4TaqZa1hxPVNKnQ`, Cred „Unipile" `Xq9Itk6yLBjpzvel`). Kein Zapier, keine LinkedIn-API-Freigabe nötig.
+- **Tägliche Live-Kette (gated durch Biancas „Freigegeben" im Redaktionsplan):** Linni 08:34 (Freigegeben→Slot Geplant) → Bild 08:40 → Veröffentlichen 08:45. Getestet mit Temp-Slot: Slot→Magnific→Visual lückenlos erfolgreich. Temp-Test + `TMP - Magnific Bild-Test` (archiviert) aufgeräumt.
+
+### 14.6 Offen / nächste Schritte
+- Donna: Antwortlänge kürzen (Prompt).
+- Magnific-Prompt verfeinern (aktuell nur Titel; besser aus Redaktionsplan-Text/eigener Bild-Beschreibung).
+- Publishing-Wege für Instagram/Newsletter/Podcast/Video (brauchen Zugänge; IG via Unipile möglich).
+- SerpAPI-Key (serpapi.com) für die automatische Marketing-Recherche (`dXHZnY0KaS9iNgSo`).
+- Video: Vera macht Prompts, keine Skripte — bei Bedarf umbauen. HeyGen bleibt für Avatar/Video.
+- Volles „Kreativ-Studio" (eigene Oberfläche, Multi-Format) als späteres eigenes Projekt — Grill-Protokoll liegt in den Uploads.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
