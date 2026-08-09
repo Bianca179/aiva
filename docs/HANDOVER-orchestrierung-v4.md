@@ -469,6 +469,32 @@ Rollenteilung: **Leandra** bereitet vor (Text/Prep), **Sophia** ruft an (Stimme)
 
 ---
 
+## 18 · Donna — Telefonie (09.08. abends, Dual-Modus Empfang + Assistenz)
+
+**Biancas Entscheidungen (Abfrage 09.08.):** (1) Donna nimmt primär **eingehende Anrufe von (potenziellen) Kunden** entgegen, wenn Bianca nicht erreichbar ist; Donna darf Bianca nur in sehr dringenden Fällen anrufen (Ausnahme); Bianca-ruft-Donna-an sieht sie ohne Mehrwert (Slack reicht). (2) Nummer: **eigene DE-Nummer nach Bundle-Freigabe** (das Regulatory-Bundle `BUe29502df37de6b51cc875d3a64665da7` gilt nach Approval auch für weitere Nummern; Sophia behält ihre eigene). (3) Sophia-Übergabe: **Live-Transfer im Gespräch** („geil wäre es, wenn Donna direkt übergeben kann") → ElevenLabs-System-Tool „Transfer to AI Agent", Ziel Sophia `agent_4801kzkjqe1vf4jsam5ffagvhqpe`.
+
+**Sicherheitsarchitektur: Dual-Modus per Caller-ID (von Bianca bestätigt):** Fremde Anrufer bekommen NUR Portfolio/Notiz/Zeeg; Kalender/To-dos/Steuerzentrale gibt es nur, wenn die Anrufer-Nummer Biancas Handynummer ist. Das Gate sitzt **im n8n-Webhook (Code), nicht nur im Prompt** — die Tools schicken `caller_id` als ElevenLabs-Systemvariable `system__caller_id` (plattform-gefüllt, vom LLM nicht fälschbar). **Fail-closed:** solange der Platzhalter `PLATZHALTER_BIANCA_HANDYNUMMER` nicht ersetzt ist, verweigern die internen Tools IMMER (getestet, Execution 2119).
+
+### 18.1 Gebaut: `ORCH - Donna Voice-Tools - v1` (`eTQjKoyHfxuUV1vA`, AKTIV)
+7 Webhooks (Muster = Sophia Voice-Tools, alle antworten `{"text": ...}` außer Init):
+- `POST /webhook/donna-anruf-init` — **Conversation-Initiation-Webhook**: matcht `caller_id` gegen Biancas Nummer (→ Modus `assistentin`) sonst gegen Leads-Telefonnummern (letzte 9 Ziffern; → `bekannt` ja/nein + Kontext). Antwort: `{type: conversation_initiation_client_data, dynamic_variables: {modus, bekannt, anrufer_info, begruessung}}`. Getestet (Execution 2118): Lead-Match über Formatgrenzen (`01701234567` ↔ `+49 170 1234567`) funktioniert.
+- `POST /webhook/donna-kalender` {zeitraum: heute/morgen/woche, caller_id} — **GEGATET**, liest `aimeetseva@gmail.com` (Google Calendar `95iezphiEusNZWZT`), deutscher Sprech-Text.
+- `POST /webhook/donna-todos` {aktion: lesen/anlegen, task, beschreibung, faellig, caller_id} — **GEGATET**; anlegen → To-dos (`tblM729OMi3huDFXl`, Task/Beschreibung/Fällig/Owner=Bianca/Quelle=„Donna Telefon"); lesen → offene To-dos (`{Erledigt am}=BLANK()`), sortiert nach Fällig.
+- `POST /webhook/donna-portfolio` {thema} — öffentlich, Produkte-Tabelle, **bewusst OHNE Preis-Feld**.
+- `POST /webhook/donna-lead` {name, firma, telefon, email, anliegen, notiz} — öffentlich: legt Lead in „Leads (Inbound)" an (Status „Anruf offen" → Sophia-Rückruf-Pipeline) + Slack-DM an Bianca (Cred „Donna").
+- `POST /webhook/donna-zeeg-senden` {email, name} — öffentlich: Zeeg-Link per Gmail.
+- `POST /webhook/donna-ergebnis` {zusammenfassung, dringend: ja/nein} — öffentlich: Slack-DM (🚨 bei dringend) + Logbuch-Zeile (`tblkp0LVz3voBPEhr`, Quelle=Donna).
+
+**Ein gemeinsames Zugangs-Gate** (Fan-in beider interner Webhooks → Code „Zugangs-Gate" → IF → Switch) statt Gate-Kopien pro Tool; die Nummer steht trotzdem an ZWEI Stellen (auch „Modus bestimmen" im Init) — beide sind in der Sticky-Note im Canvas benannt.
+
+### 18.2 Offen (Reihenfolge für den Go-Live)
+1. **Bianca:** Handynummer in beiden Code-Knoten eintragen (`Modus bestimmen` + `Zugangs-Gate`, Platzhalter `PLATZHALTER_BIANCA_HANDYNUMMER`).
+2. **Bianca (Dashboard):** ElevenLabs-Agent „Donna" anlegen (analog Sophia; Prompt-Vorlage von Claude, nutzt `{{modus}}/{{bekannt}}/{{anrufer_info}}`, First Message = `{{begruessung}}`), die 6 Tools als Webhook-Tools übers Formular (Regel wie bei Sophia: Tool-Name ohne Leerzeichen; `caller_id` = Werttyp „Dynamische Variable" → `system__caller_id`), Conversation-Initiation-Webhook auf `/donna-anruf-init`, System-Tool „Transfer to AI Agent" → Sophia.
+3. **Nach Bundle-OK:** zweite DE-Nummer kaufen → in ElevenLabs importieren → Donna als Inbound-Agent der Nummer zuweisen → Testanruf (dabei bekanntes Risiko prüfen: n8n sendet httpHeaderAuth bei ElevenLabs-POSTs manchmal nicht — betrifft hier nur künftige Outbound-Calls, Inbound läuft ohne n8n-Auth).
+4. **Später (Ausnahme-Fall):** „Donna ruft Bianca an bei dringend" — Outbound-Trigger nach Sophia-Muster (`outbound_call`), bewusst noch nicht gebaut; v1 markiert Dringendes per 🚨-Slack-DM.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
