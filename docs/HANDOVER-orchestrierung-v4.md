@@ -455,7 +455,7 @@ Rollenteilung: **Leandra** bereitet vor (Text/Prep), **Sophia** ruft an (Stimme)
 
 ### 17.3 Offen (Sophia)
 - **ElevenLabs-Agent anlegen** (deutsche Stimme + Sophia-Prompt + FAQ-Wissensbasis + die 4 Tools als Server-Tools) — via ElevenLabs-API/Dashboard.
-- **Ausgehender Anruf-Trigger** (n8n: Lead „Anruf offen" → ElevenLabs Outbound-Call mit dynamischen Variablen name/firma/prep/lead_id) — braucht agent_id + phone_number_id (nach Agent + DE-Nummer).
+- **Ausgehender Anruf-Trigger GEBAUT (inaktiv):** `ORCH - Sophia Anruf starten - v1` (`i9JHfn8I4jmKkmPR`). Werktags 10/14/17 Uhr → Leads „Anruf offen" (max 5) → `POST https://api.elevenlabs.io/v1/convai/twilio/outbound_call` (Cred Elevenlabs `W7YE9YwJcFJFmk1Q`) mit dynamischen Variablen name/firma/anliegen/prep/lead_id → Status „Anruf gestartet". **Zwei Platzhalter im Code-Node „Anruf vorbereiten": `PLATZHALTER_AGENT_ID` + `PLATZHALTER_PHONE_NUMBER_ID`** — nach Agent-Anlage + DE-Nummer eintragen, dann publish.
 - **Twilio↔ElevenLabs** verdrahten (deutsche Nummer). Interne Preis-Ranges + Website-Claims in die FAQ (Petra/Bianca).
 - Alter Stub `TMP - Sophia Setup` archiviert.
 
