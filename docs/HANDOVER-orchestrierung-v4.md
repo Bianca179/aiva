@@ -434,6 +434,33 @@ Produkte: Retreats, Workshops, kleine Bots. Regeln (Vorrang: Firmengröße zuers
 
 ---
 
+## 17 · Sophia — Voice-Agent (ausgehende Anrufe, Phase 2)
+
+Rollenteilung: **Leandra** bereitet vor (Text/Prep), **Sophia** ruft an (Stimme). Sophia = Setterin mit Closer-Skills, gestaffelt: High-Ticket → Termin für Bianca setzen; Low-Ticket → selbst buchen. **Nur warme Leads** (Formular-Leads, die Kontakt wollten) — keine Cold Calls (§7 UWG). Zeeg-Abschluss per E-Mail.
+
+### 17.1 Architektur-Entscheidung (Hybrid)
+- **Stimme/Echtzeit = ElevenLabs Conversational Agent** (niedrige Latenz, Turn-Taking). **Steuerung = n8n** (Tools/Webhooks). Wie Philipps CENTCOM-Backend.
+- **Telefonie:** Nummer in **Twilio** (Biancas Setup), Twilio brückt zu ElevenLabs. Deutsche Nummer kommt noch (US → DE); dann verdrahten.
+- Kalender = **Zeeg** (`https://zeeg.me/biancaenderlin/lookandfeel`) — Sophia bucht nicht live, sondern schickt den Zeeg-Link per Mail (Zeeg bleibt Single Source; optional später Zeeg-Webhook → CRM „Termin gebucht").
+- Produktwissen = **FAQ** (Q&A) aus Portfolio destilliert; lebt in ElevenLabs-Wissensbasis + live-Lookup aus Airtable-Produkte.
+
+### 17.2 Gebaut
+- **FAQ-Rohentwurf** (Google Doc `1b6RoP18w-ZDTebr6EImLaPnurWB44Dkqi-8cCDwQsZ0`, „Sophia — Gesprächs-FAQ") aus dem Produktportfolio (inkl. Lichtenburg I/II/III + Pilgerbegleitung „Wege zurück in die eigene Führung", letztere BEHUTSAM = noch in Entwicklung). **Petra macht das Wort-Destillat.**
+- **`ORCH - Sophia Voice-Tools - v1` (`A5qEeHOQ0BaorGMZ`, AKTIV):** 4 Webhooks für den ElevenLabs-Agenten:
+  - `POST /webhook/sophia-lead-context` {lead_id} → Name/Firma/Anliegen/Nachricht + Leandras Prep als Sprech-Text.
+  - `POST /webhook/sophia-produkt` {thema} → Live-Produktinfo aus Airtable-Produkte (`tblNRHkpgTfWHo82Y`).
+  - `POST /webhook/sophia-zeeg-senden` {lead_id} → Gmail schickt Zeeg-Link an Lead-E-Mail + Status „Termin-Link gesendet".
+  - `POST /webhook/sophia-ergebnis` {lead_id, status, notiz} → schreibt Lead-Status + `Anruf-Notiz` (neues Feld `fldknqPtZKLg9zSNc`) in Leads.
+  - Alle antworten `{ "text": ... }` (Voice-Agent liest vor).
+
+### 17.3 Offen (Sophia)
+- **ElevenLabs-Agent anlegen** (deutsche Stimme + Sophia-Prompt + FAQ-Wissensbasis + die 4 Tools als Server-Tools) — via ElevenLabs-API/Dashboard.
+- **Ausgehender Anruf-Trigger** (n8n: Lead „Anruf offen" → ElevenLabs Outbound-Call mit dynamischen Variablen name/firma/prep/lead_id) — braucht agent_id + phone_number_id (nach Agent + DE-Nummer).
+- **Twilio↔ElevenLabs** verdrahten (deutsche Nummer). Interne Preis-Ranges + Website-Claims in die FAQ (Petra/Bianca).
+- Alter Stub `TMP - Sophia Setup` archiviert.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
