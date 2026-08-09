@@ -426,7 +426,11 @@ Produkte: Retreats, Workshops, kleine Bots. Regeln (Vorrang: Firmengröße zuers
 ### 16.3 Offen (Leandra)
 - **Formular anbinden:** Onepage-Formular muss an die Webhook-URL POSTen (Felder: name, email, telefon, firma, firmengroesse, anliegen, nachricht). Onepage-MCP war in der Session nicht erreichbar (Connector neu autorisieren, dann direkt verdrahtbar).
 - **A-Inhalte fehlen:** echte Angebote/Produktlinks (Bots / einfacher Workshop / Keynote) → dann schreibt Leandra echte Angebots-Entwürfe + separater **A-Versand-Workflow** (nach Freigabe Mail an Kunde).
-- **Telefonassistent:** Phase 1 = Leandra bereitet vor + meldet, Mensch ruft an. Phase 2 = echter Voice-Anrufbot (eigenes Projekt, Voice-Dienst nötig).
+- **Telefonassistent (Lead B) — geprüft:** Der vorhandene aktive `PD - Telefon-Backend (Voice-Tools, R97)` (`bPwOJvyVfuwync5x`) gehört zu **Philipps CENTCOM** (fremde Firma, Basis SSOT `app2lmhCxLhMkdfmN`, Mandate/Funnel) und ist **eingehend** (Mensch ruft an → 4 Voice-Webhooks: Tageslage/Wissen/Notiz/Auftrag, ElevenLabs-Agent). **Nicht** für Biancas ausgehende Lead-B-Anrufe nutzbar — falsche Richtung + fremde Daten, wird nicht angefasst. Phase 1 (jetzt): Leandra bereitet vor + meldet, Mensch ruft an. **Phase 2 = eigener ausgehender ElevenLabs-Anrufbot** (Nummer wählen, Leitfaden, Buchung/CRM-Rückschreibung) — eigenes Projekt (ElevenLabs-Credential `W7YE9YwJcFJFmk1Q` vorhanden).
+
+### 16.4 Leandra-Identität + Aktivierung (Abgleich Personalübersicht)
+- **Personalübersicht (Base `app9r4BK5FJTU219P`, Tabelle Team `tbl72m0LzgoCmadrV`):** Leandra ist dort als **„Sales Directrice / Buchungsgeneratorin"** definiert (Rollentyp Agentin; Trigger „Übergabe von Sam Sales"; Output Buchungsvorschläge/Terminkoordination/Funnel-Pflege; Methodik Solution/Challenger/SPIN Selling). Mein Inbound-Build ist eine operative Teilmenge davon. **Leandras Agent-Prompt daran angeglichen** (Sales-Directrice-Identität, Prep zielt auf Buchung, SPIN/Challenger-Fragen).
+- **Alle vier Workflows jetzt publiziert/aktiv:** WF1 Entwürfe (`jtpl5UP0IvsESOCn`), WF2 Versand (`UHpsLw9QOhAA6wLE`, WF2 war noch auf api54+alte Cred → korrigiert), WF3 Vernetzt-Check (`UOBCmmA27mOOdQOs`), Leandra Empfang (`sGGeiWqO1BJMxhJe`).
 
 ---
 
