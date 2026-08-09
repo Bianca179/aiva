@@ -459,6 +459,14 @@ Rollenteilung: **Leandra** bereitet vor (Text/Prep), **Sophia** ruft an (Stimme)
 - **Twilio↔ElevenLabs** verdrahten (deutsche Nummer). Interne Preis-Ranges + Website-Claims in die FAQ (Petra/Bianca).
 - Alter Stub `TMP - Sophia Setup` archiviert.
 
+### 17.5 Fortschritt 09.08. (Abend) — Agent + Tools + CRM-Abgleich
+- **ElevenLabs-Agent „Sophia" angelegt** (Dashboard, nicht n8n): `agent_id = agent_4801kzkjqe1vf4jsam5ffagvhqpe`. Voice = deutsche Library-Stimme; LLM = „Luna" (OpenAI, im Test validieren); strukturierter Prompt mit dynamischen Variablen `{{name}} {{firma}} {{anliegen}} {{prep}}`; Persona von „Ava" auf Sophia umgestellt.
+- **agent_id im Anruf-Trigger eingetragen** (`i9JHfn8I4jmKkmPR`); nur noch `PLATZHALTER_PHONE_NUMBER_ID` offen (wartet auf DE-Nummer).
+- **4 Webhook-Tools im Agenten** (über Formular, nicht JSON — JSON-Schema war fehleranfällig): `kalenderlink_senden`, `ergebnis_speichern`, `produkt_info`, `lead_kontext`. Regel: Tool-Name ohne Leerzeichen; `lead_id` = Werttyp „Dynamische Variable" `lead_id`; Rest „LLM-Aufforderung"; nur Körperparameter füllen.
+- **CRM-Abgleich bekannt/neu (NEU):** Trigger hat jetzt Node **„Kontakt-Match"** (Airtable-Suche in Kontakte per E-Mail, `alwaysOutputData`+onError continue). „Anruf vorbereiten" baut daraus „BEKANNTER/NEUER KONTAKT" + Rolle/Funnel-Status/Notizen und hängt es vorne an `{{prep}}` — plus neue Variable `{{bekannt}}` (ja/nein). Keine ElevenLabs-Änderung nötig.
+- **Bekanntes Risiko:** n8n hat beim ElevenLabs-**POST** (Agent-Create) den httpHeaderAuth-Header nicht gesendet (GET /voices ging). Beim Nummer-Schritt prüfen, ob der `POST /convai/twilio/outbound_call` mit Cred `Elevenlabs AIVa` (`pk48TyBk18g6woTX`) authentifiziert; sonst xi-api-key-Header manuell setzen.
+- **Offen = nur noch:** DE-Nummer approved (Donna-Wächter meldet) → in ElevenLabs importieren → `phone_number_id` in den Trigger → publish → Testanruf.
+
 ---
 
 ## 8 · Referenzen
