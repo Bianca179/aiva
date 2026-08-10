@@ -518,6 +518,13 @@ Bianca kam mit der Dashboard-Anleitung nicht klar („zu ungenau") → Claude ha
 - **Noch UNGETESTET:** Donna eingehend — Test: Bianca ruft +1 571 586 5442 vom Handy an (→ „Hallo Bianca…", Kalender abfragbar) und einmal von fremder Nummer (→ Empfang, Kalender verweigert). Hinweis: Anruf in die USA, Auslandstarif, kurz halten.
 - **Offene Loops:** DE-Nummer (07156-Ticket im Review / Mobile-Bundle pending) → bei Ankunft Import + ID-Tausch in Sophia-Trigger + Inbound-Umzug Donna; Onepage-Beispiel-Lead-Mail fehlt weiterhin (Leandra-Gmail-Erfassung blockiert); Donna-Stimme ggf. im Dashboard tauschen (aktuell = Sophias).
 
+### 18.17 Gesprächsqualität-Fixes 10.08. (Sophia + Donna, per API, verifiziert)
+- **Unterbrechungs-Problem** („Ja" würgte Sophia mitten im Satz ab): beiden Agenten `turn.interruption_ignore_terms` gesetzt (15 deutsche Backchannel-Wörter: ja/okay/mhm/genau/…). 
+- **Tool-Latenz** (lange Stille bei Tool-Nutzung): Prompt-Regel ergänzt („TOOL-REGEL (Latenz): jeden Tool-Aufruf erst mit kurzem Satz ankündigen") — Prompt wurde per GET gelesen und angehängt, nicht überschrieben; Marker-Guard gegen Doppel-Append.
+- **API-Lehre:** `PATCH /v1/convai/tools/{id}` mit `{tool_config:{…force_pre_tool_speech:true}}` antwortet **200, ändert aber NICHTS** (Feld wird ignoriert) — Tool-Verhalten daher über Agent-Prompt gelöst. Grundsatz-LLM-Wechsel (gpt-5.6-luna → schnelleres Modell) weiter offen, Biancas Entscheidung.
+- **Aufräum-Kandidaten:** zwei verwaiste Tools aus Biancas manuellem Dashboard-Versuch (`Kalender_lesen` + `todos`, beide Methode GET, keine Agent-Bindung) — können gelöscht werden.
+- Biancas Stimm-Klon: Riverside-**Raw-WAV** wird abgelegt; nächster Schritt Instant-Klon per API (ffmpeg-Install nötig, Go ausstehend), später Professional-Klon (30+ Min + Live-Verifizierung).
+
 ### 18.2 Offen (Reihenfolge für den Go-Live)
 1. **Bianca:** Handynummer in beiden Code-Knoten eintragen (`Modus bestimmen` + `Zugangs-Gate`, Platzhalter `PLATZHALTER_BIANCA_HANDYNUMMER`).
 2. **Bianca (Dashboard):** ElevenLabs-Agent „Donna" anlegen — **komplette Anleitung inkl. fertigem System-Prompt liegt jetzt in `docs/DONNA-VOICE-AGENT-SETUP.md`** (10.08.): Agent + First Message `{{begruessung}}`, 6 Webhook-Tools übers Formular (`caller_id` = Dynamische Variable `system__caller_id`), Conversation-Initiation-Webhook auf `/donna-anruf-init`, System-Tool „Transfer to AI Agent" → Sophia.
