@@ -451,7 +451,19 @@ Beide Workflows per n8n-MCP gelesen (`FmC7exobAoPLIdVK` + `sGGeiWqO1BJMxhJe`). B
 
 **Belege:** DataTable-Export (nur 2 eigene Testzeilen, keine echten Leads) → `exports/datatable-leads-website-export-2026-08-10.json` (gitignored, nur lokal auf Biancas Rechner); TMP-Export-WF `DtLj08yQ79g44PDh` archiviert. **E2E-Tests über den Produktions-Webhook (curl geht von Biancas Rechner, kein Proxy-Problem): Exec 2197 = C-Spur** (Browser „A/20" → Server C, Record + Prep + Status „C – Rückruf vorbereitet" + Mail, danach gelöscht), **Exec 2198 = A-Spur** (Browser „C/95" → Server A, Angebots-Mail + Status + Angebot-Entwurf, danach gelöscht). B nicht erneut getestet (heute bereits Exec 2184, „fertig, nicht anfassen").
 
-**Offen danach:** (a) DataTable `2T5X2zWgBcXGODee` ist nur noch verwaist — endgültig löschen macht Bianca in der n8n-UI (Datentabellen) oder bleibt eingefroren; (b) **Missbrauchsvektor Rest:** Webhook weiter ohne Auth — serverseitige Qualifizierung nimmt Angreifern die Spur-Wahl, aber ein POST mit beliebiger Nummer kann weiterhin einen Sophia-Anruf auslösen; Shared-Secret-Header bräuchte einen kleinen Website-Eingriff (Biancas Go ausstehend); (c) Leandras `/lead-eingang` läuft als traffic-loser Zweit-Eingang weiter — bei Onepage-Mail-Parser-Bau wiederverwenden oder archivieren.
+**Offen danach:** (a) DataTable `2T5X2zWgBcXGODee` ist nur noch verwaist — endgültig löschen macht Bianca in der n8n-UI (Datentabellen) oder bleibt eingefroren; (b) ~~Missbrauchsvektor~~ → **erledigt in 16.28**; (c) Leandras `/lead-eingang` läuft als traffic-loser Zweit-Eingang weiter — bei Onepage-Mail-Parser-Bau wiederverwenden oder archivieren.
+
+### 16.28 NACHSCHÄRFUNG 10.08. spätabends (Biancas Go): Firmengröße-Regel + Webhook-Härtung, deployed + getestet
+**Biancas Antworten auf die zwei Judgment-Calls:** Workshop/Vortrag→B bestätigt; Budget-Override ab 2.000 € bestätigt; **zusätzlich Firmengröße ≥ 20 → C** (wie Leandra-Regel 16.1) — dafür fragt das Formular Firmengröße jetzt ab.
+
+**Website (Vibe-Section „Lead-Qualifizierungsformular", App `6a78beb67ba118ad565a3aa4`, Restore-Point `YW093I63ORDN4NzSLFv0I`, publiziert):** neues Select **Firmengröße** (1-5 / 6-19 / 20-99 / 100+, optional) + Formular sendet ein **Shared Secret** im Payload mit. Live verifiziert (Feld + Optionen im DOM).
+
+**n8n `FmC7exobAoPLIdVK` (13 Ops, publiziert `edaf3111`):**
+- **Zugangs-Check** (IF nach Normalize): POST ohne gültiges Secret → **403** + Hinweis-Mail an Bianca mit den Rohdaten (nichts geht still verloren, z. B. veralteter Browser-Tab; aber kein Anruf/Angebot/CRM-Eintrag auslösbar). Secret liegt NUR im Formular-Code + im IF-Node, bewusst nicht in diesem Doc. Ehrliche Einordnung: Das Secret steht im öffentlichen Seiten-JS — es stoppt Scanner/Zufallstreffer, nicht einen gezielten Angreifer; die eigentliche Entschärfung bleibt die serverseitige Spur-Wahl.
+- **Qualifizierung:** Firmengröße-Parsing (Range→Maximum, „+"→Basiswert), **fg ≥ 20 → C mit Vorrang vor allem anderen**; Zahl geht ins Airtable-Feld Firmengröße, Rohwert in die Notiz.
+- Webhook-CORS von `*` auf `https://biancaenderlin.de,https://www.biancaenderlin.de`.
+
+**Belege:** Exec 2222 = POST ohne Secret → 403 + Mail (SENT). Exec 2223 = Secret + Firmengröße „20-99" + A-Anliegen + Browser „A/10" → **Spur C** (Vorrang), Firmengröße 99 im CRM, komplette C-Kette bis Mail. Testdatensatz gelöscht. Deploy-Reihenfolge war Website→n8n, damit kein Lead ins 403 läuft.
 
 ### 16.3 Offen (Leandra)
 - **Formular anbinden — neuer Weg (Bianca 10.08.):** statt Webhook/Zapier fängt n8n **Onepages Lead-Benachrichtigungsmail** ab und parst sie. **Blockiert 10.08.:** Die Beispiel-Lead-Mail ist im verbundenen Gmail-Postfach nicht auffindbar (gesucht: from:onepage.io, Einsendung/Formular/Lead-Betreffe) — Bianca muss die Beispiel-Mail weiterleiten oder sagen, in welchem Postfach sie liegt; erst dann wird der Parser gebaut (nichts Ungetestetes ausliefern). Zielbild: Gmail-Trigger → Parse → POST an `https://aiva179.app.n8n.cloud/webhook/lead-eingang` (nutzt die komplette bestehende Qualifizierung).
