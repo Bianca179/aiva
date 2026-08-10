@@ -1,5 +1,12 @@
 # Donna — ElevenLabs-Voice-Agent anlegen (Anleitung für Bianca)
 
+> **ERLEDIGT 10.08. — per API gebaut, Anleitung nur noch Referenz.** Donna existiert:
+> `agent_1801kznxw02af899y3exzwytmsxq` — alle 6 Tools (POST), Init-Webhook + Abruf-Flag,
+> Transfer→Sophia, und sie ist Inbound-Agent der Nummer `+15715865442`
+> (`phnum_0101kznw8e52et6twgq515pjr74e`, geteilt mit Sophia Outbound).
+> Stimme = vorerst dieselbe wie Sophia (`fBs1tCpaSMsPcbMkLQlk`) — im Dashboard tauschbar.
+> Noch offen: Abschnitt E Punkt 4 (Handynummer in die zwei n8n-Code-Knoten) + Testanrufe.
+
 Stand 10.08.2026. Voraussetzung: n8n-Workflow `ORCH - Donna Voice-Tools - v1` (`eTQjKoyHfxuUV1vA`) ist AKTIV (ist er).
 Wichtig: Im ElevenLabs-Dashboard arbeiten, nicht in n8n.
 

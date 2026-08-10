@@ -496,6 +496,15 @@ Rollenteilung: **Leandra** bereitet vor (Text/Prep), **Sophia** ruft an (Stimme)
 
 **Ein gemeinsames Zugangs-Gate** (Fan-in beider interner Webhooks → Code „Zugangs-Gate" → IF → Switch) statt Gate-Kopien pro Tool; die Nummer steht trotzdem an ZWEI Stellen (auch „Modus bestimmen" im Init) — beide sind in der Sticky-Note im Canvas benannt.
 
+### 18.15 Donna-Agent GEBAUT per API (10.08. nachmittags)
+Bianca kam mit der Dashboard-Anleitung nicht klar („zu ungenau") → Claude hat Donna komplett per ElevenLabs-API angelegt, **Referenz war Sophias funktionierende Config** (GET agent → exakte Tool-/Property-Syntax abgeschaut). **`agent_id = agent_1801kznxw02af899y3exzwytmsxq`**, verifiziert per GET:
+- 6 Webhook-Tools (alle POST auf die donna-* n8n-Webhooks), `caller_id` in `kalender_lesen`+`todos` als `dynamic_variable: system__caller_id` (LLM-fälschungssicher).
+- System-Tools: end_call, language_detection, **transfer_to_agent → Sophia** (Bedingung: konkretes Angebots-/Kaufinteresse).
+- Init-Webhook `/donna-anruf-init` in `platform_settings.workspace_overrides` + **Flag `enable_conversation_initiation_client_data_from_webhook: true`** (ohne das Flag wird der Webhook bei Twilio-Inbound NICHT abgerufen — wichtige API-Lehre).
+- **Donna ist Inbound-Agent der geteilten Nummer** `+15715865442` (`phnum_0101…`, PATCH verifiziert); Sophia nutzt dieselbe Nummer outbound.
+- Stimme vorerst = Sophias (`fBs1tCpaSMsPcbMkLQlk`), LLM gpt-5.6-luna, temp 0 — Stimme kann Bianca im Dashboard per Klick tauschen.
+- `docs/DONNA-VOICE-AGENT-SETUP.md` als ERLEDIGT markiert (nur noch Referenz).
+
 ### 18.2 Offen (Reihenfolge für den Go-Live)
 1. **Bianca:** Handynummer in beiden Code-Knoten eintragen (`Modus bestimmen` + `Zugangs-Gate`, Platzhalter `PLATZHALTER_BIANCA_HANDYNUMMER`).
 2. **Bianca (Dashboard):** ElevenLabs-Agent „Donna" anlegen — **komplette Anleitung inkl. fertigem System-Prompt liegt jetzt in `docs/DONNA-VOICE-AGENT-SETUP.md`** (10.08.): Agent + First Message `{{begruessung}}`, 6 Webhook-Tools übers Formular (`caller_id` = Dynamische Variable `system__caller_id`), Conversation-Initiation-Webhook auf `/donna-anruf-init`, System-Tool „Transfer to AI Agent" → Sophia.
