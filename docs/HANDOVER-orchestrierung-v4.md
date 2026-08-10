@@ -495,6 +495,26 @@ Rollenteilung: **Leandra** bereitet vor (Text/Prep), **Sophia** ruft an (Stimme)
 
 ---
 
+## 19 · Sam Lead-Search (offen, PRIORITÄT vor weiterem Versand) — 10.08.
+
+**Feststellungen von Bianca zum Bestand:**
+- Die 201 vorhandenen Kontakte in `Kontakte` sind **Mail-Kontakte** (darum **keine** `LinkedIn Profil-URL`, nur `LinkedIn Member ID`). Sie wurden **bereits kontaktiert** → **nicht erneut anschreiben**.
+- Zielgruppen-Muster im Bestand: **ausschließlich Frauen**, ca. **die Hälfte in der Unternehmensübergabe-Phase** → starker, konkreter Anschreib-Winkel für Sam.
+
+**Anforderung:** Sam braucht **frischen Lead-Nachschub** über eine **Lead-Search**, die *zuerst* laufen muss, bevor neu gesendet wird. Erst die mit `Akquise-Status = "Freigegeben"` (von Bianca gesetzt) versehenen Kontakte werden angeschrieben.
+
+**Zu scopen (nächste Session):**
+- **Quelle/Methode:** LinkedIn-Personensuche über **Unipile** mit Biancas **Free-Account** (kein Sales Navigator → Filter-Limits prüfen: welche Suchparameter die Unipile-Search-API ohne SN zulässt). Ergebnis liefert `provider_id` **und** `public_id`/Profil-URL → damit läuft die bestehende Recherche-Pipeline direkt.
+- **Kriterien:** Frauen, Unternehmensübergabe-/Nachfolgephase (Retreat); Boutique-Headhunter/Inhaber:innen kleiner Personalberatungen DACH+Südtirol (Research-Team).
+- **Flow:** Search → neue Kontakte in `Kontakte` anlegen (mit Profil-URL, `Akquise-Produkt`, `Akquise-Status="Anschreiben"`) → bestehende Entwuerfe-Pipeline (`jtpl5UP0IvsESOCn`) zieht sie automatisch → Entwurf → Biancas Freigabe → Versand.
+- **Hinweis:** Bestehende Recherche nutzt `LinkedIn Profil-URL` (parst `/in/<publicId>`); falls Search nur `provider_id` liefert, „Profil holen" auf Member ID umstellen (Ein-Knoten-Umbau, Unipile `GET /users/{provider_id}` funktioniert mit beidem).
+
+**Status Versand heute:** Nichts gesendet. Versand-Filter (`UHpsLw9QOhAA6wLE`) ist sauber gated (`Akquise-Status='Freigegeben'`) — kein Fehlversand möglich.
+
+**Spur Donna:** Telefonie-Tools bereits gebaut (siehe §18, `eTQjKoyHfxuUV1vA`); Feinschliff/Go-Live läuft in eigener Session.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
