@@ -540,6 +540,50 @@ Bianca kam mit der Dashboard-Anleitung nicht klar („zu ungenau") → Claude ha
 
 ---
 
+## 20 · Sam Salesteam — Abstimmung + verifizierter Lead-Search-Test (10.08., Abend)
+
+### 20.1 Architektur-Klarstellung (Bianca hat zurecht „da stimmt was nicht" gesagt)
+Zwei Dinge waren unsauber und sind jetzt entschieden:
+
+1. **Kein manuelles Anstoßen, kein Extra-Workflow zum Klicken.** Alles läuft automatisch (Zeitplan + Datenstatus). **Biancas einziger Handgriff = die Freigabe** (bewusste Kontrolle bei Erstkontakt, nicht Umständlichkeit). „Auslösen per Knopf" ist explizit verworfen.
+2. **Zwei getrennte Motions — nie wieder vermischen:**
+   - **Spur 1 – Kalt/LinkedIn (Neukunden):** Lead-Search → neue Kontakte → Sam-Entwurf → **Freigabe** → Vernetzungsanfrage → nach Annahme DM. Das ist die bestehende, schon automatische Kette (`jtpl5UP0IvsESOCn` → `UHpsLw9QOhAA6wLE` → `UOBCmmA27mOOdQOs`); ihr fehlt nur die Lead-Quelle vorne.
+   - **Spur 2 – Warm/E-Mail (bestehende Kontakte, z. B. die 5 aus Programmen/Workshops):** eigene, sanftere Bewegung. **Braucht Biancas/Petras Stimme.** NICHT durch den Kalt-LinkedIn-Rahmen pressen (genau das ging beim ersten Versuch schief — Christiane, Doris, Vanessa etc. sind warme E-Mail-Kontakte, keine LinkedIn-DM-Ziele).
+
+### 20.2 Stimme-Schleife (für Spur 2, offen)
+- **Stimme-Skill (Fundament):** ein hinterlegtes Dokument = Biancas Wörter/Rhythmus/Tabus/Beispielsätze. Sam liest es bei jedem Schreiben. **Petra (Speaking-Coach) kuratiert dieses eine Dokument** — der eigentliche, skalierende Hebel.
+- **Petra als Freigabe-Schritt (Sicherheitsnetz):** Sam schreibt → Petra korrigiert → Korrektur fließt zurück ins Stimme-Dokument → wird jede Runde besser; später nur noch Stichprobe.
+- **Wichtig:** Biancas Stimme wird NICHT erfunden. Fundament muss von Bianca/Petra kommen; Claude baut Maschine + Gerüst.
+- Offene Detailfrage für nächste Session: Petra-Freigabe in Slack oder direkt in Airtable-Feld?
+- Merke: Bianca will **Executive/CEO-Ton** — gleich sagen worum es geht, kein Fragen-Herantasten, kein Marketing-Sprech. Erste Chat-Entwürfe waren „nicht ihre Worte" → verworfen. Deshalb Stimme-Skill zwingend, bevor Spur 2 automatisiert wird.
+
+### 20.3 VERIFIZIERT ✅ — Unipile LinkedIn-Suche läuft mit Free-Account
+Test-Workflow **`TMP - Unipile Search Test` (`DNZCStD1ecCltSCB`)**, Execution **2180 = success**. Der Knackpunkt ist geklärt: **klassische Personensuche funktioniert ohne Sales Navigator.**
+
+**Funktionierender Aufruf:**
+- `POST https://api31.unipile.com:16114/api/v1/linkedin/search?account_id=tsvsLWt4TaqZa1hxPVNKnQ`
+- Auth: httpHeaderAuth-Cred **`Unipile` (`pDCflyLLBRNGHz8u`)** (X-API-KEY).
+- Body (JSON): `{ "api": "classic", "category": "people", "keywords": "Personalberatung Inhaberin" }`
+- Antwort: `{ object:"LinkedinSearch", items:[…], paging:{start,page_count:10,total_count}, cursor }`. Pro Seite **10 Treffer**; Weiterblättern über `cursor` (base64) bzw. `start`.
+- Jedes Item liefert: **`id` (= provider_id für invite), `public_identifier`, `profile_url`/`public_profile_url`, `name`, `headline`, `location`, `network_distance` (meist DISTANCE_2 = 2. Grad, ideal für Vernetzung), `premium`/`verified`.** → deckt ALLES ab, was die Entwuerfe-/Versand-Pipeline braucht.
+
+**Beobachtete Limits/Fallen (wichtig fürs Bauen):**
+- **`total_count` zeigt 1000** = LinkedIn-Kappungsgrenze der klassischen Suche, nicht echte Gesamtzahl. Realistisch die ersten ~100 Treffer nutzbar.
+- **Keyword-Suche streut.** „Personalberatung Inhaberin" lieferte auch Männer (Fernholz, Wanner, Krüger, Desch) und Off-Target (Karrierecoaching, EAP-Beratung). **Kein Gender-Filter in der Classic-Suche.** → **Ein Qualifizierungs-/Filter-Schritt nach der Suche ist Pflicht** (Sam/Classifier bewertet headline+name, verwirft Off-Target; Frauen-Fokus ggf. über Vorname-Heuristik + headline).
+- Commercial-Use-Limit von LinkedIn beachten (Free-Account hat monatliches Such-Kontingent) → nicht exzessiv paginieren.
+
+### 20.4 Zu bauen (nächste Session) — Lead-Search-Workflow (Spur 1)
+Design (plugt in die bestehende automatische Kette, kein manueller Trigger):
+1. **Schedule** (z. B. 1×/Tag) → **Unipile-Suche** (Body wie oben; je Produkt eine Suche: Research-Team = Personalberatungs-Keywords; Retreat = Keywords für Unternehmerinnen/Nachfolge — Retreat ist schwerer zu filtern).
+2. **Qualifizieren/Filtern** (Code oder Sam-Classifier): Off-Target + Männer (für Retreat/Frauen-Fokus) raus; Dubletten gegen `Kontakte` (per `public_identifier`/provider_id) raus.
+3. **Kontakt anlegen** in `Kontakte`: `Name`, `LinkedIn Profil-URL` (= `public_profile_url`), `LinkedIn Member ID` (= `id`), `Rolle`/`Firma` aus headline, `Akquise-Produkt` (Research-Team bzw. Retreat), **`Akquise-Status = "Anschreiben"`**.
+4. Ab hier läuft die **bestehende Pipeline automatisch**: Entwuerfe (`jtpl5UP0IvsESOCn`, 07:30) → Entwurf + Status „Wartet auf Freigabe" → **Biancas Freigabe** (+ Variante A/B) → Versand (`UHpsLw9QOhAA6wLE`, 10:00, gated auf „Freigegeben", 5+5 A/B) → Vernetzt-Check.
+5. Tagesmenge an Biancas ~10 Anfragen/Tag koppeln (Free-Account); Search-Menge entsprechend deckeln.
+- **Aufräumen:** `TMP - Unipile Search Test` (`DNZCStD1ecCltSCB`) danach archivieren oder als Basis des echten Workflows wiederverwenden.
+- **Retreat-Ziel offen:** „beide parallel" gewählt — aber Retreat-Zielgruppe (Frauen in Führung/Übergabe) ist über Classic-Keywords schwer sauber zu treffen; Kriterien/Keywords in nächster Session schärfen.
+
+---
+
 ## 8 · Referenzen
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
