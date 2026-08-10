@@ -424,7 +424,7 @@ Produkte: Retreats, Workshops, kleine Bots. Regeln (Vorrang: Firmengröße zuers
 - **Live getestet (echter POST via n8n→n8n, Proxy blockt lokalen curl):** B-Spur (leerer Body → Donna-DM ok:true) und **C-Spur** (Musterwerk-AG-Lead → hochwertige Prep gespeichert + Mail) beide erfolgreich. Testdaten + `TMP - Leandra C-Test` aufgeräumt.
 
 ### 16.3 Offen (Leandra)
-- **Formular anbinden:** Onepage-Formular muss an die Webhook-URL POSTen (Felder: name, email, telefon, firma, firmengroesse, anliegen, nachricht). Onepage-MCP war in der Session nicht erreichbar (Connector neu autorisieren, dann direkt verdrahtbar).
+- **Formular anbinden — neuer Weg (Bianca 10.08.):** statt Webhook/Zapier fängt n8n **Onepages Lead-Benachrichtigungsmail** ab und parst sie. **Blockiert 10.08.:** Die Beispiel-Lead-Mail ist im verbundenen Gmail-Postfach nicht auffindbar (gesucht: from:onepage.io, Einsendung/Formular/Lead-Betreffe) — Bianca muss die Beispiel-Mail weiterleiten oder sagen, in welchem Postfach sie liegt; erst dann wird der Parser gebaut (nichts Ungetestetes ausliefern). Zielbild: Gmail-Trigger → Parse → POST an `https://aiva179.app.n8n.cloud/webhook/lead-eingang` (nutzt die komplette bestehende Qualifizierung).
 - **A-Inhalte fehlen:** echte Angebote/Produktlinks (Bots / einfacher Workshop / Keynote) → dann schreibt Leandra echte Angebots-Entwürfe + separater **A-Versand-Workflow** (nach Freigabe Mail an Kunde).
 - **Telefonassistent (Lead B) — geprüft:** Der vorhandene aktive `PD - Telefon-Backend (Voice-Tools, R97)` (`bPwOJvyVfuwync5x`) gehört zu **Philipps CENTCOM** (fremde Firma, Basis SSOT `app2lmhCxLhMkdfmN`, Mandate/Funnel) und ist **eingehend** (Mensch ruft an → 4 Voice-Webhooks: Tageslage/Wissen/Notiz/Auftrag, ElevenLabs-Agent). **Nicht** für Biancas ausgehende Lead-B-Anrufe nutzbar — falsche Richtung + fremde Daten, wird nicht angefasst. Phase 1 (jetzt): Leandra bereitet vor + meldet, Mensch ruft an. **Phase 2 = eigener ausgehender ElevenLabs-Anrufbot** (Nummer wählen, Leitfaden, Buchung/CRM-Rückschreibung) — eigenes Projekt (ElevenLabs-Credential `W7YE9YwJcFJFmk1Q` vorhanden).
 
@@ -467,6 +467,13 @@ Rollenteilung: **Leandra** bereitet vor (Text/Prep), **Sophia** ruft an (Stimme)
 - **Bekanntes Risiko:** n8n hat beim ElevenLabs-**POST** (Agent-Create) den httpHeaderAuth-Header nicht gesendet (GET /voices ging). Beim Nummer-Schritt prüfen, ob der `POST /convai/twilio/outbound_call` mit Cred `Elevenlabs AIVa` (`pk48TyBk18g6woTX`) authentifiziert; sonst xi-api-key-Header manuell setzen.
 - **Offen = nur noch:** DE-Nummer approved (Donna-Wächter meldet) → in ElevenLabs importieren → `phone_number_id` in den Trigger → publish → Testanruf.
 
+### 17.6 Fortschritt 10.08. — Nummer importiert, Trigger LIVE, Auth-Rätsel gelöst
+- **Root-Cause des Auth-Risikos gefunden:** Credential **„Elevenlabs AIVa" (`pk48TyBk18g6woTX`) sendet ihren Header GAR NICHT** (auch bei GET → 401 „Neither authorization header nor xi-api-key received", Execution 2148). Es war nie ein GET-vs-POST-Problem. Credential **„Elevenlabs" (`W7YE9YwJcFJFmk1Q`) funktioniert für GET UND POST** (bewiesen: Nummern-Liste 200 + Import-POST 200). → Überall nur noch `W7YE9YwJcFJFmk1Q` verwenden; „Elevenlabs AIVa" reparieren oder löschen.
+- **Keine DE-Nummer in Twilio vorhanden** (Stand 10.08., Konto „AIVa"): nur `+14472612718` (an Studio-Flow/Telefonansage gebunden — nicht anfassen) und `+15715865442` (frei). Das Regulatory-Bundle ist genehmigt, aber die DE-Nummer muss noch GEKAUFT werden.
+- **`+15715865442` als Sophias Nummer in ElevenLabs importiert** (per n8n-Workflow, Twilio-SID/-Token maschinell durchgereicht): **`phone_number_id = phnum_5401kzng8f9yezate5bbndgb8gjq`**. Wenn später die DE-Nummer kommt: neu importieren und ID im Trigger tauschen.
+- **Trigger `i9JHfn8I4jmKkmPR` PUBLIZIERT/AKTIV:** phone_number_id eingetragen, Credential „Elevenlabs" an „ElevenLabs Anruf starten" gehängt (Node hatte vorher KEINE Credential), Schedule von „täglich" auf echte Werktage korrigiert (cron `0 10,14,17 * * 1-5`). Leads-Tabelle war zum Zeitpunkt der Aktivierung leer → kein Anrufrisiko.
+- **Offen:** Testanruf auf Biancas Nummer (Nummer liegt Claude nicht vor → Test-Lead mit ihrer Handynummer + Status „Anruf offen" anlegen, Trigger manuell ausführen). Optional: Sophia als Inbound-Agent der Nummer zuweisen (Rückrufe auf `+15715865442` laufen aktuell ins Leere). Hilfs-Workflow `TMP - Sophia Nummern-Check` (`6sh9rAJ7KqY0zp8P`) archiviert.
+
 ---
 
 ## 18 · Donna — Telefonie (09.08. abends, Dual-Modus Empfang + Assistenz)
@@ -489,7 +496,7 @@ Rollenteilung: **Leandra** bereitet vor (Text/Prep), **Sophia** ruft an (Stimme)
 
 ### 18.2 Offen (Reihenfolge für den Go-Live)
 1. **Bianca:** Handynummer in beiden Code-Knoten eintragen (`Modus bestimmen` + `Zugangs-Gate`, Platzhalter `PLATZHALTER_BIANCA_HANDYNUMMER`).
-2. **Bianca (Dashboard):** ElevenLabs-Agent „Donna" anlegen (analog Sophia; Prompt-Vorlage von Claude, nutzt `{{modus}}/{{bekannt}}/{{anrufer_info}}`, First Message = `{{begruessung}}`), die 6 Tools als Webhook-Tools übers Formular (Regel wie bei Sophia: Tool-Name ohne Leerzeichen; `caller_id` = Werttyp „Dynamische Variable" → `system__caller_id`), Conversation-Initiation-Webhook auf `/donna-anruf-init`, System-Tool „Transfer to AI Agent" → Sophia.
+2. **Bianca (Dashboard):** ElevenLabs-Agent „Donna" anlegen — **komplette Anleitung inkl. fertigem System-Prompt liegt jetzt in `docs/DONNA-VOICE-AGENT-SETUP.md`** (10.08.): Agent + First Message `{{begruessung}}`, 6 Webhook-Tools übers Formular (`caller_id` = Dynamische Variable `system__caller_id`), Conversation-Initiation-Webhook auf `/donna-anruf-init`, System-Tool „Transfer to AI Agent" → Sophia.
 3. **Nach Bundle-OK:** zweite DE-Nummer kaufen → in ElevenLabs importieren → Donna als Inbound-Agent der Nummer zuweisen → Testanruf (dabei bekanntes Risiko prüfen: n8n sendet httpHeaderAuth bei ElevenLabs-POSTs manchmal nicht — betrifft hier nur künftige Outbound-Calls, Inbound läuft ohne n8n-Auth).
 4. **Später (Ausnahme-Fall):** „Donna ruft Bianca an bei dringend" — Outbound-Trigger nach Sophia-Muster (`outbound_call`), bewusst noch nicht gebaut; v1 markiert Dringendes per 🚨-Slack-DM.
 
