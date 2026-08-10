@@ -505,6 +505,13 @@ Bianca kam mit der Dashboard-Anleitung nicht klar („zu ungenau") → Claude ha
 - Stimme vorerst = Sophias (`fBs1tCpaSMsPcbMkLQlk`), LLM gpt-5.6-luna, temp 0 — Stimme kann Bianca im Dashboard per Klick tauschen.
 - `docs/DONNA-VOICE-AGENT-SETUP.md` als ERLEDIGT markiert (nur noch Referenz).
 
+### 18.16 GO-LIVE-STAND 10.08. abends
+- **Sophia Ende-zu-Ende BEWIESEN (2 Testanrufe):** Anruf 1 (conv_6901…) kam an, brach nach 7 s ab — Log-Diagnose: „Call ended by remote party", KEIN Systemfehler. Anruf 2 (conv_6501…) voller Erfolg: Gespräch geführt, **Zeeg-Link-Mail versendet** (Lead-Status „Termin-Link gesendet" vom Webhook gesetzt) und **Anruf-Notiz von Sophias ergebnis-Tool geschrieben** — beide Tool-Ketten live belegt. Test-Lead auf „Erledigt". Sophia-Trigger AKTIV (werktags 10/14/17).
+- **Biancas Feintuning-Wünsche:** (1) Antwortlatenz zu hoch — Metriken zeigen ~1,4–2 s LLM-TTFB (gpt-5.6-luna); schnelleres LLM im Dashboard testbar (Dropdown neben Stimme; gilt pro Agent — Donna ggf. mitziehen). (2) Bianca sucht eine andere Stimme aus (betrifft Sophia; Donna nutzt aktuell DIESELBE Stimme → bei der Gelegenheit für beide entscheiden). (3) Beobachtung: hohe Unterbrechungs-Empfindlichkeit — kurzes „Ja" schnitt Sophia zweimal das Wort ab.
+- **Donna-Gate scharf:** Biancas Handynummer in beiden Code-Knoten eingetragen (`eTQjKoyHfxuUV1vA` publiziert) — Assistentin-Modus + interne Tools nur für ihre Caller-ID.
+- **Noch UNGETESTET:** Donna eingehend — Test: Bianca ruft +1 571 586 5442 vom Handy an (→ „Hallo Bianca…", Kalender abfragbar) und einmal von fremder Nummer (→ Empfang, Kalender verweigert). Hinweis: Anruf in die USA, Auslandstarif, kurz halten.
+- **Offene Loops:** DE-Nummer (07156-Ticket im Review / Mobile-Bundle pending) → bei Ankunft Import + ID-Tausch in Sophia-Trigger + Inbound-Umzug Donna; Onepage-Beispiel-Lead-Mail fehlt weiterhin (Leandra-Gmail-Erfassung blockiert); Donna-Stimme ggf. im Dashboard tauschen (aktuell = Sophias).
+
 ### 18.2 Offen (Reihenfolge für den Go-Live)
 1. **Bianca:** Handynummer in beiden Code-Knoten eintragen (`Modus bestimmen` + `Zugangs-Gate`, Platzhalter `PLATZHALTER_BIANCA_HANDYNUMMER`).
 2. **Bianca (Dashboard):** ElevenLabs-Agent „Donna" anlegen — **komplette Anleitung inkl. fertigem System-Prompt liegt jetzt in `docs/DONNA-VOICE-AGENT-SETUP.md`** (10.08.): Agent + First Message `{{begruessung}}`, 6 Webhook-Tools übers Formular (`caller_id` = Dynamische Variable `system__caller_id`), Conversation-Initiation-Webhook auf `/donna-anruf-init`, System-Tool „Transfer to AI Agent" → Sophia.
