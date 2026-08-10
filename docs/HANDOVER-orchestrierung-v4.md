@@ -639,6 +639,17 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 - **Offen:** (1) Bianca lädt Anthropic-Guthaben auf → (2) Testlauf wiederholen (legt dann echte Kontakte „Anschreiben" an, Versand bleibt durch Freigabe-Gate sicher) → (3) publizieren. `TMP - Unipile Search Test` (`DNZCStD1ecCltSCB`) archiviert.
 - **Keywords v1** (Rotation Tag für Tag): Research-Team: Personalberatung Inhaberin / Executive Search Inhaber / Personalberatung Gründerin / Personalberatung geschäftsführende Gesellschafterin / Headhunter Inhaber. Retreat: Unternehmensnachfolge Unternehmerin / Nachfolgerin Familienunternehmen / Geschäftsführerin Unternehmensnachfolge / Unternehmerin Generationswechsel / Übergabe Familienunternehmen Geschäftsführerin. Befund aus 2192: Research-Team-Treffer gut (echte Inhaberinnen dabei), Retreat streut wie erwartet stark (viele Männer + Nachfolge-BERATER = Wettbewerber) — genau dafür ist der strenge Classifier da.
 
+### 20.6 LIVE 10.08. spätabends: 5 Produkte + Rotation, E2E getestet, PUBLIZIERT
+- **Blocker weg:** Bianca hat Anthropic-Guthaben aufgeladen — betrifft auch die Entwuerfe-Pipeline (`jtpl5UP0IvsESOCn`, gleiche Credential), die läuft morgen 07:30 wieder.
+- **Drei neue Produkte eingebaut** (`WZnBsihP0PqbKQpN`, publiziert `97db4532`), je 5 Keywords + eigenes Classifier-Zielprofil:
+  - **Speaking Coach App (CEO-Sprech)** — CEO-Sprech/Konfliktgespräche/manipulative Gespräche. Zielgruppen-**Hypothese v1**: Führungskräfte mit echter Verantwortung DACH (GF/C-Level/Vertriebs-/Bereichsleitung); Rhetorik-Coaches = Wettbewerber, raus.
+  - **Future-Self (Begleit-App)** — angeleitetes Future-Self-Erarbeiten, danach persönlicher Begleit-Chatbot. Zielgruppen-**Hypothese v1**: Personalentwicklung/L&D/HR-Direktion als Multiplikatoren + Unternehmer:innen in Neuausrichtung; Persönlichkeits-Coaches raus.
+  - **Leadership Circle (Jahresbegleitung)** — Kommunikation+KI+Identität, 1 Jahr, max 5 Frauen. Classifier: NUR Frauen, GF/Unternehmerin/Vorständin/Senior, nur hochwertige Profile (Exklusiv-Format).
+- **Rotation statt 25/Tag:** pro Tag suchen **2 der 5 Produkte** (Paar wandert täglich über Tagesindex), max 5/Produkt → **Gesamtdeckel 10 Kontakte/Tag** = Invite-Budget Free-Account. Von Claude entschieden (Bianca hatte die Mengen-Frage offen gelassen), im Chat geflaggt.
+- **Testlauf Exec 2230 = success, komplette Kette:** Rotation zog Research-Team + Retreat, 40 Kandidaten, 0 Dubletten, Classifier lief (Guthaben ok) → **2 Kontakte angelegt** (Michaela Boeke/PERSONALBERATUNG BOEKE Nürnberg `recKxfG8JgtXaGBg0`, Claudia Peuser/PERSONALBERATUNG RIEMER Dortmund `recazj5UX5ixlvOvO`), Status „Anschreiben", Notizen mit Suchwort+Grund. Retreat: 0 aufgenommen (streut stark, Classifier bewusst streng). ⚠ Peuser ist grenzwertig (Headline klingt nach Karrierecoaching/Outplacement) — Biancas Freigabe-Gate fängt das; ggf. Classifier nachschärfen.
+- **Ab morgen automatisch:** 06:30 Search → 07:30 Entwürfe → Biancas Freigabe in Airtable (`Akquise-Status = "Freigegeben"`) → 10:00 Versand (5+5 A/B).
+- **Offen:** Zielgruppen-Hypothesen Produkt 3+4 von Bianca bestätigen/schärfen (Keywords + Zielprofile sind die Stellschrauben in „Suchauftraege" + „Qualifizieren (Sam)"); Spur 2 (Warm/E-Mail) wartet weiter auf Stimme-Skill (Bianca/Petra).
+
 ---
 
 ## 8 · Referenzen
