@@ -666,6 +666,12 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 - **Biancas Übergabe-Mechanismus ab jetzt:** formlose Nachricht in #max → binnen 15 Min entstehen Redaktionsplan-Einträge + Thread-Antwort. Erster Fehlversuch 2233 (`not_in_channel`) durch Self-Join gelöst.
 - **Offen:** Linnis 140-Node-Strecke (Redaktionsplan→LinkedIn Posts) bleibt UNGETESTET — nächster Schritt: Bianca gibt EINEN der 8 Einträge frei (Status „Freigegeben"), dann die Linni-Kette einmal E2E beobachten/testen. Podcast-Kanal fehlt im Redaktionsplan-Select (Agent nutzt ihn ggf. — typecast legt ihn an, unkritisch).
 
+### 20.9 LIVE 11.08. früh: „ORCH - AIVA Cockpit (Dashboard) - v1" (`HPl4FtmXeISou9FN`, publiziert `8e785850`)
+- **Biancas Wunsch:** eigenständiges Web-Dashboard „wie für Philipp" statt Airtable-Interface (Airtable findet sie kompliziert). Ein zuvor angelegtes Airtable-Interface „Cockpit" (`pbdBezyX2kVCfbCtA`) wurde wieder gelöscht (revert-actionId `actfxL4j9sxxZvt1g`).
+- **Bauweise:** GET-Webhook `https://aiva179.app.n8n.cloud/webhook/aiva-cockpit?key=7f7ac47671ef94fa` → 6 Airtable-Reads (Kontakte, Leads Inbound, Redaktionsplan, To-dos, OKRs, Key Results; alle `alwaysOutputData` — Lehre bestätigt: leere OKR-Tabelle stoppte anfangs die Kette, Fix im HTML-Builder filtert Leer-Items) → Code baut HTML-Seite (Karten: Heute wichtig/KPIs, Salesteam Sam, Empfang Leandra/Sophia, Marketing Max/CC Top, Donna To-dos, OKRs Ophra; Airtable-Deep-Links zum Freigeben, Auto-Refresh 5 Min, Handy-tauglich).
+- **Zugriff:** `?key=` wird im Code geprüft (ohne Key → „Zugriff verweigert"). Ehrlich: Key steht in der URL = Soft-Schutz gegen Zufallszugriffe, kein echter Login.
+- **LIVE VERIFIZIERT 11.08. ~09:00:** Seite liefert echte Daten — **8 Sam-Entwürfe „Wartet auf Freigabe"** (die 06:30-Suche + 07:30-Entwürfe-Pipeline liefen nach Guthaben-Aufladung erstmals komplett automatisch durch: neue Kandidaten inkl. Wanner/Boeke/Duscha/Krüger mit personalisierten Openern!), 11 Marketing-Ideen, 0 Rückrufe, 17 To-dos.
+
 ---
 
 ## 8 · Referenzen
