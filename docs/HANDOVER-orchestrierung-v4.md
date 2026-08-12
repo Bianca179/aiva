@@ -738,6 +738,32 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **(d) Kosten-/Caching-Frage beantwortet (Biancas Frage nach Caching und Sub-Agenten):** Prompt-Caching bringt hier nichts — die System-Prompts liegen unter der Mindestgröße von 1.024 Tokens, und der Cache lebt nur 5 Minuten, während C-Leads einzeln und Stunden auseinander eintreffen; der n8n-Anthropic-Node bietet ohnehin keine Cache-Steuerung. Die gewünschte Sub-Agenten-Architektur ist bereits gebaut: die Profilerin hängt ausschließlich am C-Ausgang des Switch und läuft bei A- und B-Leads gar nicht. Verbleibende Hebel, falls die Kosten je stören: günstigeres Modell für die Profilerin oder Zusammenlegen von Profilerin und Gesprächsvorbereitung in einen Aufruf (spart Tokens, kostet Trennschärfe).
 
+### 20.14 Lexware Stufe 2 LIVE: Angebots-Entwurf für C-Leads (12.08., Biancas „so")
+
+**Biancas Vorgaben, die den Bau geformt haben:** Voca und TennisShift sind Links mit Paywall und gehören NICHT nach Lexware. Retreat und Leadership Circle sind High Tickets und gehen als individuelle Angebote raus. C-Lead-Angebote sind individuell. → **Konsequenz, die den ursprünglichen Plan änderte:** Der Entwurf wird NICHT aus der Artikelliste zusammengesetzt, sondern als echtes Individualangebot formuliert; die Artikelliste dient nur als Preisanker.
+
+**Neuer Workflow `ORCH - Angebots-Entwurf C-Leads (Lexware) - v1` (`YqIRx1eIjEfr0tXG`, aktiv, publiziert `58721903`).** Kette: `GET /webhook/angebot-entwurf?lead=recXXX&key=…` → **Zugangs-Check VOR jedem Schreibvorgang** → Lead holen → Artikel laden (Preisanker) → Kontext bauen → KI „Angebot formulieren" (`claude-sonnet-5`, maxTokens 4000) → Angebot bauen (Code) → **POST `/v1/quotations?finalize=false`** → Lead aktualisieren → Mail an Bianca → Redirect zurück ins Cockpit. Fehler-Workflow: `Sa3c6JClOoPKNAp5`.
+
+**Die drei Entscheidungen (Bianca bestätigt):** Auslöser ist ihr Klick, nicht Automatik nach jedem C-Gespräch. Die KI schlägt Positionen und Preise vor, festlegen tut Bianca. Der Entwurf entsteht **ohne Lexware-Kontakt** (nur `address.name`) — Zuordnung macht Bianca, um Dubletten in der Buchhaltung zu vermeiden. Versand bleibt in jedem Fall ihr Klick.
+
+**Steuer-Fund (belegt aus AG0003):** Biancas Angebote laufen **umsatzsteuerfrei nach § 4 UStG** (`taxConditions.taxType: "vatfree"`), nicht mit 0 % MwSt. Der Workflow setzt das fest; der KI ist verboten, „netto" oder einen Steuersatz zu schreiben. ⚠ **Offen für Bianca:** Das Lexware-**Artikel-Tool** sagt Kundinnen am Telefon weiterhin „2.790 Euro **netto**" — bei USt-Freiheit irreführend. Formulierung ist noch nicht geändert, weil Biancas Antwort dazu aussteht.
+
+**Drei Fehler im Testlauf gefunden und behoben — alle drei wären sonst beim Kunden gelandet:**
+1. **HTTP 529 (Anthropic überlastet)** brach den ersten Lauf ab → beide Außenaufrufe haben jetzt 3 Versuche mit Abstand.
+2. **Lexware wies den Entwurf mit 406 zurück: `title` darf höchstens 25 Zeichen haben.** Die KI schrieb länger. Fix an zwei Stellen (Prompt kennt die Grenze, Code kappt hart).
+3. **Der schlimmste:** Weil der Lexware-Aufruf auf `neverError: true` stand, **lief die Kette nach dem 406 fröhlich weiter** — schrieb einen kaputten Link ins Airtable und mailte Bianca einen Entwurf, den es gar nicht gab. `neverError` entfernt; Fehler brechen jetzt ab und laufen in den zentralen Alarm. **Lehre: `neverError` gehört an Diagnose-Aufrufe, niemals an einen Schreibvorgang.**
+4. Zusätzlich: Die KI schrieb „Dieses Angebot gilt 14 Tage", während das Ablaufdatum im Beleg auf 30 Tage stand — Widerspruch im Kundendokument. Fristen zu nennen ist der KI jetzt verboten.
+
+**E2E belegt (AG0005, Status `draft`):** Titel „Analyse und Roadmap" (19 Zeichen), zwei Positionen (Status-quo-Analyse 2.790 € am Tagessatz-Anker, Vor-/Nachbereitung 890 €), Einleitung greift den Eröffnungssatz aus der Gesprächsvorbereitung auf, Deliverables benannt, `vatfree` gesetzt, kein Kontakt zugeordnet, keine erfundene Frist.
+
+**Cockpit erweitert (`HPl4FtmXeISou9FN`, publiziert `c7d6adab`):** Die Empfangs-Karte listet C-Leads jetzt einzeln — Gesprächsvorbereitung und Persönlichkeitsprofil aufklappbar, vorhandener Entwurf aufklappbar, blauer Knopf „Angebots-Entwurf erstellen" (bzw. „Neuen Entwurf erzeugen"). Live verifiziert.
+
+**Aufräumen:** Test-Lead in Airtable gelöscht. ⚠ **In Lexware liegen zwei Test-Entwürfe (AG0004 und AG0005, beide „TESTLAUF Musterwerk AG") — die API kann Belege nicht löschen, das macht Bianca in der Lexware-Oberfläche.** Ebenso liegt eine Test-Mail in ihrem Postfach.
+
+**Nebenbefund gefixt:** Das Artikel-Tool (`6KeZef13FRgtAUVh`, publiziert `e54690ef`) las nur die ersten **5** Artikel vor. Nach Biancas Aufräumen sind es 6 — der neue **Umsetzungsshift (279 €)** fiel hinten runter und wurde von keiner Agentin je genannt. Deckel auf 8 angehoben, belegt per Aufruf.
+
+**Bauweg-Lehren für n8n (neu):** Der Workflow-SDK-Parser verbietet `.join()` und andere native Methoden im Bau-Code — mehrzeilige Strings als Template-Literale schreiben. Backticks im jsCode brechen Template-Literale; Code-Fences stattdessen über `String.fromCharCode(96)` erkennen. Und: Ein `ifElse` mit zwei vollständigen Zweigen ist der saubere Weg für den Key-Check, weil der `onFalse`-Zweig eine eigene Antwort liefern muss.
+
 ### 20.9 LIVE 11.08. früh: „ORCH - AIVA Cockpit (Dashboard) - v1" (`HPl4FtmXeISou9FN`, publiziert `8e785850`)
 - **Biancas Wunsch:** eigenständiges Web-Dashboard „wie für Philipp" statt Airtable-Interface (Airtable findet sie kompliziert). Ein zuvor angelegtes Airtable-Interface „Cockpit" (`pbdBezyX2kVCfbCtA`) wurde wieder gelöscht (revert-actionId `actfxL4j9sxxZvt1g`).
 - **Bauweise:** GET-Webhook `https://aiva179.app.n8n.cloud/webhook/aiva-cockpit?key=7f7ac47671ef94fa` → 6 Airtable-Reads (Kontakte, Leads Inbound, Redaktionsplan, To-dos, OKRs, Key Results; alle `alwaysOutputData` — Lehre bestätigt: leere OKR-Tabelle stoppte anfangs die Kette, Fix im HTML-Builder filtert Leer-Items) → Code baut HTML-Seite (Karten: Heute wichtig/KPIs, Salesteam Sam, Empfang Leandra/Sophia, Marketing Max/CC Top, Donna To-dos, OKRs Ophra; Airtable-Deep-Links zum Freigeben, Auto-Refresh 5 Min, Handy-tauglich).
