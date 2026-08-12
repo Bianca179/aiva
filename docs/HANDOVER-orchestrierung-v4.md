@@ -635,6 +635,26 @@ Design (plugt in die bestehende automatische Kette, kein manueller Trigger):
   1. **Keywords je Produkt** — Claude-Vorschlag: Research-Team = Rotation aus „Personalberatung Inhaberin" / „Executive Search Gründerin" / „Headhunter Personalberatung Inhaberin DACH"; Retreat = „Unternehmerin Nachfolge" / „Geschäftsführerin Unternehmensübergabe" / „Gründerin Nachfolge Übergabe". Danach Filter-Schritt (Vorname-Heuristik + Headline) → Männer/Off-Target raus.
   2. **Tagesmenge neu angelegter, qualifizierter Leads** — Claude-Vorschlag: 6/Tag (3 Research-Team + 3 Retreat), Puffer unter Biancas ~10 Anfragen/Tag, schont Free-Account-Suchkontingent.
 
+### 20.5 KORREKTUR 11.08. — Lead-Search ist bereits GEBAUT & LIVE (nicht mehr „zu bauen")
+Read-only-Prüfung in n8n (auf Biancas ausdrücklichen Wunsch „erst schauen, nicht bauen") ergab: **Der Lead-Search-Workflow existiert schon und ist aktiv.** Der Bauplan in §20.4 ist damit erledigt — nächste Sam-Session = **prüfen & feintunen**, NICHT bauen.
+
+- **`ORCH - Sam Lead-Search - v1` (`WZnBsihP0PqbKQpN`), AKTIV**, Schedule tägl. **06:30** (vor Entwuerfe 07:30). Von einer Parallel-Session gebaut.
+- Kette: `Suchauftraege` (Keyword-Rotation) → `Suche Seite 1/2` (Unipile classic, 2 Seiten) → `Kandidaten flatten` (nur DISTANCE_2/3, URL bauen) → `Kandidaten sammeln` (dedupe intern, cap 40) → `Bestand laden` (Kontakte) → `Dubletten raus` (Member ID + Profil-URL) → `Qualifizieren (Sam)` (Claude Sonnet Classifier, temp 0, strenge Zielprofile) → `Auswahl + Felder` (max 5/Produkt) → `Kontakt anlegen` (Status „Anschreiben").
+- **Deckt 5 Produkte ab** (Rotation: 2/Tag): Research-Team, Retreat, **Speaking Coach App (CEO-Sprech)**, **Future-Self (Begleit-App)**, **Leadership Circle (Jahresbegleitung)**. Stellschrauben: Keyword-Listen (Node `Suchauftraege`) + Classifier-Zielprofile.
+- Design deckt sich mit §20.1–20.4 (kein manueller Trigger, Freigabe bleibt Gate, max 10/Tag). ✅
+
+**Offene Prüf-/Klärpunkte (nächste Session, mit Biancas GO):**
+1. **`Akquise-Produkt` hat nur 2 Optionen** (Retreat, Research-Team), Workflow schreibt aber 5 Namen mit `typecast:true` → Airtable legt 3 Optionen automatisch neu an. Klären: sind Speaking Coach App / Future-Self / Leadership Circle echte aktive Akquise-Produkte? Sollen alle 5 laufen oder erst nur Research-Team + Retreat?
+2. Noch kein realer Lauf beobachtet → erste Ergebnisse ansehen, Classifier-Trefferqualität prüfen, Keywords/Zielprofile schärfen (v. a. Retreat).
+3. **TMP-Testworkflow `DNZCStD1ecCltSCB` archivieren** (war überflüssig — echte Lead-Search existierte schon). NUR nach Biancas GO anfassen.
+
+**Weiteres bereits Live entdeckt (read-only):** `ORCH - AIVA Cockpit (Dashboard) - v1` (`HPl4FtmXeISou9FN`, aktiv) mit Karten für Salesteam/Empfang/Marketing-Redaktionsplan/Donna/OKRs (Ophra) — parallel gebaut, im Handover bisher nicht dokumentiert.
+
+### 20.6 NEUE ANFORDERUNG — Redaktionsplan (Marketing: Linni / Vera / Insta), offen
+Bianca hat die **Vorlage für Linnis Redaktionsplan** gefunden: Airtable `appVrzySbfvHEW8nc/tblgcNe0E9oT5KdVi/viwYVgqxaWrS8V3k0`. Sie passt sie noch auf sich an (= Vorlage).
+Auftrag: **in den gesamten Redaktionsplan integrieren** und **analog für „Vera" und „Insta" (Instagram) je eine eigene Tabelle** im Redaktionsplan bauen.
+**Status: NUR read-only ansehen + Plan vorschlagen. NICHT bauen ohne Biancas ausdrückliches GO** (neue, feste Regel: erst schauen/fragen, GO holen, dann bauen — vieles ist schon live).
+
 ### 20.5 GEBAUT: `ORCH - Sam Lead-Search - v1` (`WZnBsihP0PqbKQpN`) — 10.08. abends, NOCH NICHT publiziert
 Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 - **Kette:** Schedule **täglich 06:30** (vor Entwuerfe 07:30) → Code „Suchauftraege" (je Produkt EIN Suchwort/Tag, rotiert deterministisch über Tagesindex; Listen à 5 Keywords je Produkt im Code-Node — das ist die Stellschraube) → Unipile-Suche **Seite 1 + Seite 2** (Cursor als Query-Param, max 20 Rohtreffer/Produkt, 4 API-Calls/Tag wegen Commercial-Limit) → „Kandidaten flatten" (nur DISTANCE_2/3, URL-Pflicht) → „Kandidaten sammeln" (Intra-Run-Dedup, Kappung 40) → Airtable „Bestand laden" (alle Kontakte) → „Dubletten raus" (Member ID **und** public_identifier aus Profil-URL) → **„Qualifizieren (Sam)"** (Claude Sonnet 4.6, temp 0, strenger Classifier: Zielprofile je Produkt, Retreat nur Frauen, Wettbewerber/Coaches/Konzern-Angestellte raus; zerlegt Headline in Rolle+Firma) → „Auswahl + Felder" (max **5/Produkt/Tag**, JSON-Parse mit Fallback) → Airtable „Kontakt anlegen" (Name, Profil-URL, Member ID, Rolle, Firma, Akquise-Produkt, **Akquise-Status „Anschreiben"**, Sales-Funnel „Neu", Notizen mit Suchwort+Headline+Classifier-Grund als Freigabe-Kontext).
