@@ -649,6 +649,8 @@ Read-only-Prüfung in n8n (auf Biancas ausdrücklichen Wunsch „erst schauen, n
 3. **TMP-Testworkflow `DNZCStD1ecCltSCB` archivieren** (war überflüssig — echte Lead-Search existierte schon). NUR nach Biancas GO anfassen.
 
 **Weiteres bereits Live entdeckt (read-only):** `ORCH - AIVA Cockpit (Dashboard) - v1` (`HPl4FtmXeISou9FN`, aktiv) mit Karten für Salesteam/Empfang/Marketing-Redaktionsplan/Donna/OKRs (Ophra) — parallel gebaut, im Handover bisher nicht dokumentiert.
+- **Dashboard-Link:** `https://aiva179.app.n8n.cloud/webhook/aiva-cockpit?key=7f7ac47671ef94fa` (Key ist der einzige Schutz, steht im Code — nicht öffentlich teilen; bei Bedarf gegen neuen tauschen).
+- **Änderung 11.08. (mit Biancas GO):** To-do-Karte hat jetzt je offene Aufgabe einen **„✅ Erledigt"-Button** (Muster wie Sam/Marketing-Freigabe-Buttons). Setzt `Erledigt am`=heute → Aufgabe fällt aus der Liste. Umgesetzt per `update_workflow`: `Aktion pruefen` + Switch `Tabelle?` um `todo` erweitert, neuer Airtable-Node `To-do erledigen` (Cred `zWqHnt0xhODSDQ26`), `HTML bauen` rendert Button. Publiziert (activeVersion `6f983ad8…`). Egress-Proxy blockt Claude-seitiges Rendern-Prüfen → Bianca verifiziert per Klick.
 
 ### 20.6 NEUE ANFORDERUNG — Redaktionsplan (Marketing: Linni / Vera / Insta), offen
 Bianca hat die **Vorlage für Linnis Redaktionsplan** gefunden: Airtable `appVrzySbfvHEW8nc/tblgcNe0E9oT5KdVi/viwYVgqxaWrS8V3k0`. Sie passt sie noch auf sich an (= Vorlage).
