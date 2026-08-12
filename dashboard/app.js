@@ -73,6 +73,16 @@
     'Quick reset after a rough day',
   ];
 
+  // Alex refuses to write any programme once pain or a complaint is mentioned — that is
+  // his central guardrail. So none of his starters may name a body part that hurts
+  // ("my back feels tight" would trigger the medical referral on the very first tap).
+  // They describe a SITUATION instead.
+  const ALEX_STARTERS = [
+    'Warm-up before a match',
+    '10 minutes — what do I do?',
+    "I'm travelling today",
+  ];
+
   const CHAT_AGENTS = {
     markus: {
       name: 'Markus',
@@ -87,6 +97,16 @@
       tagline: 'Sam Menton — your mental game: matches, pressure, focus. Stays between the two of you.',
       greeting: "Hey Lenard, Sam here. What's on your mind — the next match, the last one, or something else entirely?",
       starters: COACH_STARTERS,
+    },
+    // The key 'alex' has to match the one in the n8n node "Chat vorbereiten" — that is
+    // what picks his Langdock agent. The toggle above builds itself from this object,
+    // so this entry is all a new coach needs; no button has to be added by hand.
+    alex: {
+      name: 'Alex',
+      icon: '🤸',
+      tagline: 'Stretching, mobility, warm-ups and cool-downs — for a day, a week or a month.',
+      greeting: "Hey — I'm Alex. What's on today: a match, tennis training, travel or a rest day, and how much time have you got?",
+      starters: ALEX_STARTERS,
     },
   };
 
