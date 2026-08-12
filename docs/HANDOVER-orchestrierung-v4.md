@@ -631,6 +631,9 @@ Design (plugt in die bestehende automatische Kette, kein manueller Trigger):
 5. Tagesmenge an Biancas ~10 Anfragen/Tag koppeln (Free-Account); Search-Menge entsprechend deckeln.
 - **Aufräumen:** `TMP - Unipile Search Test` (`DNZCStD1ecCltSCB`) danach archivieren oder als Basis des echten Workflows wiederverwenden.
 - **Retreat-Ziel offen:** „beide parallel" gewählt — aber Retreat-Zielgruppe (Frauen in Führung/Übergabe) ist über Classic-Keywords schwer sauber zu treffen; Kriterien/Keywords in nächster Session schärfen.
+- **Offene Startentscheidungen (zu Beginn der nächsten Session mit Bianca klären):**
+  1. **Keywords je Produkt** — Claude-Vorschlag: Research-Team = Rotation aus „Personalberatung Inhaberin" / „Executive Search Gründerin" / „Headhunter Personalberatung Inhaberin DACH"; Retreat = „Unternehmerin Nachfolge" / „Geschäftsführerin Unternehmensübergabe" / „Gründerin Nachfolge Übergabe". Danach Filter-Schritt (Vorname-Heuristik + Headline) → Männer/Off-Target raus.
+  2. **Tagesmenge neu angelegter, qualifizierter Leads** — Claude-Vorschlag: 6/Tag (3 Research-Team + 3 Retreat), Puffer unter Biancas ~10 Anfragen/Tag, schont Free-Account-Suchkontingent.
 
 ### 20.5 GEBAUT: `ORCH - Sam Lead-Search - v1` (`WZnBsihP0PqbKQpN`) — 10.08. abends, NOCH NICHT publiziert
 Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
