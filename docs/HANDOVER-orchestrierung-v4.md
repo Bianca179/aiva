@@ -766,6 +766,29 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **Bauweg-Lehren für n8n (neu):** Der Workflow-SDK-Parser verbietet `.join()` und andere native Methoden im Bau-Code — mehrzeilige Strings als Template-Literale schreiben. Backticks im jsCode brechen Template-Literale; Code-Fences stattdessen über `String.fromCharCode(96)` erkennen. Und: Ein `ifElse` mit zwei vollständigen Zweigen ist der saubere Weg für den Key-Check, weil der `onFalse`-Zweig eine eigene Antwort liefern muss.
 
+### 20.15 Telefonie LIVE auf deutscher Festnetznummer (12.08.)
+
+**Der Blocker seit Wochen ist weg: Bianca hat die DE-Festnetznummer `+49 7156 4229016`** (das alte 07156-Twilio-Regulatory-Ticket). Twilio-Konto: Account-SID bewusst NICHT hier notiert (GitHub blockiert sie als Geheimnis) — sie steht in der n8n-Credential „Twilio account" `ADZsjSzLPxeRkJI2` und in der Twilio-Console.
+
+**Ausgangslage, die niemand auf dem Schirm hatte:** Sophia rief deutsche Leads bis heute mit einer **US-Nummer** an (`+1 571 586 5442`, Label „Sophia + Donna (AIVA)"). Für die Annahmequote ist das Gift. Entwarnung zur alten Sorge: Es war Biancas eigene AIVA-Nummer, **nicht** die Kunden-Demo-Nummer.
+
+**Geprüfte Eigenschaften der neuen Nummer (Twilio-API):** `voice: true`, **`sms: false`** — deutsche Festnetznummern können kein SMS. `address_requirements: local` erfüllt. Vor dem Import war `voice_url` leer, eingehende Anrufe liefen also ins Leere.
+
+**Jetzt live:**
+- ElevenLabs: Label „AIVas Team", **`phnum_4901kzvfk5vkf80swp390xmz0rq3`**, inbound + outbound, **Donna zugewiesen**.
+- Sophias Anruf-Workflow **`i9JHfn8I4jmKkmPR`** (publiziert `edbaa3d5`): Nummern-ID getauscht, sie wählt jetzt mit der deutschen Nummer heraus.
+- **Ausgehender Testanruf erfolgreich** (`conv_9501kzvn7tqff6wb1x8y076pgctc`, `CA418a7d93…`).
+- **Eingehender Testanruf mit fremder Anrufer-ID erfolgreich:** über die (noch bestehende) US-Nummer wurde Biancas Handy angerufen und dann auf die Festnetznummer gebrückt, sodass Donna eine unbekannte Nummer sah und in den Empfangs-Modus ging. Bauweg: Twilio-Calls-API mit `Twiml` = `<Say>` + `<Dial callerId="+1571…">`.
+- Bianca: „funktioniert" — Stimme passt sie bei Gelegenheit noch an.
+
+**⚠ Zwei Donnas gefunden.** `agent_1801kznxw02af899y3exzwytmsxq` (10.08. 13:30, 2636 Zeichen Prompt, **8 Werkzeuge**) ist die echte. `agent_1101kznx2r44ercss3aysbmdw9ad` (13:16, **0 Werkzeuge**, kaputte Variable `{begruessung}}` statt `{{begruessung}}`) ist der Fehlversuch aus der API-Anlege-Session und tauchte als zweites „Donna" im Zuweisungs-Dropdown auf. **Umbenannt in „Donna (Fehlversuch 10.08. - NICHT verwenden)"**, damit die Verwechslung nicht wiederkommt. Löschen steht aus (Biancas Go nötig).
+
+**⚠ Lehre — mein eigener Brücken-Bug hat zu einer Falschmeldung geführt:** Die PVC-Brücke antwortete mit `{{ $json }}`. n8n zerlegt JSON-**Arrays** in einzelne Items, `respondToWebhook` liest aber nur das erste — dadurch sah ich bei zwei Telefonnummern nur eine und meldete Bianca fälschlich, ihr Import sei fehlgeschlagen. Sie hat es per Screenshot widerlegt. **Fix: `{{ $input.all().map(i => i.json) }}`.** Gilt für jede Listen-Antwort über diese Brücke — der Fehler war unsichtbar, weil eine gekürzte Liste wie eine gültige Antwort aussieht.
+
+**Stand US-Nummer:** aus ElevenLabs entfernt (HTTP 204), bei **Twilio noch vorhanden**. Bewusst so: Sie ist das einzige Werkzeug, mit dem sich ein Anruf von einer *fremden* Nummer erzeugen lässt. Biancas Go zur Freigabe lag vor, ich habe es aber zurückgestellt, weil sich der Nutzen erst im Test gezeigt hat — Entscheidung steht aus. Belegt vor der Entscheidung: **11 ausgehende Anrufe, alle an Biancas Handy, kein einziger eingehender Anruf.**
+
+**⚠ Offen vor Veröffentlichung der Nummer auf der Website:** Wenn eine KI Anrufe entgegennimmt, gehört das den Anrufenden gesagt — dieselbe Frage wie beim Website-Chat, für den das Anwalts-Briefing schon geschrieben ist. Der Punkt gehört mit ins Anwaltspaket, bevor die Nummer öffentlich beworben wird.
+
 ### 20.9 LIVE 11.08. früh: „ORCH - AIVA Cockpit (Dashboard) - v1" (`HPl4FtmXeISou9FN`, publiziert `8e785850`)
 - **Biancas Wunsch:** eigenständiges Web-Dashboard „wie für Philipp" statt Airtable-Interface (Airtable findet sie kompliziert). Ein zuvor angelegtes Airtable-Interface „Cockpit" (`pbdBezyX2kVCfbCtA`) wurde wieder gelöscht (revert-actionId `actfxL4j9sxxZvt1g`).
 - **Bauweise:** GET-Webhook `https://aiva179.app.n8n.cloud/webhook/aiva-cockpit?key=7f7ac47671ef94fa` → 6 Airtable-Reads (Kontakte, Leads Inbound, Redaktionsplan, To-dos, OKRs, Key Results; alle `alwaysOutputData` — Lehre bestätigt: leere OKR-Tabelle stoppte anfangs die Kette, Fix im HTML-Builder filtert Leer-Items) → Code baut HTML-Seite (Karten: Heute wichtig/KPIs, Salesteam Sam, Empfang Leandra/Sophia, Marketing Max/CC Top, Donna To-dos, OKRs Ophra; Airtable-Deep-Links zum Freigeben, Auto-Refresh 5 Min, Handy-tauglich).
