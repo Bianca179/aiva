@@ -787,6 +787,14 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **Stand US-Nummer:** aus ElevenLabs entfernt (HTTP 204), bei **Twilio noch vorhanden**. Bewusst so: Sie ist das einzige Werkzeug, mit dem sich ein Anruf von einer *fremden* Nummer erzeugen lässt. Biancas Go zur Freigabe lag vor, ich habe es aber zurückgestellt, weil sich der Nutzen erst im Test gezeigt hat — Entscheidung steht aus. Belegt vor der Entscheidung: **11 ausgehende Anrufe, alle an Biancas Handy, kein einziger eingehender Anruf.**
 
+**KI-Hinweis gesetzt (Biancas Auftrag, 12.08.):** Alle drei Agentinnen sagen jetzt im ersten Satz, dass sie eine KI sind und dass das Gespräch verarbeitet und gespeichert wird, mit Verweis auf die Datenschutzerklärung.
+- **Sophia** und **Leandra**: `first_message` per API getauscht (Prompts unverändert).
+- **Donna**: Ihre Begrüßung kommt nicht aus ElevenLabs, sondern aus dem Code-Node „Modus bestimmen" in `eTQjKoyHfxuUV1vA` (publiziert `0bc3c726`) — drei Varianten. Hinweis nur bei **bekannten und unbekannten externen** Anrufenden; Biancas eigene Begrüßung bleibt ohne. Live geprüft über `/webhook/donna-anruf-init` mit beiden Anrufer-IDs.
+- Nebenbei repariert: Die Begrüßungen enthielten ASCII-Ersatzschreibungen („fuer", „Schoen"), die die Sprachausgabe falsch vorlas — jetzt echte Umlaute.
+- **Bauweg-Lehre:** Umlaute und Emoji über PowerShell-Kommandozeile an die API zu schicken zerstört sie (aus „Gespräch" wurde „Gespraech", aus 1️⃣ wurde „1..bd."). Verlässlich ist: Text als UTF-8-Datei schreiben, in PowerShell mit `-Encoding UTF8` lesen und als `UTF8.GetBytes()` senden.
+
+**⚠ Damit fällig geworden:** Die Agentinnen verweisen jetzt auf die Datenschutzerklärung. Dort muss die Telefon- und Chat-Verarbeitung auch tatsächlich beschrieben sein — sonst zeigt der Hinweis ins Leere. Gehört ins schon vorbereitete Anwalts-Briefing.
+
 **⚠ Offen vor Veröffentlichung der Nummer auf der Website:** Wenn eine KI Anrufe entgegennimmt, gehört das den Anrufenden gesagt — dieselbe Frage wie beim Website-Chat, für den das Anwalts-Briefing schon geschrieben ist. Der Punkt gehört mit ins Anwaltspaket, bevor die Nummer öffentlich beworben wird.
 
 ### 20.9 LIVE 11.08. früh: „ORCH - AIVA Cockpit (Dashboard) - v1" (`HPl4FtmXeISou9FN`, publiziert `8e785850`)
