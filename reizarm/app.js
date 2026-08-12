@@ -1,6 +1,6 @@
 // Öffentliches Einreichungsformular (Airtable Form-View, ohne Account nutzbar).
 // Nach dem Anlegen des Form-Views in Airtable hier den Share-Link eintragen.
-const SUBMISSION_FORM_URL = "";
+const SUBMISSION_FORM_URL = "https://airtable.com/appPQ9KSqKDuS4HaC/shrNNXKHl24dCtDTy";
 
 // Nur-Lese-Zugriff auf die Airtable-Base, damit neue Einreichungen sofort
 // erscheinen, ohne dass jemand manuell einen Commit machen muss. Der Token
