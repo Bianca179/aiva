@@ -1,3 +1,6 @@
 .cog/
 __pycache__/
 diffusers-cache/
+.env
+.venv/
+data/
