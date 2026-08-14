@@ -821,6 +821,14 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **⚠ Offener Fund am Identitätscheck (`rec6apQ9NckLKsAqe`):** Der hinterlegte Buchungslink ist `zeeg.me/biancaenderlin/lookandfeel` — derselbe Link, der überall als kostenfreies 20-Minuten-Kennenlernen ausgewiesen ist (u. a. in Donnas Prompt). **Die 49 € werden an keiner Stelle der Kette eingezogen.** Preis ist bestätigt, die Bezahlstrecke fehlt.
 
+**Rundschreiben-Text FERTIG (Biancas Fassung, von ihr überarbeitet — meine war schwächer in der Stimme).** These des Briefs: „Ich habe meine Weiterbildung bewusst sein lassen und stattdessen vorhandenes Wissen umgesetzt — Wissen ist keine knappe Ressource mehr, es fehlt die Umsetzung, es entsteht Wissensstau." Inhalt: Voca (FOUNDER30) · Future Me · Identitätscheck 18.09. 11:30, 49 € · Leadership Circle ab Oktober. **Biancas Streichungen (bewusst):** TennisShift raus (Vereine werden separat angeschrieben), Reizarm raus (kommt in einen Newsletter), „Richy Rich" raus (falsches Publikum — Empfängerinnen sind Führungskräfte/Unternehmerinnen), **Zyklusintelligenz-Ankündigung raus**, **Abwesenheitshinweis raus** („hemmt die Handlung, mein Team ist ja da"). **Namensentscheidung: „Future Me"** (nicht Future Self / Zukunfts-Ich — die Seite heißt weiterhin `/zukunfts-ich`).
+
+**Als Gmail-Entwurf angelegt 14.08.** (`r-6420788469575323279`, an Bianca selbst adressiert, also nicht versehentlich versendbar) — enthält den Platzhalter `[BUCHUNGSLINK 18.09. — HIER EINSETZEN]`.
+
+**⚠ Blocker für den Versand: es gibt keinen Buchungslink für den 18.09.** Zeeg ist von hier aus nicht erreichbar (kein Zugang) — Bianca oder ihr Team muss ein eigenes Event anlegen (Titel „Der Identitätscheck", 90 Min, 18.09.2026 11:30, Teilnehmerzahl offen). Bezahlweg laut Biancas Entscheidung: **manuell durch ihr Team — nach Buchung wird die Rechnung versendet**. Fallback ohne Zeeg-Umbau: „Antworte auf diese Mail".
+
+**Nächster Bauschritt (noch nicht beauftragt):** personalisierter Versand über die 16 Kontakte aus n8n (Vorname aus `fldEdGUrDFjztkMq8`), damit der Link nicht 16× von Hand eingesetzt wird. Danach LinkedIn-DM-Fassung.
+
 **Produkte-Tabelle hat kein Datumsfeld** (Felder: Name, Beschreibung, Notizen, Angebotsarchitektur-Link, Status, Preis, Einstiegsangebot-Haken). Für den 18.09. wäre eines nötig — Umbau noch nicht beauftragt.
 
 ### 20.9 LIVE 11.08. früh: „ORCH - AIVA Cockpit (Dashboard) - v1" (`HPl4FtmXeISou9FN`, publiziert `8e785850`)
