@@ -835,6 +835,20 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **⚠ Zwei Test-Entwürfe liegen in Biancas Postfach** und sind zu löschen: `r-14248660291195434` (fehlerhaft, ohne Empfänger) und `r3232272963786094113` (korrekt, an Doris Graf). Beide unversendet.
 
+**Buchungslink eingesetzt (14.08. abends):** Der Platzhalter ist ersetzt durch `https://aiva179.app.n8n.cloud/webhook/identitaetscheck`. **Der Brief ist damit versandfertig.**
+
+### 20.18 Anmeldeseite Identitätscheck (14.08.) — und warum es KEIN n8n-Formular ist
+
+**`ORCH - Anmeldung Identitaetscheck 18.09. - v2` (`8wN9j52YZYAOCr9N`, aktiv, publiziert `2a08598a`).** Zwei Webhooks: `GET /webhook/identitaetscheck` rendert die Anmeldeseite (Code-Node baut HTML), `POST /webhook/identitaetscheck-anmelden` verarbeitet → Airtable `Anmeldungen` (**neue Tabelle `tbllRhdkDa8n9iJ90`**) → Danke-Seite + Bestätigung an die Person + Meldung an `bianca@enderlin.info`. Hintergrund: Zeeg kann keine festen Gruppentermine (1:1-Werkzeug), deshalb eigene Seite.
+
+**⚠ Wichtige Instanz-Erkenntnis: Der n8n-Form-Trigger ist auf `aiva179` unbrauchbar.** `/form/<pfad>` antwortet mit **HTTP 401 und `WWW-Authenticate: Basic`** — auch mit `authentication: 'none'` und auch ganz ohne den Parameter. Unbekannte Formularpfade geben 404, der eigene 401 → die Sperre gilt gezielt der Form-Route, nicht dem Routing. `/webhook/` antwortet dagegen 200 (Gegenprobe am Cockpit). **Konsequenz für alle künftigen Formulare hier: Webhook + selbst gebautes HTML, nicht Form-Trigger.** Die gescheiterte Fassung `uSYAeLo1HXWdjVvb` ist archiviert.
+
+**E2E belegt:** Seite HTTP 200, Testanmeldung POST → Danke-Seite („Danke, Testlauf."), Airtable-Zeile angelegt, **beide Mails nachweislich raus**. Testzeile danach gelöscht (`rec1ZprLVQ9ZMAfEU`).
+
+**⚠ Absender-Befund:** Die n8n-Gmail-Credential hängt an **`aimeetseva@gmail.com`**, nicht an `bianca@enderlin.info`. Bestätigungen gehen also von der Gmail-Adresse raus, angezeigt als „Bianca Enderlin". `replyTo` ist auf `bianca@enderlin.info` gesetzt. **Offen für Bianca:** ob das so bleiben soll — sauber wäre eine Send-as-Alias-Konfiguration im Google-Konto (`message:send` bietet kein `fromAlias`, `draft:create` schon).
+
+**Sam-Versand auf zweimal täglich gestellt (Biancas Entscheidung 14.08.):** `UHpsLw9QOhAA6wLE` läuft jetzt 10:00 **und 16:00** → rund 20 statt 10 Vernetzungsanfragen/Tag. Sie hat das im Wissen um die Nähe zu LinkedIns Grenze entschieden. Kontext: 6.000 Follower, bei 20/Tag rund 300 Tage — **eine Rundschreiben-Verteilung über DMs ist damit rechnerisch ausgeschlossen**, dafür ist der LinkedIn-Newsletter der Kanal.
+
 **⚠ Der echte Lauf steht aus** — er erzeugt 16 Entwürfe und darf erst starten, wenn der Zeeg-Link den Platzhalter `BUCHUNGSLINK_18_09` im Knoten „Brief personalisieren" ersetzt hat.
 
 **Danach offen:** LinkedIn-DM-Fassung, **getaktet über mehrere Tage** (Biancas Ansage) — Empfänger live aus Unipile.
