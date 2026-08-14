@@ -849,7 +849,11 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **Sam-Versand auf zweimal täglich gestellt (Biancas Entscheidung 14.08.):** `UHpsLw9QOhAA6wLE` läuft jetzt 10:00 **und 16:00** → rund 20 statt 10 Vernetzungsanfragen/Tag. Sie hat das im Wissen um die Nähe zu LinkedIns Grenze entschieden. Kontext: 6.000 Follower, bei 20/Tag rund 300 Tage — **eine Rundschreiben-Verteilung über DMs ist damit rechnerisch ausgeschlossen**, dafür ist der LinkedIn-Newsletter der Kanal.
 
-**⚠ Der echte Lauf steht aus** — er erzeugt 16 Entwürfe und darf erst starten, wenn der Zeeg-Link den Platzhalter `BUCHUNGSLINK_18_09` im Knoten „Brief personalisieren" ersetzt hat.
+**✅ ECHTER LAUF DURCH (14.08. abends, Exec 3101, Biancas „ja, bitte"): 16 Entwürfe liegen im Postfach.** Empfänger stichprobenartig geprüft — Anrede korrekt („Liebe Irene,"), Anmeldelink drin, Dietz & Associates nicht dabei. **Absender:** `bianca@enderlin.info` per `options.fromAlias` gesetzt; die Alias-Abfrage (`getGmailAliases`) ergab, dass die Adresse im Google-Konto hinterlegt und sogar Standard ist. Versendet ist nichts — 16 Entwürfe warten auf einen Klick.
+
+**⚠ Offen: Wer klickt am Montag?** Ein Gmail-Entwurf lässt sich nur aus dem Postfach heraus senden, in dem er liegt. Ob Biancas Team Zugriff auf dieses Postfach hat, ist von hier aus nicht prüfbar. Falls nicht, ist die Alternative ein Schedule-Trigger, der die 16 Mails Montag zu fester Uhrzeit selbst versendet (Text ist wortgleich fixiert und von Bianca freigegeben, Empfängerliste geprüft) — dann müssen die Entwürfe vorher weg, sonst droht Doppelversand.
+
+**⚠ Alter Stand (überholt, zur Nachvollziehbarkeit):** Der echte Lauf stand aus — er erzeugt 16 Entwürfe und darf erst starten, wenn der Zeeg-Link den Platzhalter `BUCHUNGSLINK_18_09` im Knoten „Brief personalisieren" ersetzt hat.
 
 **Danach offen:** LinkedIn-DM-Fassung, **getaktet über mehrere Tage** (Biancas Ansage) — Empfänger live aus Unipile.
 
