@@ -831,7 +831,11 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **Warum kein Agent:** Biancas Frage war, ob Donna das übernehmen kann. Nein — nachgesehen in `J22CV0Ovkjj9Zd6f`: Donnas fünf Airtable-Werkzeuge zeigen auf Logbuch, Registry, Projekte, To-dos, Vorhaben, **nicht auf Kontakte**. Dazu: ein Sprachmodell reproduziert einen redigierten Text nicht 16× wortgleich, und Donnas Sende-Werkzeug ist genau das, das am 31.07./03.08. dreimal ungefragt gefeuert hat. Deterministische Kette + menschlicher Klick ist hier die richtige Bauform.
 
-**⚠ NOCH NICHT GELAUFEN.** Ein Lauf erzeugt 16 echte Entwürfe; das passiert erst, wenn der Zeeg-Link im Set-Node den Platzhalter `BUCHUNGSLINK_18_09` ersetzt hat. Probelauf mit einem Datensatz wurde Bianca angeboten, Antwort steht aus.
+**PROBELAUF GEMACHT (Biancas Go) — und er hat einen Fehler gefunden, der sonst 16-fach gelandet wäre.** Erster Lauf (Exec 3026, Filter temporär auf Doris Graf verengt) erzeugte einen Entwurf mit **„Liebe ,"** und **ohne Empfänger**. Ursache per Execution-Daten belegt: **der Airtable-Node v2.2 gibt `{id, createdTime, fields:{…}}` aus, nicht flach** — `$json.Name` und `$json.Email` waren leer. Fix: alle Referenzen auf `$json.fields.*`, Email als eigenes Set-Feld. **Zweiter Lauf (Exec 3029) belegt korrekt:** „Liebe Doris," an `dodograf@web.de`, Umlaute und Umbrüche intakt. Filter danach auf den echten Empfängerkreis zurückgesetzt. **Lehre für alle künftigen Airtable-Ketten in diesem Projekt: Felder liegen unter `fields`.**
+
+**⚠ Zwei Test-Entwürfe liegen in Biancas Postfach** und sind zu löschen: `r-14248660291195434` (fehlerhaft, ohne Empfänger) und `r3232272963786094113` (korrekt, an Doris Graf). Beide unversendet.
+
+**⚠ Der echte Lauf steht aus** — er erzeugt 16 Entwürfe und darf erst starten, wenn der Zeeg-Link den Platzhalter `BUCHUNGSLINK_18_09` im Knoten „Brief personalisieren" ersetzt hat.
 
 **Danach offen:** LinkedIn-DM-Fassung, **getaktet über mehrere Tage** (Biancas Ansage) — Empfänger live aus Unipile.
 
