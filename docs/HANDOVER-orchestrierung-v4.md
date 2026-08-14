@@ -837,6 +837,14 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **Buchungslink eingesetzt (14.08. abends):** Der Platzhalter ist ersetzt durch `https://aiva179.app.n8n.cloud/webhook/identitaetscheck`. **Der Brief ist damit versandfertig.**
 
+### 20.19 Reizarm ist live (14.08.) — und war es schon die ganze Zeit
+
+**`https://bianca179.github.io/aiva/reizarm/`** — GitHub Pages war für das Repo bereits aktiv (Quelle: `main`), der Unterordner also seit dem Commit erreichbar. Die Notiz „NOCH NICHT DEPLOYED" war seit dem 11.08. falsch. **Geprüft:** Seite, `data/places.json` und `vendor/leaflet/leaflet.js` antworten alle HTTP 200; alle Asset-Pfade sind relativ, kein Build nötig.
+
+**URL in die Produkte-Tabelle eingetragen** (`recdlmD22rdhuBrfN`, Feld `Angebotsarchitektur-Link`). **Gegenprobe per curl auf `/webhook/sophia-produkt`:** Die Agentinnen geben den Link jetzt aus. Damit teilen Sophia, Donna und Leandra Reizarm ab sofort von allein.
+
+**Sackgasse dokumentiert:** Ich hatte zuerst einen `gh-pages`-Zweig mit der Seite im Wurzelverzeichnis gepusht — unnötig, weil Pages aus `main` baut. Zweig wieder gelöscht. `gh` ist auf diesem Rechner nicht installiert, die Pages-Quelle lässt sich von hier also nicht umstellen; für eine eigene Domain (die URL enthält noch den Repo-Namen „aiva") muss Bianca in die GitHub-Einstellungen.
+
 ### 20.18 Anmeldeseite Identitätscheck (14.08.) — und warum es KEIN n8n-Formular ist
 
 **`ORCH - Anmeldung Identitaetscheck 18.09. - v2` (`8wN9j52YZYAOCr9N`, aktiv, publiziert `2a08598a`).** Zwei Webhooks: `GET /webhook/identitaetscheck` rendert die Anmeldeseite (Code-Node baut HTML), `POST /webhook/identitaetscheck-anmelden` verarbeitet → Airtable `Anmeldungen` (**neue Tabelle `tbllRhdkDa8n9iJ90`**) → Danke-Seite + Bestätigung an die Person + Meldung an `bianca@enderlin.info`. Hintergrund: Zeeg kann keine festen Gruppentermine (1:1-Werkzeug), deshalb eigene Seite.
