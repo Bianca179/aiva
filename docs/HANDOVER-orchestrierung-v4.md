@@ -799,6 +799,20 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **⚠ Offen vor Veröffentlichung der Nummer auf der Website:** Wenn eine KI Anrufe entgegennimmt, gehört das den Anrufenden gesagt — dieselbe Frage wie beim Website-Chat, für den das Anwalts-Briefing schon geschrieben ist. Der Punkt gehört mit ins Anwaltspaket, bevor die Nummer öffentlich beworben wird.
 
+### 20.16 Befund 14.08.: Welche Donna darf was (Vorabklärung zum Abwesenheits-Plan)
+
+**Anlass:** Offener Punkt aus START-NAECHSTER-CHAT — Bianca sagt, Donna habe Zugriff auf Mails und Kalender; die Telefon-Donna hat aber kein Postfach-Werkzeug. Reiner Lesevorgang in `aiva179`, nichts geändert.
+
+**Es gibt zwei arbeitende Donnas auf zwei Oberflächen — beide Aussagen stimmen, sie meinen verschiedene Donnas:**
+
+- **Slack-Donna** = `ORCH - Donna - v1` (`J22CV0Ovkjj9Zd6f`, **aktiv**, Webhook `POST /webhook/donna-dm`, Modell `claude-sonnet-4-6`). **17 Werkzeuge:** Kalender lesen/Termin anlegen/Termin verschieben (Kalender-ID `aimeetseva@gmail.com`), **Posteingang lesen (Gmail, Label INBOX)**, **E-Mail-Entwurf anlegen**, **„E-Mail senden (NUR nach Freigabe)"**, Airtable (Logbuch `tblkp0LVz3voBPEhr`, Registry `tbl72m0LzgoCmadrV`, Projekte `tblrEiq8TU41vbwfr`, To-dos `tblM729OMi3huDFXl`, Vorhaben `tblVQ3zZ7M47TjUO5`), LinkedIn-Nachrichten lesen (Unipile), Websuche (freie URL), Calculator. Auslöser ist ausschließlich **Biancas DM** (`channel_type = im`) — es läuft nichts von selbst.
+- **Telefon-Donna** = ElevenLabs `agent_1801kznxw02af899y3exzwytmsxq`, bedient von `ORCH - Donna Voice-Tools - v1` (`eTQjKoyHfxuUV1vA`, aktiv, 7 Webhooks): Anruf-Init (Dual-Modus), Kalender, To-dos (beide gegatet), Portfolio, Lead-Aufnahme, Zeeg-Link, Anruf-Ergebnis → Slack+Logbuch. Dazu `lexware_artikel` und `produkt_info`. **Kein Postfach-Werkzeug** — bestätigt.
+
+**Zwei Punkte, die vor dem Abwesenheits-Workflow zählen:**
+1. **Das Gmail-Sende-Werkzeug der Slack-Donna ist technisch scharf** und nur durch die `<EmailRule>` im System-Prompt gehalten — dieselbe Bauart, die am 31.07. und 03.08. dreimal ungefragt versendet hat. Solange Bianca im Chat gegenlesen kann, ist das ein bewusstes Restrisiko; drei Wochen ohne sie ist es ein anderes.
+2. **Keine laufende Postfach-Automatik.** Beide Morgenpost-Workflows (`YG0GEWgHdxkqfkVR`, `P2t3h2YIrYg5jvtj`) sind **inaktiv** („INAKTIV bis QS-Gate"). Ohne Biancas DM sieht niemand ihren Posteingang. Aktiv laufen von den Donna-Ketten nur `yWMtiz2SLUfmK1yi` (Rechnungen → Lexware) und `4GBtzm8U2GwYW5aj` (Wochenreview Fr 16:00).
+3. **Zu prüfen:** Der Kalender hängt an `aimeetseva@gmail.com`, nicht an `bianca@enderlin.info` — ob das der Kalender ist, den Bianca meint, ist nicht verifiziert.
+
 ### 20.9 LIVE 11.08. früh: „ORCH - AIVA Cockpit (Dashboard) - v1" (`HPl4FtmXeISou9FN`, publiziert `8e785850`)
 - **Biancas Wunsch:** eigenständiges Web-Dashboard „wie für Philipp" statt Airtable-Interface (Airtable findet sie kompliziert). Ein zuvor angelegtes Airtable-Interface „Cockpit" (`pbdBezyX2kVCfbCtA`) wurde wieder gelöscht (revert-actionId `actfxL4j9sxxZvt1g`).
 - **Bauweise:** GET-Webhook `https://aiva179.app.n8n.cloud/webhook/aiva-cockpit?key=7f7ac47671ef94fa` → 6 Airtable-Reads (Kontakte, Leads Inbound, Redaktionsplan, To-dos, OKRs, Key Results; alle `alwaysOutputData` — Lehre bestätigt: leere OKR-Tabelle stoppte anfangs die Kette, Fix im HTML-Builder filtert Leer-Items) → Code baut HTML-Seite (Karten: Heute wichtig/KPIs, Salesteam Sam, Empfang Leandra/Sophia, Marketing Max/CC Top, Donna To-dos, OKRs Ophra; Airtable-Deep-Links zum Freigeben, Auto-Refresh 5 Min, Handy-tauglich).
