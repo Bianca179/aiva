@@ -827,7 +827,13 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 
 **⚠ Blocker für den Versand: es gibt keinen Buchungslink für den 18.09.** Zeeg ist von hier aus nicht erreichbar (kein Zugang) — Bianca oder ihr Team muss ein eigenes Event anlegen (Titel „Der Identitätscheck", 90 Min, 18.09.2026 11:30, Teilnehmerzahl offen). Bezahlweg laut Biancas Entscheidung: **manuell durch ihr Team — nach Buchung wird die Rechnung versendet**. Fallback ohne Zeeg-Umbau: „Antworte auf diese Mail".
 
-**Nächster Bauschritt (noch nicht beauftragt):** personalisierter Versand über die 16 Kontakte aus n8n (Vorname aus `fldEdGUrDFjztkMq8`), damit der Link nicht 16× von Hand eingesetzt wird. Danach LinkedIn-DM-Fassung.
+**GEBAUT 14.08. (Biancas Go „vier Knoten bitte"): `ORCH - Rundschreiben Entwuerfe (16 Kontakte) - v1` (`8wAdOJCD6onoJ2lY`, persönliches Projekt, INAKTIV — Manual Trigger).** Kette: Manual Trigger → Airtable-Suche in Kontakte `tblNDQZsFwjluKZMo` (`filterByFormula: AND({LinkedIn Member ID} = "", {Email} != "", RECORD_ID() != "recuhvPGdEraVEWbw")`, Cred `zWqHnt0xhODSDQ26`) → Set „Brief personalisieren" (Vorname = erstes Wort aus `Name`, Betreff, Brieftext) → Gmail **draft:create** mit `sendTo` vorbefüllt (Cred `AoEYEWFBZ9zCOhcK`). **Es wird nichts versendet** — pro Empfängerin entsteht ein Entwurf, Absenden bleibt ein Klick im Postfach.
+
+**Warum kein Agent:** Biancas Frage war, ob Donna das übernehmen kann. Nein — nachgesehen in `J22CV0Ovkjj9Zd6f`: Donnas fünf Airtable-Werkzeuge zeigen auf Logbuch, Registry, Projekte, To-dos, Vorhaben, **nicht auf Kontakte**. Dazu: ein Sprachmodell reproduziert einen redigierten Text nicht 16× wortgleich, und Donnas Sende-Werkzeug ist genau das, das am 31.07./03.08. dreimal ungefragt gefeuert hat. Deterministische Kette + menschlicher Klick ist hier die richtige Bauform.
+
+**⚠ NOCH NICHT GELAUFEN.** Ein Lauf erzeugt 16 echte Entwürfe; das passiert erst, wenn der Zeeg-Link im Set-Node den Platzhalter `BUCHUNGSLINK_18_09` ersetzt hat. Probelauf mit einem Datensatz wurde Bianca angeboten, Antwort steht aus.
+
+**Danach offen:** LinkedIn-DM-Fassung, **getaktet über mehrere Tage** (Biancas Ansage) — Empfänger live aus Unipile.
 
 **Produkte-Tabelle hat kein Datumsfeld** (Felder: Name, Beschreibung, Notizen, Angebotsarchitektur-Link, Status, Preis, Einstiegsangebot-Haken). Für den 18.09. wäre eines nötig — Umbau noch nicht beauftragt.
 
