@@ -1,67 +1,72 @@
 # START HIER — aiva (Biancas eigenes Team)
 
 > Kurzfassung für den Einstieg. Details stehen in `docs/HANDOVER-orchestrierung-v4.md`,
-> neueste Abschnitte zuerst lesen: **20.15 → 20.14 → 20.13**.
+> neueste Abschnitte zuerst lesen: **20.19 → 20.18 → 20.17 → 20.16**.
 > Nicht verwechseln: **PD / CENTCOM ist ein Kundenprojekt** und liegt im Ordner darüber.
 
-**Stand: 12.08.2026, abends**
+**Stand: 14.08.2026, abends — Bianca ist ab jetzt drei Wochen im Urlaub.**
 
 ---
 
-## Was seit heute läuft
+## Was ohne Bianca weiterläuft
 
-- **Telefonie auf deutscher Festnetznummer.** `+49 7156 4229016` → Donna nimmt an,
-  Sophia wählt darüber heraus. Die alte US-Nummer ist freigegeben, es gibt nur noch diese eine.
-  Aus- und eingehender Testanruf erfolgreich.
-- **KI-Hinweis bei allen drei Agentinnen** (Sophia, Leandra, Donna): Sie sagen im ersten Satz,
-  dass sie eine KI sind und dass das Gespräch verarbeitet wird. Datenschutzerklärung ist ergänzt.
-- **Angebots-Entwürfe für C-Leads auf Knopfdruck.** Im Cockpit erzeugt ein Klick ein
-  individuelles Angebot als **Entwurf** in Lexware. Versand bleibt Biancas Klick dort.
-- **Produkte mit Links** bei allen Agentinnen abrufbar (Voca, TennisShift, Future Self,
-  Retreat, Digitales Team, Identitätscheck, Leadership Circle; Reizarm noch ohne Live-URL).
+- **Montag 15:38: das Rundschreiben geht raus.** Automatisch, an **16 Empfängerinnen**.
+  Workflow `ORCH - Rundschreiben Versand (16 Kontakte) - v2` (`8wAdOJCD6onoJ2lY`, aktiv).
+  Danach setzt er bei jedem Kontakt ein Häkchen — der Brief kann sich nicht wiederholen.
+  ⚠ Absender ist `aimeetseva@gmail.com` (Anzeige „Bianca Enderlin", Antwort an `bianca@enderlin.info`).
+  Bianca kennt das und hat es so entschieden.
+- **Anmeldungen zum Identitätscheck** laufen über
+  `https://aiva179.app.n8n.cloud/webhook/identitaetscheck` (18.09., 11:30, 49 €).
+  Jede Anmeldung → Airtable `Anmeldungen` + Bestätigung an die Person + Meldung an Bianca.
+  **Rechnung stellt das Team von Hand**, danach die Haken in Airtable setzen.
+- **Sam schreibt zweimal täglich an** (10:00 und 16:00, rund 20 Vernetzungsanfragen).
+  Freigaben sammeln sich im Cockpit an — in drei Wochen etwa sechzig. Das ist bekannt
+  und ungeklärt (Bianca wollte es sich ansehen, kam nicht mehr dazu).
+- **Telefonie, Website-Chat, Lead-Routing** laufen wie gehabt.
 
 ## Cockpit
 
 `https://aiva179.app.n8n.cloud/webhook/aiva-cockpit?key=7f7ac47671ef94fa`
-Sam-Freigaben, Marketing-Freigaben, To-dos abhaken, C-Leads mit Angebots-Knopf.
 
 ---
 
-## Die vier Entscheidungen für die nächste Sitzung
+## Was auf Biancas Rückkehr wartet
 
-Bianca ist **drei Wochen abwesend** und will ein **Rundschreiben** mit ihren Produkten
-und den im September startenden Kursen. Vorher muss geklärt sein:
-
-1. **Empfängerkreis.** Die Tabelle *Kontakte* hat **kein Einwilligungsfeld**, die 209 Einträge
-   stammen überwiegend aus LinkedIn-Kaltakquise. Eine Werbemail dorthin ist in Deutschland
-   angreifbar. Welche Liste mit nachweisbarer Einwilligung gibt es — oder wird daraus ein
-   LinkedIn-Beitrag statt einer Mail?
-2. **September-Termine.** In der Produkte-Tabelle steht bei keinem Angebot ein Datum.
-   Was startet wann?
-3. **Wie weit darf die Kette ohne Bianca laufen?** Identitätscheck (49 €, Zeeg-Link) geht
-   autonom. Alles Höherpreisige endet heute bei ihr.
-4. **Freigabe-Regel für Sams Nachschub.** Er legt werktags 06:30 neue Entwürfe an; in drei
-   Wochen sammeln sich rund sechzig an, die niemand freigibt.
-
-**Zuerst prüfen:** Bianca sagt, Donna habe Zugriff auf Mails und Kalender. Die **Telefon-Donna**
-(`agent_1801kznxw02af899y3exzwytmsxq`) hat Kalender-Lesezugriff, aber **kein Postfach-Werkzeug**.
-Klären, welche Donna auf welcher Oberfläche was darf, bevor der Abwesenheits-Workflow darauf baut.
+1. **Sams Nachschub** — die Freigabe-Regel für die Zeit ohne sie ist nie entschieden worden.
+2. **Der neue Kurs „Wie nutze ich KI, ohne zu verdummen"** ist nicht gebaut. Bewusst nicht
+   angekündigt — er wird der erste Beitrag nach der Rückkehr, dann mit Kaufmöglichkeit.
+3. **Zyklusintelligenz-Chatbot** und **„Richy Rich"** (Finanzcoach für junge Menschen):
+   beide bewusst aus dem Rundschreiben herausgehalten, warten auf einen eigenen Anlass.
+4. **Absenderadresse sauber ziehen** — für echten Versand als `bianca@enderlin.info`
+   bräuchte es einen SMTP-Zugang; der n8n-Gmail-Baustein kann es beim Senden nicht.
+5. **Reizarm unter eigener Adresse** — läuft unter `bianca179.github.io/aiva/reizarm/`,
+   eine eigene Domain geht nur über die GitHub-Pages-Einstellungen (nicht von hier aus).
+6. **Donna als sprechendes CRM** — Biancas Wunsch: Lesezugriff auf alles
+   (Kontakte, Produkte, Leads, Kooperationspartner, Bühnen, Redaktionsplan),
+   Schreiben eng wie heute, Massenversand nie. Vorbereitet, nicht gebaut.
 
 ---
 
-## Offene Kleinigkeiten
+## Alle Produkt-Links (Stand 14.08.)
 
-- **Reizarm** ist nicht deployed (liegt in `reizarm/` im Repo). Sobald live: URL ins Feld
-  *Angebotsarchitektur-Link* des Produkts `recdlmD22rdhuBrfN`, dann teilen die Agentinnen sie automatisch.
-- **Lexware-Artikel-Tool sagt „netto"**, obwohl Biancas Leistungen nach § 4 UStG
-  umsatzsteuerfrei sind. Formulierung ändern, sobald Bianca es bestätigt.
-- **Zwei Test-Angebote in Lexware** (AG0004, AG0005, „TESTLAUF Musterwerk AG") — die API kann
-  Belege nicht löschen, das macht Bianca in der Oberfläche.
-- **Verwaistes ElevenLabs-Werkzeug** `tool_3301kzkrhb5qez0brm4qcveppe66` (altes `produkt_info`)
-  und die **Fehlversuch-Donna** `agent_1101kznx2r44ercss3aysbmdw9ad` — beide löschbar, Go nötig.
-- **Linnis 140-Node-Post-Strecke** ist weiterhin ungetestet; sie wartet auf einen freigegebenen
-  Redaktionsplan-Eintrag.
-- **Rechnung AG0003 heinekingmedia, 2.170 €**, überfällig seit 16.07.
+| Voca | `https://voca-mxp6.onrender.com/` |
+|---|---|
+| TennisShift | `https://tennisshift.netlify.app/` |
+| Future Me | `https://www.biancaenderlin.de/zukunfts-ich` |
+| Reizarm | `https://bianca179.github.io/aiva/reizarm/` |
+| Digitales Team | `https://www.biancaenderlin.de/digitales-team` |
+| Retreat Identitätsshift | `https://www.biancaenderlin.de/identitaetsshift` |
+| Identitätscheck 18.09. | `https://aiva179.app.n8n.cloud/webhook/identitaetscheck` |
+
+---
+
+## Zwei Bau-Lehren vom 14.08. (sparen der nächsten Sitzung Stunden)
+
+- **Der n8n-Form-Trigger ist auf dieser Instanz unbrauchbar.** `/form/<pfad>` antwortet
+  HTTP 401 mit Basic-Auth-Abfrage, auch mit `authentication: 'none'`. `/webhook/` läuft.
+  Formulare also immer als Webhook + selbst gebautes HTML.
+- **Der Airtable-Node liefert Felder unter `fields`**, nicht flach: `$json.fields.Name`.
+  Ein Probelauf mit einem einzigen Datensatz hat das gefunden, bevor es 16-fach schiefging.
 
 ---
 
