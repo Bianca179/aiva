@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bianca auf dem Camino</title>
+<link rel="apple-touch-icon" href="camino-media?code=ultreia&amp;id=1fZLtXmNB42CBCYqZWcMVpqAA_EFduVk0">
+<link rel="icon" href="camino-media?code=ultreia&amp;id=1fZLtXmNB42CBCYqZWcMVpqAA_EFduVk0">
+<meta name="apple-mobile-web-app-title" content="Camino">
+<meta name="theme-color" content="#f6f0e4">
+<style>
+:root{--bg:#f6f0e4;--card:#fffaf1;--ink:#2e2a24;--muted:#6f6558;--dim:#998c7b;
+--line:#e3d8c6;--line2:#ece2d2;--gold:#c9962e;--terra:#c26744;--olive:#7d8455;--sea:#2f7f8f;
+--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--shell:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M11 51 Q9.4 38.2 19.4 37.5 Q20.7 24.6 30.5 27.7 Q34.7 16 43.3 22.7 Q50 13 56.7 22.7 Q65.3 16 69.5 27.7 Q79.3 24.6 80.6 37.5 Q90.7 38.2 89 51 L50 86 Z' fill='%23c9962e'/%3E%3Cpath d='M50 86 19.4 37.5 M50 86 30.5 27.7 M50 86 43.3 22.7 M50 86 56.7 22.7 M50 86 69.5 27.7 M50 86 80.6 37.5' stroke='%23fffaf1' stroke-width='3.4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+--shellDim:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M11 51 Q9.4 38.2 19.4 37.5 Q20.7 24.6 30.5 27.7 Q34.7 16 43.3 22.7 Q50 13 56.7 22.7 Q65.3 16 69.5 27.7 Q79.3 24.6 80.6 37.5 Q90.7 38.2 89 51 L50 86 Z' fill='none' stroke='%23c26744' stroke-width='4'/%3E%3Cpath d='M50 86 19.4 37.5 M50 86 30.5 27.7 M50 86 43.3 22.7 M50 86 56.7 22.7 M50 86 69.5 27.7 M50 86 80.6 37.5' stroke='%23c26744' stroke-width='3' stroke-linecap='round' fill='none'/%3E%3C/svg%3E")}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);
+background-image:radial-gradient(900px 500px at 10% -10%,rgba(201,150,46,.10),transparent 60%),
+radial-gradient(800px 600px at 105% 25%,rgba(47,127,143,.08),transparent 55%);
+-webkit-font-smoothing:antialiased}
+.wrap{max-width:740px;margin:0 auto;padding:18px 14px 60px}
+.stone{background:var(--card);border:1px solid var(--line);border-radius:20px;
+box-shadow:0 10px 30px rgba(87,66,37,.10);padding:26px 18px 20px;text-align:center;position:relative;overflow:hidden}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--muted)}
+.bigk{font-family:var(--mono);font-weight:600;line-height:.95;color:var(--terra);
+font-size:clamp(60px,19vw,108px);letter-spacing:-.02em;margin-top:12px}
+.bigk.zero{color:var(--sea)}
+.unit{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted);margin-top:8px}
+.sub{color:var(--muted);font-size:14px;margin-top:12px;line-height:1.5}
+.livechip{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-family:var(--mono);
+font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:#fff}
+.livechip .p{width:9px;height:9px;border-radius:50%;background:#b9ada0}
+.livechip.on .p{background:#4a9e5c;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,158,92,.5)}70%{box-shadow:0 0 0 8px rgba(74,158,92,0)}100%{box-shadow:0 0 0 0 rgba(74,158,92,0)}}
+.stone::before{content:"";position:absolute;right:-34px;top:-30px;width:200px;height:200px;
+background:var(--shell) center/contain no-repeat;opacity:.07;transform:rotate(14deg);pointer-events:none}
+.stone::after{content:"";position:absolute;left:-46px;bottom:-6px;width:150px;height:150px;
+background:var(--shell) center/contain no-repeat;opacity:.05;transform:rotate(-18deg);pointer-events:none}
+.stone>*{position:relative;z-index:1}
+.bar{position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--line2);display:flex;z-index:2}
+.bar i{display:block;height:100%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center}
+.st b{display:block;font-family:var(--mono);font-size:19px;font-weight:600}
+.st span{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+.card h2{margin:0;font-size:11.5px;font-family:var(--mono);letter-spacing:.14em;color:var(--dim);font-weight:600;
+padding-left:20px;background:var(--shell) left 1px/13px 13px no-repeat}
+#map{width:100%;height:auto;display:block}
+#map .base{fill:none;stroke:var(--line);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#map .walk{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+#map .dot{fill:#cdbfa8}
+#map .lbl{font-family:var(--mono);font-size:11.5px;fill:var(--muted)}
+#map .here{stroke:#fff;stroke-width:2}
+.day{margin-top:14px}
+.day .dh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.day .dh b{font-size:17px}
+.day .dh span{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.day img{width:100%;border-radius:14px;display:block;margin-top:10px}
+.day img.wm{max-height:220px;object-fit:cover}
+.hero{width:100%;border-radius:12px;display:none;margin-bottom:10px;max-height:300px;object-fit:cover}
+.cred{font-size:10px;color:var(--dim);text-align:right;margin-top:6px}
+.day audio{width:100%;margin-top:10px;height:38px}
+.qa{margin-top:12px}
+.qa b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--terra);margin-bottom:3px;
+padding-left:16px;background:var(--shellDim) left center/11px 11px no-repeat}
+.qa p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap}
+.empty{color:var(--dim);font-size:14px;text-align:center;padding:24px 0}
+footer{margin-top:18px;text-align:center;font-size:12px;color:var(--dim);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stone">
+    <div class="eyebrow">BIANCA AUF DEM CAMINO · BIS CABO FISTERRA</div>
+    <div class="bigk" id="bigk">–</div>
+    <div class="unit">KILOMETER</div>
+    <div class="sub" id="sub"></div>
+    <div class="livechip" id="chip"><span class="p"></span><span id="chipTxt">noch kein Signal</span></div>
+    <div class="bar" id="bar"></div>
+  </div>
+  <div class="stats">
+    <div class="st"><b id="sDay">–</b><span>TAG</span></div>
+    <div class="st"><b id="sDone">–</b><span>KM GELAUFEN</span></div>
+    <div class="st"><b id="sPct">–</b><span>GESCHAFFT</span></div>
+  </div>
+  <div class="card"><h2>WO SIE GERADE IST</h2><img class="hero" id="hero" alt="" loading="lazy"><canvas id="map" style="width:100%;height:auto;display:block;border-radius:12px"></canvas><div class="cred">Karte © OpenStreetMap-Mitwirkende</div></div>
+  <div class="card"><h2>TAGEBUCH VOM WEG</h2><div id="feed"><div class="empty">Noch keine Einträge — es geht bald los.</div></div></div>
+  <footer>Oviedo → Muxía → Cabo Fisterra · 430 km · 15.08.–12.09.2026<br>Position aktualisiert sich automatisch. Ortsbilder: Wikimedia Commons.</footer>
+</div>
+<script id="__data" type="application/json">__DATA_PLACEHOLDER__</script>
+<script>
+var DATA=JSON.parse(atob(document.getElementById("__data").textContent));
+try{localStorage.setItem("camino_code",DATA.code);}catch(e){}
+var START=new Date(2026,7,15,12,0,0),TOTAL=430;
+var W=[["Oviedo",43.362,-5.845,0,1],["Escamplero",43.395,-5.955,12,2],["Grado",43.388,-6.070,25,3],
+["Cornellana",43.395,-6.170,37,4],["Salas",43.410,-6.256,47,5],["Tineo",43.336,-6.415,67,6],
+["Campiello",43.297,-6.518,84,7],["Berducedo",43.267,-6.712,110,8],["Grandas de Salime",43.216,-6.876,130,9],
+["A Fonsagrada",43.125,-7.068,155,10],["O Cádavo",43.135,-7.278,179,11],["Castroverde",43.031,-7.335,191,12],
+["Lugo",43.012,-7.556,210,13],["Lugo",43.012,-7.556,210,14],["San Román",42.930,-7.669,230,15],
+["Ferreira",42.895,-7.795,244,16],["Melide",42.914,-8.014,259,17],["Arzúa",42.929,-8.163,273,18],
+["O Pedrouzo",42.909,-8.360,292,19],["Santiago",42.881,-8.545,312,20],["Santiago",42.881,-8.545,312,21],
+["Negreira",42.905,-8.735,333,22],["Vilaserío",42.965,-8.816,346,23],["Olveiroa",42.945,-9.048,366,24],
+["Dumbría",43.000,-9.114,376,25],["Muxía",43.105,-9.218,398,26],["Lires",43.005,-9.230,413,27],
+["Finisterre",42.905,-9.263,427,28],["Cabo Fisterra",42.883,-9.272,430,29]];
+var PH_FILES=["https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cathedral_of_Oviedo_2021_-_exterior.jpg/1280px-Cathedral_of_Oviedo_2021_-_exterior.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Ayuntamientu_de_Grau_%28Asturies%29.JPG/1280px-Ayuntamientu_de_Grau_%28Asturies%29.JPG","https://upload.wikimedia.org/wikipedia/commons/4/4e/Salas.png","https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Tineo.JPG/1280px-Tineo.JPG","https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2009Somiedo_%287%29.JPG/1280px-2009Somiedo_%287%29.JPG","https://upload.wikimedia.org/wikipedia/commons/7/75/Grandas_de_Salime.png","https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Casa_concello_A_Fonsagrada.JPG/1280px-Casa_concello_A_Fonsagrada.JPG","https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Muralla_de_Lugo_-_03.jpg/1280px-Muralla_de_Lugo_-_03.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Durante_el_camino_de_Santiago.jpg/1280px-Durante_el_camino_de_Santiago.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Panor%C3%A1mica_da_Vila_de_Melide.jpeg/1280px-Panor%C3%A1mica_da_Vila_de_Melide.jpeg","https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Santiago_cathedral_2021.jpg/1280px-Santiago_cathedral_2021.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Rio_Tambre.Portor.Ponte_Maceira.jpg/1280px-Rio_Tambre.Portor.Ponte_Maceira.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/20240126_090324_Santuario_de_Nuestra_Se%C3%B1ora_de_la_Barca.jpg/1280px-20240126_090324_Santuario_de_Nuestra_Se%C3%B1ora_de_la_Barca.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Finisterre.JPG/1280px-Finisterre.JPG"];
+var PH_IDX=[0,1,1,2,2,3,3,4,5,6,6,7,7,7,8,8,9,8,8,10,10,11,11,8,8,12,13,13,13];
+function stagePhoto(i){return PH_FILES[PH_IDX[Math.max(0,Math.min(28,i))]]}
+function idxOfDay(t){for(var i=0;i<W.length;i++){if(W[i][4]===t)return i;}return 0;}
+var LON0=-5.845,LAT0=43.410,KC=Math.cos(43.1*Math.PI/180),SC=399.6,PAD=26;
+function px(lon){return PAD+(LON0-lon)*KC*SC}
+function py(lat){return PAD+(LAT0-lat)*SC}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function dateOf(day){var d=new Date(START.getTime());d.setDate(d.getDate()+(day-1));
+return ["So","Mo","Di","Mi","Do","Fr","Sa"][d.getDay()]+" "+("0"+d.getDate()).slice(-2)+"."+("0"+(d.getMonth()+1)).slice(-2)+"."}
+function project(lat,lon){
+  var best={d:1e18,km:0,name:W[0][0],x:px(W[0][2]),y:py(W[0][1])};
+  var X=px(lon),Y=py(lat),i;
+  for(i=0;i<W.length-1;i++){
+    var x1=px(W[i][2]),y1=py(W[i][1]),x2=px(W[i+1][2]),y2=py(W[i+1][1]);
+    var dx=x2-x1,dy=y2-y1,L2=dx*dx+dy*dy;
+    var t=L2?((X-x1)*dx+(Y-y1)*dy)/L2:0;t=Math.max(0,Math.min(1,t));
+    var qx=x1+t*dx,qy=y1+t*dy,dd=(X-qx)*(X-qx)+(Y-qy)*(Y-qy);
+    if(dd<best.d){best={d:dd,km:W[i][3]+t*(W[i+1][3]-W[i][3]),x:qx,y:qy,
+      name:(t<0.5?W[i][0]:W[i+1][0]),near:(t<0.5?i:i+1)};}
+  }
+  return best;
+}
+function segColor(km){return km>=312?"#2f7f8f":km>=259?"#7d8455":"#c9962e"}
+function agoTxt(iso){
+  var m=Math.round((new Date().getTime()-new Date(iso).getTime())/60000);
+  if(m<1)return "gerade eben";if(m<60)return "vor "+m+" min";
+  var h=Math.floor(m/60);if(h<48)return "vor "+h+" Std";return "vor "+Math.floor(h/24)+" Tagen";
+}
+var loc=DATA.loc,pos=null,km=0;
+if(loc&&loc.lat){pos=project(loc.lat,loc.lon);km=Math.round(pos.km);}
+else if(DATA.days.length){var last=DATA.days[DATA.days.length-1];km=last.km||0;}
+var left=TOTAL-km,pct=Math.round(km/TOTAL*100);
+var dayNow=Math.max(1,Math.min(29,Math.floor((new Date().getTime()-START.getTime())/86400000)+1));
+var started=new Date().getTime()>=START.getTime()-43200000;
+document.getElementById("bigk").textContent=left<=0?"0":left;
+if(left<=0)document.getElementById("bigk").className="bigk zero";
+document.getElementById("sub").textContent=
+  left<=0?"Angekommen. Ende der Welt erreicht.":
+  !started?"Es geht am 15. August los. Der Stein wartet in Oviedo.":
+  "Bianca hat "+km+" km hinter sich"+(pos?" — gerade bei "+pos.name:"")+".";
+var chip=document.getElementById("chip");
+if(loc&&loc.zeit){
+  var fresh=(new Date().getTime()-new Date(loc.zeit).getTime())<1800000;
+  chip.className="livechip"+(fresh?" on":"");
+  document.getElementById("chipTxt").textContent="zuletzt gesehen "+agoTxt(loc.zeit)+
+    (loc.batt?" · Akku "+loc.batt+"%":"");
+}
+document.getElementById("sDay").textContent=(started?Math.min(dayNow,29):0)+"/29";
+document.getElementById("sDone").textContent=km;
+document.getElementById("sPct").textContent=pct+"%";
+var seg1=Math.min(km,259),seg2=Math.min(Math.max(km-259,0),53),seg3=Math.max(km-312,0);
+document.getElementById("bar").innerHTML=
+  '<i style="width:'+(seg1/TOTAL*100)+'%;background:#c9962e"></i>'+
+  '<i style="width:'+(seg2/TOTAL*100)+'%;background:#7d8455"></i>'+
+  '<i style="width:'+(seg3/TOTAL*100)+'%;background:#2f7f8f"></i>';
+function lon2tx(lon,z){return (lon+180)/360*Math.pow(2,z)}
+function lat2ty(lat,z){var r=lat*Math.PI/180;return (1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*Math.pow(2,z)}
+(function drawMap(){
+  var canvas=document.getElementById("map"),z=9,i;
+  var minLat=42.78,maxLat=43.52,minLon=-9.45,maxLon=-5.62;
+  var tx0=Math.floor(lon2tx(minLon,z)),tx1=Math.floor(lon2tx(maxLon,z));
+  var ty0=Math.floor(lat2ty(maxLat,z)),ty1=Math.floor(lat2ty(minLat,z));
+  canvas.width=(tx1-tx0+1)*256;canvas.height=(ty1-ty0+1)*256;
+  var ctx=canvas.getContext("2d");
+  ctx.fillStyle="#e9e4d8";ctx.fillRect(0,0,canvas.width,canvas.height);
+  function X(lon){return (lon2tx(lon,z)-tx0)*256}
+  function Y(lat){return (lat2ty(lat,z)-ty0)*256}
+  var curLat=loc&&loc.lat?loc.lat:null,curLon=loc&&loc.lat?loc.lon:null;
+  var routeDrawn=false;
+  function drawRoute(){
+    if(routeDrawn)return;routeDrawn=true;
+    ctx.lineCap="round";ctx.lineJoin="round";
+    ctx.strokeStyle="rgba(46,42,36,0.4)";ctx.lineWidth=5;
+    ctx.beginPath();
+    for(i=0;i<W.length;i++){i?ctx.lineTo(X(W[i][2]),Y(W[i][1])):ctx.moveTo(X(W[i][2]),Y(W[i][1]));}
+    ctx.stroke();
+    if(km>0){
+      ctx.strokeStyle=segColor(km);ctx.lineWidth=7;
+      ctx.beginPath();var st=false;
+      for(i=0;i<W.length&&W[i][3]<=km;i++){st?ctx.lineTo(X(W[i][2]),Y(W[i][1])):(ctx.moveTo(X(W[i][2]),Y(W[i][1])),st=true);}
+      if(st&&curLat!=null)ctx.lineTo(X(curLon),Y(curLat));
+      if(st)ctx.stroke();
+    }
+    for(i=0;i<W.length;i++){
+      ctx.beginPath();ctx.arc(X(W[i][2]),Y(W[i][1]),4,0,7);
+      ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#8a7c66";ctx.lineWidth=2;ctx.stroke();
+    }
+    var L=[[0,"Oviedo",-16],[12,"Lugo",-16],[19,"Santiago",30],[25,"Muxía",-16],[28,"Kap Fisterra",30]];
+    ctx.font="600 22px system-ui,sans-serif";ctx.textAlign="center";
+    for(i=0;i<L.length;i++){var w=W[L[i][0]],x=X(w[2]),y=Y(w[1])+L[i][2];
+      ctx.lineWidth=6;ctx.strokeStyle="rgba(255,255,255,0.92)";ctx.strokeText(L[i][1],x,y);
+      ctx.fillStyle="#2e2a24";ctx.fillText(L[i][1],x,y);}
+    var cx=curLat!=null?X(curLon):X(W[0][2]),cy=curLat!=null?Y(curLat):Y(W[0][1]);
+    ctx.beginPath();ctx.arc(cx,cy,12,0,7);
+    ctx.fillStyle=segColor(km);ctx.fill();
+    ctx.lineWidth=4;ctx.strokeStyle="#fff";ctx.stroke();
+  }
+  var total=(tx1-tx0+1)*(ty1-ty0+1),done=0;
+  for(var tx=tx0;tx<=tx1;tx++){for(var ty=ty0;ty<=ty1;ty++){(function(tx,ty){
+    var img=new Image();
+    img.onload=function(){ctx.drawImage(img,(tx-tx0)*256,(ty-ty0)*256);done++;if(done>=total)drawRoute();};
+    img.onerror=function(){done++;if(done>=total)drawRoute();};
+    img.src="https://tile.openstreetmap.org/"+z+"/"+tx+"/"+ty+".png";
+  })(tx,ty);}}
+  setTimeout(drawRoute,4000);
+})();
+(function hero(){
+  var h=document.getElementById("hero");
+  var i=pos?pos.near:(DATA.days.length?idxOfDay(DATA.days[DATA.days.length-1].tag):0);
+  h.onload=function(){h.style.display="block";};
+  h.onerror=function(){h.style.display="none";};
+  h.src=stagePhoto(i);
+})();
+(function feed(){
+  var QA=[["a","ABSICHT DES TAGES"],["f","ZUM ERSTEN MAL"],["s","SCHWER GEFALLEN"],
+    ["u","ÜBERRASCHT"],["g","GELERNT"],["q","FRAGE DES TAGES"],["e","ERKENNTNIS"]];
+  var days=DATA.days.slice().sort(function(a,b){return b.tag-a.tag});
+  if(!days.length)return;
+  var h="",i,j;
+  for(i=0;i<days.length;i++){var d=days[i];
+    h+='<div class="day"><div class="dh"><b>Tag '+d.tag+'</b><span>'+dateOf(d.tag)+
+      (d.etappe?' · '+esc(d.etappe):'')+(d.km?' · km '+d.km:'')+'</span></div>';
+    if(d.foto)h+='<img loading="lazy" src="camino-media?id='+encodeURIComponent(d.foto)+'&code='+encodeURIComponent(DATA.code)+'" alt="Foto Tag '+d.tag+'">';
+    else h+='<img class="wm" loading="lazy" src="'+stagePhoto(idxOfDay(d.tag))+'" alt="" onerror="this.style.display=\'none\'">';
+    for(j=0;j<(d.memos||[]).length;j++)
+      h+='<audio controls preload="none" src="camino-media?id='+encodeURIComponent(d.memos[j].id)+'&code='+encodeURIComponent(DATA.code)+'"></audio>';
+    for(j=0;j<QA.length;j++){var v=d[QA[j][0]];
+      if(v&&String(v).trim())h+='<div class="qa"><b>'+QA[j][1]+'</b><p>'+esc(v)+'</p></div>';}
+    h+='</div>';
+  }
+  document.getElementById("feed").innerHTML=h;
+})();
+setInterval(function(){if(document.visibilityState==="visible")location.reload();},120000);
+</script>
+</body>
+</html>
