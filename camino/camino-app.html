@@ -261,6 +261,7 @@ footer a{color:var(--sea)}
       <button type="button" id="memBtn" style="margin-top:9px;font-size:14px;padding:12px 18px">🎙️ Hier direkt aufnehmen</button>
       <input type="file" id="memFile" multiple style="display:none">
       <button type="button" id="memPick" style="margin-top:9px;margin-left:7px;font-size:13px;padding:10px 15px">🎵 Aus Dateien wählen</button>
+      <div class="jrNote" id="memWarn" style="display:none"></div>
       <div class="jrNote" id="memHint" style="display:none"></div>
       <details class="memHow">
         <summary>SPRACHMEMO AUS DER APPLE-APP HOLEN</summary>
@@ -934,6 +935,39 @@ function renderMemos(){
 }
 
 var recRec=null,recT0=0,recTimer=null,recChunks=[];
+function micLage(){
+  return {
+    standalone:(window.navigator.standalone===true)||
+               (!!window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches),
+    sicher:(window.isSecureContext!==false),
+    api:!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia),
+    rec:!!window.MediaRecorder
+  };
+}
+function micWarnung(){
+  var l=micLage();
+  if(!l.sicher)return "Die Seite läuft nicht über eine gesicherte Verbindung — ohne https gibt kein Browser das Mikrofon frei.";
+  if(!l.api||!l.rec)return "Dieser Browser gibt das Mikrofon nicht frei"+
+    (l.standalone?" — auf dem iPhone passiert das fast immer, wenn die Seite vom Home-Bildschirm gestartet wurde.":".");
+  if(l.standalone)return "Du hast die Seite vom Home-Bildschirm geöffnet. Das iPhone sperrt dort oft das Mikrofon. Wenn die Aufnahme nicht startet, öffne sie einmal direkt in Safari.";
+  return "";
+}
+function micWarnungZeigen(){
+  var w=document.getElementById("memWarn");
+  if(!w)return;
+  var t=micWarnung();
+  if(!t){w.style.display="none";return;}
+  w.innerHTML="";
+  var p=document.createElement("div");p.textContent=t;w.appendChild(p);
+  if(micLage().standalone){
+    var a=document.createElement("a");
+    a.href=location.href;a.target="_blank";a.rel="noopener";
+    a.textContent="Diese Seite in Safari öffnen";
+    a.style.cssText="display:inline-block;margin-top:6px;color:var(--sea)";
+    w.appendChild(a);
+  }
+  w.style.display="block";
+}
 function recHint(msg){
   var h=document.getElementById("memHint");
   if(msg){h.textContent=msg;h.style.display="block";}else{h.style.display="none";}
@@ -945,7 +979,8 @@ function recStart(){
   var btn=document.getElementById("memBtn");
   if(recRec&&recRec.state==="recording"){recStop();return;}
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){
-    recHint("Aufnahme wird von diesem Browser nicht unterstützt.");
+    recHint((micWarnung()||"Dieser Browser kann keine Aufnahme starten.")+
+      " Nimm solange „Aus Dateien wählen“ — die Anleitung darunter zeigt den Weg.");
     return;
   }
   recHint("");
@@ -983,8 +1018,19 @@ function recStart(){
       btn.textContent="■ Stopp · "+fmtDur(s);
     },1000);
   }).catch(function(err){
-    var grund=err&&err.name?err.name:"unbekannt";
-    recHint("Direktaufnahme geht auf diesem Gerät nicht (Grund: "+grund+"). Nimm einfach „Memo aus Dateien / Mediathek“: in der App Sprachmemos aufnehmen, dort auf Teilen → „In Dateien sichern“, dann hier auswählen.");
+    var grund=err&&err.name?err.name:"unbekannt",t;
+    if(grund==="NotAllowedError"||grund==="PermissionDeniedError")
+      t="Das Mikrofon ist für diese Seite gesperrt. In Safari links in der Adresszeile auf „aA“ tippen → Website-Einstellungen → Mikrofon → Erlauben, dann die Seite neu laden.";
+    else if(grund==="NotFoundError"||grund==="DevicesNotFoundError")
+      t="Es wurde kein Mikrofon gefunden.";
+    else if(grund==="NotReadableError"||grund==="TrackStartError")
+      t="Das Mikrofon ist gerade von einer anderen App belegt. Andere Apps schließen und nochmal versuchen.";
+    else if(grund==="SecurityError")
+      t="Der Browser blockiert das Mikrofon auf dieser Seite.";
+    else t="Aufnahme nicht möglich (Grund: "+grund+").";
+    if(micLage().standalone)
+      t+=" Vom Home-Bildschirm aus sperrt das iPhone das Mikrofon oft ganz — probier die Seite einmal in Safari.";
+    recHint(t+" Solange nimm „Aus Dateien wählen“ — die Anleitung darunter zeigt, wie die Aufnahme dorthin kommt.");
   });
 }
 
@@ -1249,6 +1295,7 @@ document.getElementById("memFile").onchange=function(ev){
 };
 
 manualInit();
+micWarnungZeigen();
 document.getElementById("manualSave").onclick=manualSave;
 document.getElementById("geoBtn").onclick=locate;
 document.getElementById("doneBtn").onclick=advance;
