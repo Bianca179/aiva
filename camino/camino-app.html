@@ -130,6 +130,9 @@ button.rec{background:var(--terra);border-color:var(--terra);color:#fff}
   padding-left:15px;background:var(--shellDim) left center/10px 10px no-repeat;opacity:.85}
 .stopDet button{margin-top:10px;font-size:12.5px;padding:8px 14px}
 footer{margin-top:18px;text-align:center;font-size:12px;color:var(--dim);line-height:1.6}
+.stand{margin-top:14px;display:flex;gap:9px;align-items:center;justify-content:center;flex-wrap:wrap}
+.stand span{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.04em}
+.stand button{font-size:12.5px;padding:9px 14px}
 footer a{color:var(--sea)}
 .jr label.ph{display:block;border:2px dashed var(--line);border-radius:14px;padding:22px 12px;text-align:center;cursor:pointer;color:var(--dim);font-size:13px;margin-top:10px}
 .jr img{width:100%;border-radius:14px;display:block;margin-top:10px}
@@ -307,7 +310,11 @@ footer a{color:var(--sea)}
   </div>
 
   <footer>Kilometer, Höhen, Herbergs- und Busangaben sind Richtwerte — vor Ort gilt Gronze bzw. die App.<br>Zum Navigieren die GPS-App nehmen — das hier ist der Blick von oben.<br>
-  <a id="liveLink" href="https://aiva179.app.n8n.cloud/webhook/camino-live?code=ultreia" target="_blank">Live-Seite für Familie &amp; Freunde öffnen</a> · Codewort: „ultreia"</footer>
+  <a id="liveLink" href="https://aiva179.app.n8n.cloud/webhook/camino-live?code=ultreia" target="_blank">Live-Seite für Familie &amp; Freunde öffnen</a> · Codewort: „ultreia"
+  <div class="stand">
+    <span id="standTxt"></span>
+    <button type="button" id="standBtn">Neu laden</button>
+  </div></footer>
 </div>
 
 <script>
@@ -1294,6 +1301,21 @@ document.getElementById("memFile").onchange=function(ev){
   else if(fs.length)recHint("");
 };
 
+var APP_STAND="17.08.2026 · 4";
+(function stand(){
+  var t=document.getElementById("standTxt");
+  if(t)t.textContent="Stand "+APP_STAND;
+  var b=document.getElementById("standBtn");
+  if(!b)return;
+  b.onclick=function(){
+    if(anyDirty()&&!confirm("Es sind noch Eingaben ungesichert. Trotzdem neu laden?"))return;
+    var u=location.href.split("#")[0];
+    u=u.replace(/([?&])v=\d+(&|$)/,function(m,p1,p2){return p2==="&"?p1:(p1==="?"?"?":"");});
+    if(u.charAt(u.length-1)==="?"||u.charAt(u.length-1)==="&")u=u.slice(0,-1);
+    u+=(u.indexOf("?")>=0?"&":"?")+"v="+new Date().getTime();
+    location.replace(u);
+  };
+})();
 manualInit();
 micWarnungZeigen();
 document.getElementById("manualSave").onclick=manualSave;
