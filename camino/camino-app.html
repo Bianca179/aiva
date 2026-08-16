@@ -116,6 +116,13 @@ footer{margin-top:18px;text-align:center;font-size:12px;color:var(--dim);line-he
 footer a{color:var(--sea)}
 .jr label.ph{display:block;border:2px dashed var(--line);border-radius:14px;padding:22px 12px;text-align:center;cursor:pointer;color:var(--dim);font-size:13px;margin-top:10px}
 .jr img{width:100%;border-radius:14px;display:block;margin-top:10px}
+.jr .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:10px}
+.jr .gal .cell{position:relative}
+.jr .gal img{width:100%;height:96px;object-fit:cover;border-radius:12px;display:block;margin:0}
+.jr .gal .x{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:none;
+  background:rgba(46,42,36,.62);color:#fff;font-size:13px;line-height:1;padding:0;box-shadow:none;cursor:pointer}
+.jr .gal .tag{position:absolute;left:4px;bottom:4px;font-family:var(--mono);font-size:10px;
+  background:rgba(255,250,241,.92);border-radius:7px;padding:2px 5px;color:var(--muted)}
 .jr input[type=file]{display:none}
 .jr .fl{margin-top:14px}
 .jr .fl b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--terra);margin-bottom:5px;
@@ -125,6 +132,15 @@ footer a{color:var(--sea)}
 .jr .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .jr .row button{font-size:13px;padding:10px 15px}
 .jrNote{font-size:12px;color:var(--dim);margin-top:10px;line-height:1.5}
+.memHow{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 12px}
+.memHow summary{cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--terra);padding:11px 0;list-style:none}
+.memHow summary::-webkit-details-marker{display:none}
+.memHow summary::before{content:"\25b8 ";display:inline-block;transition:transform .15s}
+.memHow[open] summary::before{content:"\25be "}
+.memHow p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.55}
+.memHow ol{margin:0 0 10px;padding-left:20px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.jr .fl .memHow b{display:inline;font-family:inherit;font-size:inherit;letter-spacing:normal;font-weight:600;
+  color:var(--ink);background:none;padding:0;margin:0}
 .syncNote{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:8px}
 .jrDays{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
 .jrDay{font-family:var(--mono);font-size:11px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--dim);cursor:pointer}
@@ -132,6 +148,18 @@ footer a{color:var(--sea)}
 .jrDay.sel{outline:2px solid var(--terra);outline-offset:1px}
 .streak{font-family:var(--mono);font-size:11px;color:var(--terra);margin-left:8px;letter-spacing:0}
 .mem{display:flex;flex-direction:column;gap:7px;margin-top:9px}
+.gbList{margin-top:4px}
+.gbItem{border-top:1px solid var(--line2);padding:12px 0;display:flex;gap:10px;align-items:flex-start}
+.gbItem:first-child{border-top:none}
+.gbItem.aus{opacity:.45}
+.gbItem .body{flex:1;min-width:0}
+.gbItem .who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--terra)}
+.gbItem .when{font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-left:7px;letter-spacing:0}
+.gbItem p{margin:4px 0 0;font-size:14.5px;line-height:1.55;white-space:pre-wrap;overflow-wrap:break-word}
+.gbItem .tog{flex:0 0 auto;border:1px solid var(--line);background:#fff;box-shadow:none;color:var(--dim);
+  font-size:15px;padding:6px 9px;border-radius:10px;font-weight:400;cursor:pointer}
+.gbEmpty{color:var(--dim);font-size:14px;padding:14px 0}
+.gbNote{font-size:12px;color:var(--dim);margin-top:10px;line-height:1.5}
 .memRow{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:7px 10px}
 .memRow audio{flex:1;min-width:0;height:36px}
 .memRow .len{font-family:var(--mono);font-size:11px;color:var(--dim);flex:0 0 auto}
@@ -197,15 +225,27 @@ footer a{color:var(--sea)}
     <h2>TAGEBUCH · <span id="jrTitle"></span><span class="streak" id="jrStreak"></span></h2>
     <div class="jrDays" id="jrDays"></div>
     <div class="fl"><b>ABSICHT DES TAGES</b><textarea id="jrA" placeholder="Womit gehst du heute Morgen los?"></textarea></div>
-    <input type="file" id="jrFile" accept="image/*">
-    <label class="ph" for="jrFile" id="jrPh">📷 Foto des Tages</label>
-    <img id="jrImg" style="display:none" alt="">
+    <input type="file" id="jrFile" accept="image/*" multiple>
+    <label class="ph" for="jrFile" id="jrPh">📷 Fotos des Tages · mehrere auf einmal möglich</label>
+    <div class="gal" id="jrGal"></div>
+    <label class="ph" for="jrFile" id="jrMore" style="display:none;padding:12px;font-size:12.5px">➕ Weitere Fotos hinzufügen</label>
     <div class="fl"><b>SPRACHMEMOS</b>
       <div class="mem" id="memList"></div>
-      <button type="button" id="memBtn" style="margin-top:9px;font-size:13px;padding:10px 15px">🎙️ Sprachmemo aufnehmen</button>
-      <input type="file" id="memFile" accept="audio/*" style="display:none">
-      <button type="button" id="memPick" style="margin-top:9px;margin-left:7px;font-size:13px;padding:10px 15px">🎵 Memo aus Dateien</button>
+      <button type="button" id="memBtn" style="margin-top:9px;font-size:14px;padding:12px 18px">🎙️ Hier direkt aufnehmen</button>
+      <input type="file" id="memFile" multiple style="display:none">
+      <button type="button" id="memPick" style="margin-top:9px;margin-left:7px;font-size:13px;padding:10px 15px">🎵 Aus Dateien wählen</button>
       <div class="jrNote" id="memHint" style="display:none"></div>
+      <details class="memHow">
+        <summary>SPRACHMEMO AUS DER APPLE-APP HOLEN</summary>
+        <p>Aufnahmen der Sprachmemos-App liegen <b>nicht</b> in „Dateien“ — deshalb findest du sie hier nicht. So kommen sie hin:</p>
+        <ol>
+          <li>Sprachmemos-App öffnen, Aufnahme antippen</li>
+          <li>auf <b>⋯</b> tippen → <b>Teilen</b></li>
+          <li><b>In Dateien sichern</b> wählen, z. B. „Auf meinem iPhone“</li>
+          <li>zurück hierher, <b>Aus Dateien wählen</b> antippen</li>
+        </ol>
+        <p>Schneller geht fast immer <b>Hier direkt aufnehmen</b> — die Aufnahme landet sofort im Tagebuch, ohne Umweg über Dateien.</p>
+      </details>
     </div>
     <div class="fl"><b>ZUM ERSTEN MAL</b><textarea id="jrF" placeholder="Was habe ich heute zum ersten Mal gemacht?"></textarea></div>
     <div class="fl"><b>SCHWER GEFALLEN</b><textarea id="jrS" placeholder="Was ist mir heute schwer gefallen?"></textarea></div>
@@ -216,10 +256,16 @@ footer a{color:var(--sea)}
     <div class="row">
       <button class="go" type="button" id="jrShare">Tag teilen</button>
       <button type="button" id="jrExport">Alles exportieren</button>
-      <button class="ghost" type="button" id="jrClear">Foto löschen</button>
+      <button class="ghost" type="button" id="jrClear">Alle Fotos löschen</button>
     </div>
     <div class="syncNote" id="syncNote"></div>
     <div class="jrNote" id="jrNote">Dein Tagebuch wird direkt in deiner Cloud gespeichert (Airtable + Google Drive) — nichts hängt mehr am Handy-Speicher. Kein Netz? Seite offen lassen, es wird automatisch nachgesendet.</div>
+  </div>
+
+  <div class="card">
+    <h2>GÄSTEBUCH · WAS DIR GESCHRIEBEN WIRD</h2>
+    <div class="gbList" id="gbList"></div>
+    <div class="gbNote" id="gbNote">Mit 🙈 blendest du einen Eintrag auf der Familienseite aus, mit 👁 wieder ein. Gelöscht wird nichts.</div>
   </div>
 
   <div class="card">
@@ -244,6 +290,7 @@ var LIVE = {
   ping:"https://aiva179.app.n8n.cloud/webhook/camino-ping",
   state:"https://aiva179.app.n8n.cloud/webhook/camino-state",
   media:"https://aiva179.app.n8n.cloud/webhook/camino-media",
+  kommentar:"https://aiva179.app.n8n.cloud/webhook/camino-kommentar",
   key:"camino-ingest-x7k42m",
   pingKey:"camino-ping-v3n85q",
   appCode:"fisterra430"
@@ -357,15 +404,19 @@ function stagePhoto(i){return PH_FILES[PH_IDX[i]]}
 /* ---- Server-Zustand (einzige Wahrheit) ---- */
 var DAYS={}, IDX=0, stateLoaded=false, openIdx=-1;
 var dirty={}, syncTimers={}, syncBusy={};
-var pendPhoto={}, pendMemos={};
+var pendPhotos={}, pendMemos={};
+var KOMMENTARE=[];
 var jrDay=1;
 
-function jGet(d){var o=DAYS[d];if(!o){o={a:"",f:"",s:"",u:"",g:"",q:"",e:"",foto:"",memos:[]};}
-  if(!o.memos)o.memos=[];return o;}
+function jGet(d){var o=DAYS[d];if(!o){o={a:"",f:"",s:"",u:"",g:"",q:"",e:"",foto:"",fotos:[],memos:[]};}
+  if(!o.memos)o.memos=[];
+  if(!o.fotos)o.fotos=o.foto?[o.foto]:[];
+  return o;}
+function jFotos(o){return (o&&o.fotos&&o.fotos.length)?o.fotos:((o&&o.foto)?[o.foto]:[]);}
 function jSetLocal(d,o){DAYS[d]=o;}
 function jTxt(v){return !!(v&&String(v).trim())}
-function jHas(o){return !!(o&&(o.foto||(o.memos&&o.memos.length)||jTxt(o.a)||jTxt(o.q)||jTxt(o.e)||jTxt(o.f)||jTxt(o.s)||jTxt(o.u)||jTxt(o.g)))}
-function hasPend(d){return !!(pendPhoto[d]||(pendMemos[d]&&pendMemos[d].length))}
+function jHas(o){return !!(o&&(jFotos(o).length||(o.memos&&o.memos.length)||jTxt(o.a)||jTxt(o.q)||jTxt(o.e)||jTxt(o.f)||jTxt(o.s)||jTxt(o.u)||jTxt(o.g)))}
+function hasPend(d){return !!((pendPhotos[d]&&pendPhotos[d].length)||(pendMemos[d]&&pendMemos[d].length))}
 function dayComplete(o){return jTxt(o.a)&&jTxt(o.f)&&jTxt(o.s)&&jTxt(o.u)&&jTxt(o.g)&&jTxt(o.q)&&jTxt(o.e)}
 function anyDirty(){for(var k in dirty){if(dirty[k])return true;}return false;}
 
@@ -377,8 +428,11 @@ function loadState(cb){
         IDX=Math.max(0,Math.min(W.length-1,j.idx||0));
         (j.days||[]).forEach(function(d){
           if(dirty[d.tag])return;
-          DAYS[d.tag]={a:d.a||"",f:d.f||"",s:d.s||"",u:d.u||"",g:d.g||"",q:d.q||"",e:d.e||"",foto:d.foto||"",memos:d.memos||[]};
+          DAYS[d.tag]={a:d.a||"",f:d.f||"",s:d.s||"",u:d.u||"",g:d.g||"",q:d.q||"",e:d.e||"",
+            foto:d.foto||"",fotos:(d.fotos&&d.fotos.length)?d.fotos:(d.foto?[d.foto]:[]),memos:d.memos||[]};
         });
+        KOMMENTARE=(j.kommentare||[]).slice();
+        renderKommentare();
         stateLoaded=true;
         document.getElementById("offline").style.display="none";
       }
@@ -416,13 +470,15 @@ function syncDay(d){
   var o=jGet(d),st=stageOf(d);
   var payload={key:LIVE.key,day:d,date:isoOf(d),stage:st?st.n:"",km:st?st.km:0,
     a:o.a||"",f:o.f||"",s:o.s||"",u:o.u||"",g:o.g||"",q:o.q||"",e:o.e||"",
-    keepFotoId:o.foto||"",keepMemos:o.memos||[]};
-  if(pendPhoto[d]&&pendPhoto[d].indexOf(",")>0){payload.photo={b64:pendPhoto[d].split(",")[1]};payload.keepFotoId="";}
-  var pm=pendMemos[d]||[],out=[],i=0;
+    keepFotos:jFotos(o).slice(),keepFotoId:jFotos(o)[0]||"",keepMemos:o.memos||[]};
+  var pp=(pendPhotos[d]||[]).slice(),phOut=[],pi;
+  for(pi=0;pi<pp.length;pi++){var cm=String(pp[pi]).indexOf(",");if(cm>0)phOut.push({b64:String(pp[pi]).slice(cm+1)});}
+  if(phOut.length)payload.photos=phOut;
+  var pm=(pendMemos[d]||[]).slice(),out=[],i=0;
   function next(){
     if(i>=pm.length){send();return;}
     var m=pm[i];i++;
-    b64OfBlob(m.blob,function(b){if(b)out.push({b64:b,mime:m.mime,dur:m.dur});next();});
+    b64OfBlob(m.blob,function(b){if(b)out.push({b64:b,mime:m.mime,name:m.name||"",dur:m.dur});next();});
   }
   function send(){
     payload.memos=out;
@@ -432,8 +488,11 @@ function syncDay(d){
         syncBusy[d]=false;
         if(j&&j.ok){
           var cur=jGet(d);
-          cur.foto=j.foto||"";cur.memos=j.memos||[];jSetLocal(d,cur);
-          delete pendPhoto[d];pendMemos[d]=[];dirty[d]=0;
+          cur.fotos=(j.fotos&&j.fotos.length)?j.fotos:(j.foto?[j.foto]:[]);
+          cur.foto=j.foto||cur.fotos[0]||"";cur.memos=j.memos||[];jSetLocal(d,cur);
+          pendPhotos[d]=(pendPhotos[d]||[]).slice(pp.length);
+          pendMemos[d]=(pendMemos[d]||[]).slice(pm.length);
+          dirty[d]=0;
           if(d===jrDay){renderJournal();renderMemos();}
         }
         updateSyncUI();
@@ -806,10 +865,20 @@ function recStart(){
     },1000);
   }).catch(function(err){
     var grund=err&&err.name?err.name:"unbekannt";
-    recHint("Direktaufnahme geht auf diesem Gerät nicht (Grund: "+grund+"). Nimm einfach „Memo aus Dateien“: in der Apple-App Sprachmemos aufnehmen, dann hier auswählen.");
+    recHint("Direktaufnahme geht auf diesem Gerät nicht (Grund: "+grund+"). Nimm einfach „Memo aus Dateien / Mediathek“: in der App Sprachmemos aufnehmen, dort auf Teilen → „In Dateien sichern“, dann hier auswählen.");
   });
 }
 
+var AUDIO_EXT=["m4a","mp3","wav","aac","caf","aif","aiff","opus","ogg","oga","webm","mp4","m4b","3gp","3gpp","amr","flac","wma"];
+function isAudioFile(f){
+  if(!f)return false;
+  var t=String(f.type||"").toLowerCase();
+  if(t.indexOf("audio/")===0)return true;
+  if(t.indexOf("image/")===0)return false;
+  var n=String(f.name||"").toLowerCase(),dot=n.lastIndexOf(".");
+  if(dot<0)return t.indexOf("video/")!==0;
+  return AUDIO_EXT.indexOf(n.slice(dot+1))>=0;
+}
 function addMemoFile(f){
   if(!f)return;
   var day=jrDay;
@@ -818,7 +887,7 @@ function addMemoFile(f){
   function store(dur){
     try{URL.revokeObjectURL(url);}catch(e){}
     if(!pendMemos[day])pendMemos[day]=[];
-    pendMemos[day].push({blob:f,mime:f.type||"audio/mp4",dur:Math.max(1,Math.round(dur||0))});
+    pendMemos[day].push({blob:f,mime:f.type||"audio/mp4",name:f.name||"",dur:Math.max(1,Math.round(dur||0))});
     recHint("");
     confetti(40,false);
     if(day===jrDay)renderMemos();
@@ -831,13 +900,96 @@ function addMemoFile(f){
   setTimeout(function(){if(au.readyState===0)store(0);},4000);
 }
 
+function delPhoto(day,id){
+  if(!confirm("Dieses Foto löschen?"))return;
+  var o=jGet(day);
+  o.fotos=jFotos(o).filter(function(x){return x!==id;});
+  o.foto=o.fotos[0]||"";
+  jSetLocal(day,o);renderJournal();queueSync(day);
+}
+function delPendPhoto(day,idx){
+  (pendPhotos[day]||[]).splice(idx,1);
+  renderJournal();
+}
+function gbWhen(iso){
+  if(!iso)return "";
+  var d=new Date(iso);
+  if(isNaN(d.getTime()))return "";
+  return ["So","Mo","Di","Mi","Do","Fr","Sa"][d.getDay()]+" "+("0"+d.getDate()).slice(-2)+"."+
+    ("0"+(d.getMonth()+1)).slice(-2)+". "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);
+}
+function gbToggle(k,btn){
+  var ziel=!k.v;
+  btn.disabled=true;
+  fetch(LIVE.kommentar,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({key:LIVE.key,action:"sicht",id:k.id,sichtbar:ziel})})
+    .then(function(r){return r.json();})
+    .then(function(j){
+      btn.disabled=false;
+      if(j&&j.ok){k.v=ziel;renderKommentare();
+        document.getElementById("gbNote").textContent=ziel?"Eintrag ist wieder auf der Familienseite sichtbar.":"Eintrag ist auf der Familienseite ausgeblendet.";}
+      else document.getElementById("gbNote").textContent=(j&&j.fehler)?j.fehler:"Hat nicht geklappt.";
+    })
+    .catch(function(){
+      btn.disabled=false;
+      document.getElementById("gbNote").textContent="Kein Netz — später nochmal versuchen.";
+    });
+}
+function renderKommentare(){
+  var host=document.getElementById("gbList");
+  if(!host)return;
+  host.innerHTML="";
+  if(!KOMMENTARE.length){
+    var e=document.createElement("div");e.className="gbEmpty";
+    e.textContent="Noch keine Einträge — deine Leute können auf der Familienseite schreiben.";
+    host.appendChild(e);return;
+  }
+  KOMMENTARE.forEach(function(k){
+    var row=document.createElement("div");row.className="gbItem"+(k.v?"":" aus");
+    var body=document.createElement("div");body.className="body";
+    var who=document.createElement("div");who.className="who";who.textContent=k.n||"Anonym";
+    var wh=document.createElement("span");wh.className="when";wh.textContent=gbWhen(k.z);
+    who.appendChild(wh);
+    var pp=document.createElement("p");pp.textContent=k.t||"";
+    body.appendChild(who);body.appendChild(pp);
+    var tog=document.createElement("button");tog.type="button";tog.className="tog";
+    tog.textContent=k.v?"🙈":"👁";
+    tog.title=k.v?"Auf der Familienseite ausblenden":"Wieder einblenden";
+    tog.onclick=function(){gbToggle(k,tog);};
+    row.appendChild(body);row.appendChild(tog);
+    host.appendChild(row);
+  });
+}
+function renderPhotos(){
+  var gal=document.getElementById("jrGal"),ph=document.getElementById("jrPh"),more=document.getElementById("jrMore");
+  var o=jGet(jrDay),saved=jFotos(o),pend=pendPhotos[jrDay]||[];
+  gal.innerHTML="";
+  saved.forEach(function(id){
+    var c=document.createElement("div");c.className="cell";
+    var im=document.createElement("img");im.src=mediaUrl(id);im.alt="";
+    var x=document.createElement("button");x.type="button";x.className="x";x.textContent="✕";
+    x.setAttribute("aria-label","Foto löschen");
+    x.onclick=function(){delPhoto(jrDay,id);};
+    c.appendChild(im);c.appendChild(x);gal.appendChild(c);
+  });
+  pend.forEach(function(src,idx){
+    var c=document.createElement("div");c.className="cell";
+    var im=document.createElement("img");im.src=src;im.alt="";
+    var t=document.createElement("span");t.className="tag";t.textContent="⏳";
+    var x=document.createElement("button");x.type="button";x.className="x";x.textContent="✕";
+    x.setAttribute("aria-label","Foto verwerfen");
+    x.onclick=function(){delPendPhoto(jrDay,idx);};
+    c.appendChild(im);c.appendChild(t);c.appendChild(x);gal.appendChild(c);
+  });
+  var n=saved.length+pend.length;
+  gal.style.display=n?"grid":"none";
+  ph.style.display=n?"none":"block";
+  more.style.display=n?"block":"none";
+}
 function renderJournal(){
   var o=jGet(jrDay), st=stageOf(jrDay);
   document.getElementById("jrTitle").textContent="TAG "+jrDay+" · "+dateOf(jrDay)+(st?" · "+st.n:"");
-  var img=document.getElementById("jrImg"), ph=document.getElementById("jrPh");
-  var src=pendPhoto[jrDay]||(o.foto?mediaUrl(o.foto):"");
-  if(src){img.src=src;img.style.display="block";ph.style.display="none";}
-  else{img.style.display="none";ph.style.display="block";}
+  renderPhotos();
   document.getElementById("jrA").value=o.a||"";
   document.getElementById("jrF").value=o.f||"";
   document.getElementById("jrS").value=o.s||"";
@@ -901,7 +1053,7 @@ function jExport(){
     var st=stageOf(d);
     h+='<h2>Tag '+d+' &middot; '+dateOf(d)+(st?' &middot; '+st.n:'')+'</h2>';
     if(st)h+='<p class="m">km '+st.km+' &middot; noch '+(TOTAL-st.km)+' km bis zum Kap</p>';
-    if(o.foto)h+='<img src="'+mediaUrl(o.foto)+'">';
+    jFotos(o).forEach(function(fid){h+='<img src="'+mediaUrl(fid)+'">';});
     if(jTxt(o.a))h+='<b>ABSICHT DES TAGES</b><p>'+esc(o.a)+'</p>';
     if(jTxt(o.f))h+='<b>ZUM ERSTEN MAL</b><p>'+esc(o.f)+'</p>';
     if(jTxt(o.s))h+='<b>SCHWER GEFALLEN</b><p>'+esc(o.s)+'</p>';
@@ -920,16 +1072,30 @@ function jExport(){
 }
 
 document.getElementById("jrFile").onchange=function(ev){
-  var f=ev.target.files&&ev.target.files[0];if(!f)return;
-  document.getElementById("jrNote").textContent="Foto wird verkleinert…";
-  shrink(f,function(data){
-    if(!data){document.getElementById("jrNote").textContent="Foto konnte nicht gelesen werden.";return;}
-    pendPhoto[jrDay]=data;
-    document.getElementById("jrNote").textContent="";
-    renderJournal();
-    confetti(40,false);
-    queueSync(jrDay);
-  });
+  var files=[],i;
+  for(i=0;i<(ev.target.files?ev.target.files.length:0);i++)files.push(ev.target.files[i]);
+  ev.target.value="";
+  if(!files.length)return;
+  var day=jrDay,note=document.getElementById("jrNote"),done=0,fail=0;
+  note.textContent=files.length>1?("Fotos werden verkleinert… (0/"+files.length+")"):"Foto wird verkleinert…";
+  function next(k){
+    if(k>=files.length){
+      note.textContent=fail?(fail+" von "+files.length+" Fotos konnten nicht gelesen werden."):"";
+      if(done){confetti(40,false);queueSync(day);}
+      renderJournal();
+      return;
+    }
+    shrink(files[k],function(data){
+      if(data){
+        if(!pendPhotos[day])pendPhotos[day]=[];
+        pendPhotos[day].push(data);done++;
+      }else fail++;
+      if(files.length>1)note.textContent="Fotos werden verkleinert… ("+(k+1)+"/"+files.length+")";
+      if(day===jrDay)renderPhotos();
+      next(k+1);
+    });
+  }
+  next(0);
 };
 document.getElementById("jrA").onblur=jSaveFields;
 document.getElementById("jrF").onblur=jSaveFields;
@@ -941,16 +1107,26 @@ document.getElementById("jrE").onblur=jSaveFields;
 document.getElementById("jrShare").onclick=jShare;
 document.getElementById("jrExport").onclick=jExport;
 document.getElementById("jrClear").onclick=function(){
-  var o=jGet(jrDay);o.foto="";jSetLocal(jrDay,o);
-  delete pendPhoto[jrDay];
+  var o=jGet(jrDay);
+  if(!jFotos(o).length&&!(pendPhotos[jrDay]||[]).length)return;
+  if(!confirm("Wirklich alle Fotos von Tag "+jrDay+" löschen?"))return;
+  o.foto="";o.fotos=[];jSetLocal(jrDay,o);
+  pendPhotos[jrDay]=[];
   renderJournal();queueSync(jrDay);
 };
 document.getElementById("memBtn").onclick=recStart;
 document.getElementById("memPick").onclick=function(){document.getElementById("memFile").click();};
 document.getElementById("memFile").onchange=function(ev){
-  var f=ev.target.files&&ev.target.files[0];
+  var fs=[],i;
+  for(i=0;i<(ev.target.files?ev.target.files.length:0);i++)fs.push(ev.target.files[i]);
   ev.target.value="";
-  addMemoFile(f);
+  var bad=0;
+  for(i=0;i<fs.length;i++){
+    if(isAudioFile(fs[i]))addMemoFile(fs[i]);
+    else bad++;
+  }
+  if(bad)recHint("Bitte eine Tonaufnahme auswählen (z. B. Sprachmemo .m4a) — "+bad+" Datei(en) waren keine Audiodatei.");
+  else if(fs.length)recHint("");
 };
 
 document.getElementById("geoBtn").onclick=locate;
@@ -962,9 +1138,10 @@ window.addEventListener("beforeunload",function(e){
 });
 setInterval(function(){if(document.visibilityState==="visible")flushDirty();},60000);
 setInterval(function(){if(document.visibilityState==="visible")autoPing();},300000);
+renderKommentare();
 loadState(function(){
   jrDay=W[IDX].d;
-  render();renderJournal();renderMemos();
+  render();renderJournal();renderMemos();renderKommentare();
   autoPing();
 });
 </script>
