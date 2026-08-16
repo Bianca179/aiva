@@ -209,9 +209,11 @@ document.getElementById("sub").textContent=
   "Bianca hat "+km+" km hinter sich"+(pos?" — gerade bei "+pos.name:"")+".";
 var chip=document.getElementById("chip");
 if(loc&&loc.zeit){
+  var manuell=String(loc.quelle||"")==="manuell";
   var fresh=(new Date().getTime()-new Date(loc.zeit).getTime())<1800000;
-  chip.className="livechip"+(fresh?" on":"");
-  document.getElementById("chipTxt").textContent="zuletzt gesehen "+agoTxt(loc.zeit)+
+  chip.className="livechip"+((fresh&&!manuell)?" on":"");
+  document.getElementById("chipTxt").textContent=
+    (manuell?"von Bianca eingetragen ":"zuletzt gesehen ")+agoTxt(loc.zeit)+
     (loc.batt?" · Akku "+loc.batt+"%":"");
 }
 document.getElementById("sDay").textContent=(started?Math.min(dayNow,29):0)+"/29";

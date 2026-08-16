@@ -58,6 +58,23 @@ button:disabled{opacity:.4;cursor:default}
 button:active{transform:translateY(1px)}
 button.rec{background:var(--terra);border-color:var(--terra);color:#fff}
 .hint{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:12px;min-height:16px}
+.manual{margin-top:12px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:0 12px;text-align:left}
+.manual summary{cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--terra);
+  padding:11px 0;list-style:none;text-align:center}
+.manual summary::-webkit-details-marker{display:none}
+.manual summary::before{content:"\25b8 "}
+.manual[open] summary::before{content:"\25be "}
+.manual .mrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-bottom:2px}
+.manual select,.manual input{border:1px solid var(--line);border-radius:11px;padding:10px;background:#fff;
+  font-family:var(--sans);font-size:15px;color:var(--ink);-webkit-appearance:none;appearance:none}
+.manual select{flex:1 1 150px;min-width:0}
+.manual input{flex:0 0 82px;width:82px;text-align:right;font-family:var(--mono)}
+.manual select:focus,.manual input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.manual .unit{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.manual button{margin:10px 0 0;font-size:13px;padding:10px 16px}
+.manual .mnote{font-size:12px;color:var(--dim);margin:10px 0 12px;line-height:1.5}
+.manual .mnote.ok{color:var(--olive)}
+.manual .mnote.err{color:var(--terra)}
 .hint.err{color:var(--terra)}
 .offline{background:#f7ecd4;border:1px solid var(--gold);border-radius:14px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:var(--ink);line-height:1.5;display:none}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
@@ -180,6 +197,16 @@ footer a{color:var(--sea)}
       <button class="ghost" id="backBtn" type="button">zurück</button>
     </div>
     <div class="hint" id="hint"></div>
+    <details class="manual" id="manualBox">
+      <summary>ZWISCHENSTAND VON HAND EINTRAGEN</summary>
+      <div class="mrow">
+        <select id="manualTo" aria-label="Ort auswählen"></select>
+        <input id="manualKm" type="number" inputmode="numeric" min="0" max="430" step="1" aria-label="Kilometer">
+        <span class="unit">km</span>
+      </div>
+      <button type="button" id="manualSave">Übernehmen</button>
+      <div class="mnote" id="manualNote">Ort aus der Liste wählen — oder die Kilometer direkt eintippen, auch mitten in einer Etappe. Geht ohne GPS.</div>
+    </details>
     <div class="offline" id="offline"></div>
     <div class="bar" id="bar"></div>
   </div>
@@ -403,6 +430,21 @@ function stagePhoto(i){return PH_FILES[PH_IDX[i]]}
 
 /* ---- Server-Zustand (einzige Wahrheit) ---- */
 var DAYS={}, IDX=0, stateLoaded=false, openIdx=-1;
+var KM_JETZT=null, manualBeruehrt=false;
+function kmJetzt(){return (KM_JETZT!=null)?KM_JETZT:W[IDX].km;}
+function kmMerken(km){
+  KM_JETZT=km;
+  try{
+    if(km==null)localStorage.removeItem("camino_km_jetzt");
+    else localStorage.setItem("camino_km_jetzt",JSON.stringify({km:km,idx:IDX}));
+  }catch(e){}
+}
+function kmHolen(){
+  try{
+    var o=JSON.parse(localStorage.getItem("camino_km_jetzt")||"null");
+    if(o&&typeof o.km==="number"&&o.idx===IDX)KM_JETZT=o.km;else KM_JETZT=null;
+  }catch(e){KM_JETZT=null;}
+}
 var dirty={}, syncTimers={}, syncBusy={};
 var pendPhotos={}, pendMemos={};
 var KOMMENTARE=[];
@@ -515,9 +557,9 @@ function sendIdx(){
   fetch(LIVE.ping+"?key="+LIVE.pingKey,{method:"POST",headers:{"Content-Type":"application/json"},
     body:JSON.stringify({setIdx:IDX})}).catch(function(){});
 }
-function sendPing(lat,lon){
-  fetch(LIVE.ping+"?key="+LIVE.pingKey,{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({src:"app",lat:lat,lon:lon})}).catch(function(){});
+function sendPing(lat,lon,src){
+  return fetch(LIVE.ping+"?key="+LIVE.pingKey,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({src:src||"app",lat:lat,lon:lon})});
 }
 
 function dist(a,b,c,d){
@@ -590,11 +632,88 @@ function locate(){
     var best=0,bd=1e9,i,d;
     for(i=0;i<W.length;i++){d=dist(p.coords.latitude,p.coords.longitude,W[i].lat,W[i].lon);if(d<bd){bd=d;best=i;}}
     if(bd>120){h.className="hint err";h.textContent="Über "+Math.round(bd)+" km vom Weg entfernt — noch zu Hause?";return;}
-    IDX=best;sendIdx();render();
+    IDX=best;kmMerken(null);manualPrefill();sendIdx();render();
     sendPing(p.coords.latitude,p.coords.longitude);
     h.className="hint";h.textContent="Nächster Punkt: "+W[best].n+" ("+bd.toFixed(1)+" km entfernt)";
   },function(){h.className="hint err";h.textContent="Standort nicht verfügbar — nimm die Knöpfe.";},
   {enableHighAccuracy:true,timeout:12000,maximumAge:60000});
+}
+
+/* ---- Zwischenstand von Hand ---- */
+function posAtKm(km){
+  km=Math.max(0,Math.min(TOTAL,km));
+  for(var i=0;i<W.length-1;i++){
+    if(km>=W[i].km&&km<=W[i+1].km){
+      var d=W[i+1].km-W[i].km;
+      var t=d>0?(km-W[i].km)/d:0;
+      return {lat:W[i].lat+(W[i+1].lat-W[i].lat)*t,lon:W[i].lon+(W[i+1].lon-W[i].lon)*t};
+    }
+  }
+  return {lat:W[W.length-1].lat,lon:W[W.length-1].lon};
+}
+function idxAtKm(km){
+  var best=0;
+  for(var i=0;i<W.length;i++){if(W[i].km<=km)best=i;}
+  return best;
+}
+function manualNote(txt,art){
+  var el=document.getElementById("manualNote");
+  el.className="mnote"+(art?" "+art:"");
+  el.textContent=txt;
+}
+function manualInit(){
+  var sel=document.getElementById("manualTo");
+  if(!sel||sel.options.length)return;
+  var opt=document.createElement("option");
+  opt.value="";opt.textContent="Ort wählen …";
+  sel.appendChild(opt);
+  var gesehen={};
+  for(var i=0;i<W.length;i++){
+    var schluessel=W[i].n+"|"+W[i].km;
+    if(gesehen[schluessel])continue;
+    gesehen[schluessel]=1;
+    var o=document.createElement("option");
+    o.value=String(W[i].km);
+    o.textContent=W[i].n+" · km "+W[i].km;
+    sel.appendChild(o);
+  }
+  sel.onchange=function(){
+    if(sel.value!==""){document.getElementById("manualKm").value=sel.value;manualBeruehrt=true;}
+  };
+  document.getElementById("manualKm").oninput=function(){manualBeruehrt=true;};
+  manualPrefill();
+}
+function manualPrefill(){
+  var feld=document.getElementById("manualKm");
+  if(!feld||manualBeruehrt)return;
+  feld.value=kmJetzt();
+}
+function manualSave(){
+  var feld=document.getElementById("manualKm");
+  var km=parseInt(feld.value,10);
+  if(isNaN(km)||km<0||km>TOTAL){
+    manualNote("Bitte eine Zahl zwischen 0 und "+TOTAL+" eintragen.","err");
+    feld.focus();return;
+  }
+  var btn=document.getElementById("manualSave");
+  btn.disabled=true;
+  manualNote("Wird gespeichert …");
+  var p=posAtKm(km);
+  IDX=idxAtKm(km);
+  kmMerken(km);
+  manualBeruehrt=false;
+  sendIdx();
+  render();
+  sendPing(p.lat,p.lon,"manuell")
+    .then(function(){
+      btn.disabled=false;
+      manualNote("Eingetragen: "+km+" km — noch "+(TOTAL-km)+" km bis zum Kap. Die Familienseite zeigt es beim nächsten Laden.","ok");
+      confetti(80,false);
+    })
+    .catch(function(){
+      btn.disabled=false;
+      manualNote("Kein Netz — noch nicht gespeichert. Bitte später nochmal auf Übernehmen tippen.","err");
+    });
 }
 
 /* ---- Echte Karte (OSM-Kacheln) ---- */
@@ -685,21 +804,21 @@ function dateOf(day){
 }
 
 function render(){
-  var w=W[IDX],left=TOTAL-w.km,pct=Math.round(w.km/TOTAL*100);
+  var w=W[IDX],km=kmJetzt(),left=TOTAL-km,pct=Math.round(km/TOTAL*100);
   var bk=document.getElementById("bigk");
   bk.textContent=left===0?"0":left;
   bk.className="bigk"+(left===0?" zero":"");
   document.getElementById("sub").textContent=
     left===0?"Der Weg hört hier auf. Du bist angekommen."
     :IDX===0?"Noch nicht losgelaufen. Der Stein steht ganz am Anfang."
-    :"Du hast "+w.km+" km hinter dir. Der Rest ist nur noch Gehen.";
-  var seg1=Math.min(w.km,259),seg2=Math.min(Math.max(w.km-259,0),53),seg3=Math.max(w.km-312,0);
+    :"Du hast "+km+" km hinter dir. Der Rest ist nur noch Gehen.";
+  var seg1=Math.min(km,259),seg2=Math.min(Math.max(km-259,0),53),seg3=Math.max(km-312,0);
   document.getElementById("bar").innerHTML=
     '<i style="width:'+(seg1/TOTAL*100)+'%;background:#c9962e"></i>'+
     '<i style="width:'+(seg2/TOTAL*100)+'%;background:#7d8455"></i>'+
     '<i style="width:'+(seg3/TOTAL*100)+'%;background:#2f7f8f"></i>';
   document.getElementById("sDay").textContent=w.d+"/29";
-  document.getElementById("sDone").textContent=w.km;
+  document.getElementById("sDone").textContent=km;
   document.getElementById("sPct").textContent=pct+"%";
   var hero=document.getElementById("heroImg"),hc=document.getElementById("heroCred");
   hero.style.display="none";hc.style.display="none";
@@ -752,7 +871,7 @@ function render(){
 
 function advance(){
   if(IDX>=W.length-1)return;
-  var prev=IDX;IDX++;sendIdx();render();
+  var prev=IDX;IDX++;kmMerken(null);manualPrefill();sendIdx();render();
   var mile="";
   for(var i=0;i<MILES.length;i++){if(MILES[i].i>prev&&MILES[i].i<=IDX)mile=MILES[i].t;}
   if(IDX>=W.length-1){confetti(420,true);banner("🌊 Kilometer 0 — Ende der Welt!");}
@@ -1129,9 +1248,11 @@ document.getElementById("memFile").onchange=function(ev){
   else if(fs.length)recHint("");
 };
 
+manualInit();
+document.getElementById("manualSave").onclick=manualSave;
 document.getElementById("geoBtn").onclick=locate;
 document.getElementById("doneBtn").onclick=advance;
-document.getElementById("backBtn").onclick=function(){if(IDX>0){IDX--;sendIdx();render();}};
+document.getElementById("backBtn").onclick=function(){if(IDX>0){IDX--;kmMerken(null);manualPrefill();sendIdx();render();}};
 window.addEventListener("online",flushDirty);
 window.addEventListener("beforeunload",function(e){
   if(anyDirty()){e.preventDefault();e.returnValue="";}
@@ -1141,6 +1262,7 @@ setInterval(function(){if(document.visibilityState==="visible")autoPing();},3000
 renderKommentare();
 loadState(function(){
   jrDay=W[IDX].d;
+  kmHolen();manualPrefill();
   render();renderJournal();renderMemos();renderKommentare();
   autoPing();
 });
