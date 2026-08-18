@@ -262,7 +262,7 @@ footer a{color:var(--sea)}
     <div class="fl"><b>SPRACHMEMOS</b>
       <div class="mem" id="memList"></div>
       <button type="button" id="memBtn" style="margin-top:9px;font-size:14px;padding:12px 18px">🎙️ Hier direkt aufnehmen</button>
-      <input type="file" id="memFile" multiple style="display:none">
+      <input type="file" id="memFile" style="display:none">
       <button type="button" id="memPick" style="margin-top:9px;margin-left:7px;font-size:13px;padding:10px 15px">🎵 Aus Dateien wählen</button>
       <div class="jrNote" id="memWarn" style="display:none"></div>
       <div class="jrNote" id="memHint" style="display:none"></div>
@@ -274,6 +274,7 @@ footer a{color:var(--sea)}
           <li>auf <b>⋯</b> tippen → <b>Teilen</b></li>
           <li><b>In Dateien sichern</b> wählen, z. B. „Auf meinem iPhone“</li>
           <li>zurück hierher, <b>Aus Dateien wählen</b> antippen</li>
+          <li>die Aufnahme <b>einmal antippen</b> — der Dialog schließt sich sofort und die Datei ist übernommen</li>
         </ol>
         <p>Schneller geht fast immer <b>Hier direkt aufnehmen</b> — die Aufnahme landet sofort im Tagebuch, ohne Umweg über Dateien.</p>
       </details>
@@ -1034,7 +1035,7 @@ function recStart(){
       t="Das Mikrofon ist gerade von einer anderen App belegt. Andere Apps schließen und nochmal versuchen.";
     else if(grund==="SecurityError")
       t="Der Browser blockiert das Mikrofon auf dieser Seite.";
-    else t="Aufnahme nicht möglich (Grund: "+grund+").";
+    else t="Aufnahme nicht möglich (Grund: "+grund+(err&&err.message?" – "+err.message:"")+").";
     if(micLage().standalone)
       t+=" Vom Home-Bildschirm aus sperrt das iPhone das Mikrofon oft ganz — probier die Seite einmal in Safari.";
     recHint(t+" Solange nimm „Aus Dateien wählen“ — die Anleitung darunter zeigt, wie die Aufnahme dorthin kommt.");
@@ -1301,7 +1302,7 @@ document.getElementById("memFile").onchange=function(ev){
   else if(fs.length)recHint("");
 };
 
-var APP_STAND="17.08.2026 · 4";
+var APP_STAND="17.08.2026 · 5";
 (function stand(){
   var t=document.getElementById("standTxt");
   if(t)t.textContent="Stand "+APP_STAND;
