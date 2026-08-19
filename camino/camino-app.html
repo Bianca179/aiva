@@ -1,0 +1,1341 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Camino · Wo bin ich</title>
+<link rel="apple-touch-icon" href="camino-media?code=fisterra430&amp;id=1fZLtXmNB42CBCYqZWcMVpqAA_EFduVk0">
+<link rel="icon" href="camino-media?code=fisterra430&amp;id=1fZLtXmNB42CBCYqZWcMVpqAA_EFduVk0">
+<meta name="apple-mobile-web-app-title" content="Camino">
+<meta name="theme-color" content="#f6f0e4">
+<style>
+:root{
+  --bg:#f6f0e4; --card:#fffaf1; --ink:#2e2a24; --muted:#6f6558; --dim:#998c7b;
+  --line:#e3d8c6; --line2:#ece2d2;
+  --gold:#c9962e; --terra:#c26744; --olive:#7d8455; --sea:#2f7f8f;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --shell:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M11 51 Q9.4 38.2 19.4 37.5 Q20.7 24.6 30.5 27.7 Q34.7 16 43.3 22.7 Q50 13 56.7 22.7 Q65.3 16 69.5 27.7 Q79.3 24.6 80.6 37.5 Q90.7 38.2 89 51 L50 86 Z' fill='%23c9962e'/%3E%3Cpath d='M50 86 19.4 37.5 M50 86 30.5 27.7 M50 86 43.3 22.7 M50 86 56.7 22.7 M50 86 69.5 27.7 M50 86 80.6 37.5' stroke='%23fffaf1' stroke-width='3.4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+  --shellDim:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M11 51 Q9.4 38.2 19.4 37.5 Q20.7 24.6 30.5 27.7 Q34.7 16 43.3 22.7 Q50 13 56.7 22.7 Q65.3 16 69.5 27.7 Q79.3 24.6 80.6 37.5 Q90.7 38.2 89 51 L50 86 Z' fill='none' stroke='%23c26744' stroke-width='4'/%3E%3Cpath d='M50 86 19.4 37.5 M50 86 30.5 27.7 M50 86 43.3 22.7 M50 86 56.7 22.7 M50 86 69.5 27.7 M50 86 80.6 37.5' stroke='%23c26744' stroke-width='3' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:var(--sans);color:var(--ink);background:var(--bg);
+  background-image:
+    radial-gradient(900px 500px at 10% -10%, rgba(201,150,46,.10), transparent 60%),
+    radial-gradient(800px 600px at 105% 25%, rgba(47,127,143,.08), transparent 55%);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:740px;margin:0 auto;padding:18px 14px 60px}
+.stone{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;
+  box-shadow:0 10px 30px rgba(87,66,37,.10);
+  padding:26px 18px 20px;text-align:center;position:relative;overflow:hidden;
+}
+.stone::before{content:"";position:absolute;right:-34px;top:-30px;width:200px;height:200px;
+  background:var(--shell) center/contain no-repeat;opacity:.07;transform:rotate(14deg);pointer-events:none}
+.stone::after{content:"";position:absolute;left:-46px;bottom:-6px;width:150px;height:150px;
+  background:var(--shell) center/contain no-repeat;opacity:.05;transform:rotate(-18deg);pointer-events:none}
+.stone>*{position:relative;z-index:1}
+.bar{position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--line2);display:flex;z-index:2}
+.bar i{display:block;height:100%}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--muted)}
+.bigk{font-family:var(--mono);font-weight:600;line-height:.95;color:var(--terra);
+  font-size:clamp(60px,19vw,108px);letter-spacing:-.02em;margin-top:12px}
+.bigk.zero{color:var(--sea)}
+.unit{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted);margin-top:8px}
+.sub{color:var(--muted);font-size:14px;margin-top:12px;line-height:1.5}
+.acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+button{
+  font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;
+  border-radius:999px;padding:12px 18px;color:var(--ink);
+  border:1px solid var(--line);background:#fff;box-shadow:0 2px 6px rgba(87,66,37,.08);
+}
+button.go{background:var(--gold);border-color:var(--gold);color:#fff}
+button.ghost{font-weight:500;color:var(--muted);box-shadow:none;background:transparent}
+button:disabled{opacity:.4;cursor:default}
+button:active{transform:translateY(1px)}
+button.rec{background:var(--terra);border-color:var(--terra);color:#fff}
+.hint{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:12px;min-height:16px}
+.manual{margin-top:12px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:0 12px;text-align:left}
+.manual summary{cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--terra);
+  padding:11px 0;list-style:none;text-align:center}
+.manual summary::-webkit-details-marker{display:none}
+.manual summary::before{content:"\25b8 "}
+.manual[open] summary::before{content:"\25be "}
+.manual .mrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-bottom:2px}
+.manual select,.manual input{border:1px solid var(--line);border-radius:11px;padding:10px;background:#fff;
+  font-family:var(--sans);font-size:15px;color:var(--ink);-webkit-appearance:none;appearance:none}
+.manual select{flex:1 1 150px;min-width:0}
+.manual input{flex:0 0 82px;width:82px;text-align:right;font-family:var(--mono)}
+.manual select:focus,.manual input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.manual .unit{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.manual button{margin:10px 0 0;font-size:13px;padding:10px 16px}
+.manual .mnote{font-size:12px;color:var(--dim);margin:10px 0 12px;line-height:1.5}
+.manual .mnote.ok{color:var(--olive)}
+.manual .mnote.err{color:var(--terra)}
+.hint.err{color:var(--terra)}
+.offline{background:#f7ecd4;border:1px solid var(--gold);border-radius:14px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:var(--ink);line-height:1.5;display:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center}
+.st b{display:block;font-family:var(--mono);font-size:19px;font-weight:600}
+.st span{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+.card h2{margin:0;font-size:11.5px;font-family:var(--mono);letter-spacing:.14em;color:var(--dim);font-weight:600;
+  padding-left:20px;background:var(--shell) left 1px/13px 13px no-repeat}
+#map{width:100%;height:auto;display:block}
+#profile{width:100%;height:auto;display:block}
+#profile .grid{stroke:var(--line2);stroke-width:1}
+#profile .gl{font-family:var(--mono);font-size:10px;fill:var(--dim)}
+#profile .lbl{font-family:var(--mono);font-size:11.5px;fill:var(--muted)}
+#profile .base{fill:none;stroke:var(--line);stroke-width:2.5;stroke-linejoin:round}
+#profile .fill{fill:rgba(201,150,46,.10)}
+#profile .walk{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+#profile .here{stroke:#fff;stroke-width:2}
+.mapCred{font-size:10px;color:var(--dim);text-align:right;margin-top:4px}
+.hero{width:100%;border-radius:12px;display:none;margin-bottom:4px;max-height:280px;object-fit:cover}
+.heroCred{font-size:10px;color:var(--dim);text-align:right;margin:0 0 8px;display:none}
+.now{font-size:20px;font-weight:800;margin-top:8px}
+.nowMeta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:5px}
+.nowNote{font-size:14px;color:var(--muted);line-height:1.55;margin-top:10px;border-left:3px solid var(--gold);padding-left:10px}
+.prak{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin-top:12px;font-size:13px}
+.prak dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--dim);padding-top:2px}
+.prak dd{margin:0;color:var(--muted);line-height:1.45}
+.lnks{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+.lnk{display:inline-block;font-size:12.5px;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:#fff;color:var(--ink);text-decoration:none;box-shadow:0 2px 6px rgba(87,66,37,.08)}
+.lnk:active{transform:translateY(1px)}
+.next{font-size:14px;color:var(--muted);margin-top:12px;padding-top:10px;border-top:1px solid var(--line2)}
+.next b{color:var(--ink)}
+.miles{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.mile{font-family:var(--mono);font-size:11.5px;padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--dim)}
+.mile.on{border-color:var(--gold);background:#f7ecd4;color:var(--ink);
+  padding-left:26px;background-image:var(--shell);background-repeat:no-repeat;background-position:9px center;background-size:12px 12px}
+.mile.on.sea{border-color:var(--sea);background:#e2eff1}
+.stops{margin-top:6px}
+.stop{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--line2);cursor:pointer}
+.stop:last-child{border-bottom:none}
+.stop .d{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.stop .n{font-size:14.5px}
+.stop .k{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.stop.done .n{color:var(--dim);text-decoration:line-through}
+.stop.here{background:#f7ecd4;border-radius:10px}
+.stop.here .n{font-weight:800}
+.stop .n::after{content:" ▾";color:var(--dim);font-size:11px}
+.stop.open .n::after{content:" ▴"}
+.stopDet{display:none;padding:4px 6px 14px 62px;border-bottom:1px solid var(--line2);background:#fdf8ec}
+.stopDet.show{display:block}
+.stopDet p{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+.stopDet p b{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--dim);display:block;margin-bottom:1px;
+  padding-left:15px;background:var(--shellDim) left center/10px 10px no-repeat;opacity:.85}
+.stopDet button{margin-top:10px;font-size:12.5px;padding:8px 14px}
+footer{margin-top:18px;text-align:center;font-size:12px;color:var(--dim);line-height:1.6}
+.stand{margin-top:14px;display:flex;gap:9px;align-items:center;justify-content:center;flex-wrap:wrap}
+.stand span{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.04em}
+.stand button{font-size:12.5px;padding:9px 14px}
+footer a{color:var(--sea)}
+.jr label.ph{display:block;border:2px dashed var(--line);border-radius:14px;padding:22px 12px;text-align:center;cursor:pointer;color:var(--dim);font-size:13px;margin-top:10px}
+.jr img{width:100%;border-radius:14px;display:block;margin-top:10px}
+.jr .gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:10px}
+.jr .gal .cell{position:relative}
+.jr .gal img{width:100%;height:96px;object-fit:cover;border-radius:12px;display:block;margin:0}
+.jr .gal .x{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:50%;border:none;
+  background:rgba(46,42,36,.62);color:#fff;font-size:13px;line-height:1;padding:0;box-shadow:none;cursor:pointer}
+.jr .gal .tag{position:absolute;left:4px;bottom:4px;font-family:var(--mono);font-size:10px;
+  background:rgba(255,250,241,.92);border-radius:7px;padding:2px 5px;color:var(--muted)}
+.jr input[type=file]{display:none}
+.jr .fl{margin-top:14px}
+.jr .fl b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--terra);margin-bottom:5px;
+  padding-left:16px;background:var(--shellDim) left center/11px 11px no-repeat}
+.jr textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;font-family:var(--sans);font-size:14.5px;color:var(--ink);background:#fff;resize:vertical;min-height:64px;line-height:1.45}
+.jr textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.jr .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.jr .row button{font-size:13px;padding:10px 15px}
+.jrNote{font-size:12px;color:var(--dim);margin-top:10px;line-height:1.5}
+.memHow{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 12px}
+.memHow summary{cursor:pointer;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--terra);padding:11px 0;list-style:none}
+.memHow summary::-webkit-details-marker{display:none}
+.memHow summary::before{content:"\25b8 ";display:inline-block;transition:transform .15s}
+.memHow[open] summary::before{content:"\25be "}
+.memHow p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.55}
+.memHow ol{margin:0 0 10px;padding-left:20px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.jr .fl .memHow b{display:inline;font-family:inherit;font-size:inherit;letter-spacing:normal;font-weight:600;
+  color:var(--ink);background:none;padding:0;margin:0}
+.syncNote{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:8px}
+.jrDays{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.jrDay{font-family:var(--mono);font-size:11px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--dim);cursor:pointer}
+.jrDay.has{border-color:var(--gold);background:#f7ecd4;color:var(--ink);font-weight:600}
+.jrDay.sel{outline:2px solid var(--terra);outline-offset:1px}
+.streak{font-family:var(--mono);font-size:11px;color:var(--terra);margin-left:8px;letter-spacing:0}
+.mem{display:flex;flex-direction:column;gap:7px;margin-top:9px}
+.gbList{margin-top:4px}
+.gbItem{border-top:1px solid var(--line2);padding:12px 0;display:flex;gap:10px;align-items:flex-start}
+.gbItem:first-child{border-top:none}
+.gbItem.aus{opacity:.45}
+.gbItem .body{flex:1;min-width:0}
+.gbItem .who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--terra)}
+.gbItem .when{font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-left:7px;letter-spacing:0}
+.gbItem p{margin:4px 0 0;font-size:14.5px;line-height:1.55;white-space:pre-wrap;overflow-wrap:break-word}
+.gbItem .tog{flex:0 0 auto;border:1px solid var(--line);background:#fff;box-shadow:none;color:var(--dim);
+  font-size:15px;padding:6px 9px;border-radius:10px;font-weight:400;cursor:pointer}
+.gbEmpty{color:var(--dim);font-size:14px;padding:14px 0}
+.gbNote{font-size:12px;color:var(--dim);margin-top:10px;line-height:1.5}
+.memRow{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:7px 10px}
+.memRow audio{flex:1;min-width:0;height:36px}
+.memRow .len{font-family:var(--mono);font-size:11px;color:var(--dim);flex:0 0 auto}
+.memRow .del{border:none;background:none;box-shadow:none;color:var(--dim);font-size:15px;padding:4px 6px;font-weight:400}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="stone">
+    <div class="eyebrow">BIS CABO FISTERRA</div>
+    <div class="bigk" id="bigk">430</div>
+    <div class="unit">KILOMETER</div>
+    <div class="sub" id="sub">Noch nicht losgelaufen.</div>
+    <div class="acts">
+      <button class="go" id="geoBtn" type="button">Wo bin ich?</button>
+      <button id="doneBtn" type="button">Etappe geschafft ✓</button>
+      <button class="ghost" id="backBtn" type="button">zurück</button>
+    </div>
+    <div class="hint" id="hint"></div>
+    <details class="manual" id="manualBox">
+      <summary>ZWISCHENSTAND VON HAND EINTRAGEN</summary>
+      <div class="mrow">
+        <select id="manualTo" aria-label="Ort auswählen"></select>
+        <input id="manualKm" type="number" inputmode="numeric" min="0" max="430" step="1" aria-label="Kilometer">
+        <span class="unit">km</span>
+      </div>
+      <button type="button" id="manualSave">Übernehmen</button>
+      <div class="mnote" id="manualNote">Ort aus der Liste wählen — oder die Kilometer direkt eintippen, auch mitten in einer Etappe. Geht ohne GPS.</div>
+    </details>
+    <div class="offline" id="offline"></div>
+    <div class="bar" id="bar"></div>
+  </div>
+
+  <div class="stats">
+    <div class="st"><b id="sDay">1/29</b><span>TAG</span></div>
+    <div class="st"><b id="sDone">0</b><span>KM GELAUFEN</span></div>
+    <div class="st"><b id="sPct">0%</b><span>GESCHAFFT</span></div>
+  </div>
+
+  <div class="card">
+    <h2>ROUTE</h2>
+    <canvas id="map" style="border-radius:12px"></canvas>
+    <div class="mapCred">Karte © OpenStreetMap-Mitwirkende</div>
+  </div>
+
+  <div class="card">
+    <h2>HÖHENPROFIL</h2>
+    <svg id="profile" viewBox="0 0 1048 230" role="img" aria-label="Höhenprofil der Route"></svg>
+  </div>
+
+  <div class="card">
+    <h2>GERADE</h2>
+    <img class="hero" id="heroImg" alt="" loading="lazy">
+    <div class="heroCred" id="heroCred">Foto: Wikimedia Commons</div>
+    <div class="now" id="nowName">Oviedo</div>
+    <div class="nowMeta" id="nowMeta"></div>
+    <div class="nowNote" id="nowNote"></div>
+    <dl class="prak">
+      <dt>SCHLAFEN</dt><dd id="pAlb">—</dd>
+      <dt>VENTIL</dt><dd id="pBus">—</dd>
+    </dl>
+    <div class="lnks">
+      <a class="lnk" id="lnkEssen" target="_blank" rel="noopener">🍴 Essen</a>
+      <a class="lnk" id="lnkBar" target="_blank" rel="noopener">☕ Bar &amp; Café</a>
+      <a class="lnk" id="lnkMarkt" target="_blank" rel="noopener">🛒 Markt</a>
+      <a class="lnk" id="lnkApo" target="_blank" rel="noopener">✚ Apotheke</a>
+    </div>
+    <div class="next" id="nextLine"></div>
+  </div>
+
+  <div class="card jr">
+    <h2>TAGEBUCH · <span id="jrTitle"></span><span class="streak" id="jrStreak"></span></h2>
+    <div class="jrDays" id="jrDays"></div>
+    <div class="fl"><b>ABSICHT DES TAGES</b><textarea id="jrA" placeholder="Womit gehst du heute Morgen los?"></textarea></div>
+    <input type="file" id="jrFile" accept="image/*" multiple>
+    <label class="ph" for="jrFile" id="jrPh">📷 Fotos des Tages · mehrere auf einmal möglich</label>
+    <div class="gal" id="jrGal"></div>
+    <label class="ph" for="jrFile" id="jrMore" style="display:none;padding:12px;font-size:12.5px">➕ Weitere Fotos hinzufügen</label>
+    <div class="fl"><b>SPRACHMEMOS</b>
+      <div class="mem" id="memList"></div>
+      <button type="button" id="memBtn" style="margin-top:9px;font-size:14px;padding:12px 18px">🎙️ Hier direkt aufnehmen</button>
+      <input type="file" id="memFile" style="display:none">
+      <button type="button" id="memPick" style="margin-top:9px;margin-left:7px;font-size:13px;padding:10px 15px">🎵 Aus Dateien wählen</button>
+      <div class="jrNote" id="memWarn" style="display:none"></div>
+      <div class="jrNote" id="memHint" style="display:none"></div>
+      <details class="memHow">
+        <summary>SPRACHMEMO AUS DER APPLE-APP HOLEN</summary>
+        <p>Aufnahmen der Sprachmemos-App liegen <b>nicht</b> in „Dateien“ — deshalb findest du sie hier nicht. So kommen sie hin:</p>
+        <ol>
+          <li>Sprachmemos-App öffnen, Aufnahme antippen</li>
+          <li>auf <b>⋯</b> tippen → <b>Teilen</b></li>
+          <li><b>In Dateien sichern</b> wählen, z. B. „Auf meinem iPhone“</li>
+          <li>zurück hierher, <b>Aus Dateien wählen</b> antippen</li>
+          <li>die Aufnahme <b>einmal antippen</b> — der Dialog schließt sich sofort und die Datei ist übernommen</li>
+        </ol>
+        <p>Schneller geht fast immer <b>Hier direkt aufnehmen</b> — die Aufnahme landet sofort im Tagebuch, ohne Umweg über Dateien.</p>
+      </details>
+    </div>
+    <div class="fl"><b>ZUM ERSTEN MAL</b><textarea id="jrF" placeholder="Was habe ich heute zum ersten Mal gemacht?"></textarea></div>
+    <div class="fl"><b>SCHWER GEFALLEN</b><textarea id="jrS" placeholder="Was ist mir heute schwer gefallen?"></textarea></div>
+    <div class="fl"><b>ÜBERRASCHT</b><textarea id="jrU" placeholder="Was hat mich heute überrascht?"></textarea></div>
+    <div class="fl"><b>GELERNT</b><textarea id="jrG" placeholder="Was habe ich heute gelernt?"></textarea></div>
+    <div class="fl"><b>FRAGE DES TAGES</b><textarea id="jrQ" placeholder="Was hat dich heute beschäftigt?"></textarea></div>
+    <div class="fl"><b>ERKENNTNIS DES TAGES</b><textarea id="jrE" placeholder="Was weißt du heute Abend, das du morgens noch nicht wusstest?"></textarea></div>
+    <div class="row">
+      <button class="go" type="button" id="jrShare">Tag teilen</button>
+      <button type="button" id="jrExport">Alles exportieren</button>
+      <button class="ghost" type="button" id="jrClear">Alle Fotos löschen</button>
+    </div>
+    <div class="syncNote" id="syncNote"></div>
+    <div class="jrNote" id="jrNote">Dein Tagebuch wird direkt in deiner Cloud gespeichert (Airtable + Google Drive) — nichts hängt mehr am Handy-Speicher. Kein Netz? Seite offen lassen, es wird automatisch nachgesendet.</div>
+  </div>
+
+  <div class="card">
+    <h2>GÄSTEBUCH · WAS DIR GESCHRIEBEN WIRD</h2>
+    <div class="gbList" id="gbList"></div>
+    <div class="gbNote" id="gbNote">Mit 🙈 blendest du einen Eintrag auf der Familienseite aus, mit 👁 wieder ein. Gelöscht wird nichts.</div>
+  </div>
+
+  <div class="card">
+    <h2>FREIGESCHALTET</h2>
+    <div class="miles" id="miles"></div>
+  </div>
+
+  <div class="card">
+    <h2>ALLE ETAPPEN · ANTIPPEN ZUM AUFKLAPPEN</h2>
+    <div class="stops" id="stops"></div>
+  </div>
+
+  <footer>Kilometer, Höhen, Herbergs- und Busangaben sind Richtwerte — vor Ort gilt Gronze bzw. die App.<br>Zum Navigieren die GPS-App nehmen — das hier ist der Blick von oben.<br>
+  <a id="liveLink" href="https://aiva179.app.n8n.cloud/webhook/camino-live?code=ultreia" target="_blank">Live-Seite für Familie &amp; Freunde öffnen</a> · Codewort: „ultreia"
+  <div class="stand">
+    <span id="standTxt"></span>
+    <button type="button" id="standBtn">Neu laden</button>
+  </div></footer>
+</div>
+
+<script>
+var START = new Date(2026,7,15,12,0,0);
+var TOTAL = 430;
+var LIVE = {
+  ingest:"https://aiva179.app.n8n.cloud/webhook/camino-ingest",
+  ping:"https://aiva179.app.n8n.cloud/webhook/camino-ping",
+  state:"https://aiva179.app.n8n.cloud/webhook/camino-state",
+  media:"https://aiva179.app.n8n.cloud/webhook/camino-media",
+  kommentar:"https://aiva179.app.n8n.cloud/webhook/camino-kommentar",
+  key:"camino-ingest-x7k42m",
+  pingKey:"camino-ping-v3n85q",
+  appCode:"fisterra430"
+};
+function mediaUrl(id){return LIVE.media+"?code="+LIVE.appCode+"&id="+encodeURIComponent(id)}
+
+var W = [
+ {n:"Oviedo",lat:43.362,lon:-5.845,km:0,d:1,e:230,
+  alb:"Volle Stadt: Herbergen, Pensionen, Hotels — freie Auswahl.",bus:"Zug und ALSA-Bus in alle Richtungen.",
+  note:"Credencial holen, ersten Stempel mitnehmen. Heute nur ankommen."},
+ {n:"Escamplero",lat:43.395,lon:-5.955,km:12,d:2,e:180,
+  alb:"1 kleine Herberge — früh da sein.",bus:"Kein Bus. Taxi nach Oviedo oder Grado (15 Min).",
+  note:"Kurz halten. Der Körper lernt gerade erst."},
+ {n:"Grado",lat:43.388,lon:-6.070,km:25,d:3,e:60,
+  alb:"Kommunale + private Herbergen, Pensionen.",bus:"ALSA nach Oviedo.",
+  zw:"Premoño (Bar), Peñaflor (Bar) kurz vor Grado."},
+ {n:"Cornellana",lat:43.395,lon:-6.170,km:37,d:4,e:50,
+  alb:"Herberge im Kloster San Salvador.",bus:"Bus Richtung Salas/Oviedo.",
+  zw:"San Juan de Villapañada (kommunale Herberge, km 4 ab Grado), Doriga (Bar)."},
+ {n:"Salas",lat:43.410,lon:-6.256,km:47,d:5,e:240,
+  alb:"Kommunal, privat, Pensionen.",bus:"ALSA Richtung Oviedo/Tineo.",
+  note:"Kürzester Tag. Bewusst so."},
+ {n:"Tineo",lat:43.336,lon:-6.415,km:67,d:6,e:650,
+  alb:"Kommunale + private Herbergen.",bus:"ALSA Oviedo–Tineo.",
+  note:"Erster langer Anstieg.",
+  zw:"Bodenaya (kleine Donativo-Herberge), La Espina (Bars, Laden), El Pedregal (Herberge)."},
+ {n:"Campiello",lat:43.297,lon:-6.518,km:84,d:7,e:650,
+  alb:"2 private (Casa Herminia, Casa Ricardo) — im August anrufen.",bus:"Kein Bus. Taxi über Tineo.",
+  note:"Heute Abend entscheiden: Hospitales oder Pola de Allande. Wetterbericht fragen, nicht das Ego.",
+  zw:"3 km weiter: Borres (kommunale Herberge) — letzter Schlafplatz vor der Hospitales-Entscheidung."},
+ {n:"Berducedo",lat:43.267,lon:-6.712,km:110,d:8,e:900,
+  alb:"Mehrere kleine private Herbergen.",bus:"Kein Bus. Taxi nach Pola oder Grandas.",
+  note:"Hospitales: Kammweg bis ~1.100 m, keine Versorgung, keine Ausweiche. Wasser für den ganzen Tag.",
+  zw:"Hospitales-Variante: nichts — wirklich nichts. Über Pola de Allande: volle Versorgung in Pola."},
+ {n:"Grandas de Salime",lat:43.216,lon:-6.876,km:130,d:9,e:560,
+  alb:"Kommunale + private Herberge.",bus:"Seltener Bus Richtung Lugo — eher Taxi.",
+  note:"Der lange Abstieg zum Stausee (runter auf ~250 m, wieder rauf). Stöcke lang, Tempo raus.",
+  zw:"La Mesa (Herberge, km 6), am Stausee Hotel mit Bar."},
+ {n:"A Fonsagrada",lat:43.125,lon:-7.068,km:155,d:10,e:950,
+  alb:"Kommunale + mehrere private.",bus:"Bus nach Lugo (1–2x täglich).",
+  note:"Galicien. Ab hier klingt alles anders.",
+  zw:"Castro (Bar + Herberge, km 5 ab Grandas), danach lange wenig — eindecken."},
+ {n:"O Cádavo",lat:43.135,lon:-7.278,km:179,d:11,e:700,
+  alb:"Kommunale + private Herberge.",bus:"Bus nach Lugo.",
+  zw:"Paradavella (Bar), A Lastra (Bar)."},
+ {n:"Castroverde",lat:43.031,lon:-7.335,km:191,d:12,e:580,
+  alb:"Kleine kommunale Herberge.",bus:"Bus nach Lugo."},
+ {n:"Lugo",lat:43.012,lon:-7.556,km:210,d:13,e:460,
+  alb:"Alles da — Herbergen bis Hotel.",bus:"Bus und Zug in alle Richtungen.",
+  note:"Römische Stadtmauer. Eine richtige Stadt nach zwei Wochen Dorf.",
+  zw:"Kaum Einkehr auf der Strecke — Proviant aus Castroverde mitnehmen."},
+ {n:"Lugo · Ruhetag",lat:43.012,lon:-7.556,km:210,d:14,e:460,
+  alb:"Zweite Nacht — ggf. Pension statt Herberge.",bus:"—",
+  note:"Wäsche, Schlaf, Füße. Ehrliche Zwischenbilanz: Was hält, was nicht?"},
+ {n:"San Román da Retorta",lat:42.930,lon:-7.669,km:230,d:15,e:480,
+  alb:"Kleine kommunale + 1 private.",bus:"Kein Bus. Taxi nach Lugo."},
+ {n:"Ferreira",lat:42.895,lon:-7.795,km:244,d:16,e:400,
+  alb:"1–2 kleine private Herbergen.",bus:"Kein Bus. Taxi."},
+ {n:"Melide",lat:42.914,lon:-8.014,km:259,d:17,e:450,
+  alb:"Viele Herbergen — ab hier Francés-Infrastruktur.",bus:"Busse nach Santiago und Lugo.",
+  note:"Letzter stiller Abend. Ab morgen bist du nicht mehr allein. Pulpo essen."},
+ {n:"Arzúa",lat:42.929,lon:-8.163,km:273,d:18,e:390,
+  alb:"Sehr viele Betten, alle Kategorien.",bus:"Bus nach Santiago.",
+  note:"Francés. Früh los, mittags da — morgens ist der Weg leerer.",
+  zw:"Francés-Dichte: alle 2–3 km Bars und Herbergen."},
+ {n:"O Pedrouzo",lat:42.909,lon:-8.360,km:292,d:19,e:280,
+  alb:"Sehr viele Betten.",bus:"Bus nach Santiago."},
+ {n:"Santiago",lat:42.881,lon:-8.545,km:312,d:20,e:260,
+  alb:"Alles — für heute Nacht vorgebucht.",bus:"Flughafen, Bahnhof, Busbahnhof.",
+  note:"Kathedrale. Compostela holen. Und dann erstmal hinsetzen."},
+ {n:"Santiago · Ruhetag",lat:42.881,lon:-8.545,km:312,d:21,e:260,
+  alb:"Zweite Nacht.",bus:"—",
+  note:"Nicht dein Ziel. Dein Wendepunkt."},
+ {n:"Negreira",lat:42.905,lon:-8.735,km:333,d:22,e:160,
+  alb:"Kommunale + mehrere private.",bus:"Bus zurück nach Santiago.",
+  note:"Der Trubel fällt schon nach einer Stunde ab.",
+  zw:"Ponte Maceira (Postkartenbrücke, Bar) kurz vor Negreira."},
+ {n:"Vilaserío",lat:42.965,lon:-8.816,km:346,d:23,e:320,
+  alb:"1–2 kleine Herbergen — früh da sein.",bus:"Kein Bus. Taxi nach Negreira."},
+ {n:"Olveiroa",lat:42.945,lon:-9.048,km:366,d:24,e:270,
+  alb:"Kommunale + private.",bus:"Sehr wenig — Taxi nach Cee.",
+  note:"Hier trennen sich Muxía und Fisterra. Du gehst erst nach Muxía.",
+  zw:"Santa Mariña (Bar, Herberge), A Picota (Bars, Läden, Apotheke)."},
+ {n:"Dumbría",lat:43.000,lon:-9.114,km:376,d:25,e:230,
+  alb:"Kleine kommunale Herberge.",bus:"Kein Bus. Taxi.",
+  zw:"O Logoso (Herberge + Bar), Hospital (Bar am Abzweig Muxía/Fisterra — letzter sicherer Stopp)."},
+ {n:"Muxía",lat:43.105,lon:-9.218,km:398,d:26,e:10,
+  alb:"Kommunale + private + Pensionen — vorgebucht.",bus:"Bus nach Santiago (wenige pro Tag — Zeiten prüfen).",
+  note:"Virxe da Barca steht direkt auf den Felsen. Muxiana holen.",
+  zw:"Nach Dumbría dünn — Wasser und Snack mitnehmen, Einkehr erst wieder Richtung Muxía."},
+ {n:"Lires",lat:43.005,lon:-9.230,km:413,d:27,e:20,
+  alb:"Pensionen und Casas rurales — winziger Ort.",bus:"Kein Bus. Taxi nach Cee.",
+  note:"Küste."},
+ {n:"Finisterre",lat:42.905,lon:-9.263,km:427,d:28,e:10,
+  alb:"Viele Betten, aber Hochsaison — vorgebucht.",bus:"Bus nach Santiago mehrmals täglich (2–3 h).",
+  note:"Fisterrana holen. Morgen sind es nur noch drei Kilometer."},
+ {n:"Cabo Fisterra",lat:42.883,lon:-9.272,km:430,d:29,e:120,
+  alb:"—",bus:"3 km zurück in den Ort, von dort Bus nach Santiago.",
+  note:"Kilometerstein 0. Der Weg hört hier auf, weil das Land aufhört."}
+];
+
+var MILES = [
+ {i:7,t:"Puerto del Palo"},{i:8,t:"Salime"},{i:9,t:"Galicien"},{i:13,t:"Halbzeit Lugo"},
+ {i:17,t:"Francés"},{i:19,t:"Compostela"},{i:26,t:"Muxiana",sea:true},{i:28,t:"Kilometer 0",sea:true}
+];
+
+var PH_FILES=["https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cathedral_of_Oviedo_2021_-_exterior.jpg/1280px-Cathedral_of_Oviedo_2021_-_exterior.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Ayuntamientu_de_Grau_%28Asturies%29.JPG/1280px-Ayuntamientu_de_Grau_%28Asturies%29.JPG","https://upload.wikimedia.org/wikipedia/commons/4/4e/Salas.png","https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Tineo.JPG/1280px-Tineo.JPG","https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2009Somiedo_%287%29.JPG/1280px-2009Somiedo_%287%29.JPG","https://upload.wikimedia.org/wikipedia/commons/7/75/Grandas_de_Salime.png","https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Casa_concello_A_Fonsagrada.JPG/1280px-Casa_concello_A_Fonsagrada.JPG","https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Muralla_de_Lugo_-_03.jpg/1280px-Muralla_de_Lugo_-_03.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Durante_el_camino_de_Santiago.jpg/1280px-Durante_el_camino_de_Santiago.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Panor%C3%A1mica_da_Vila_de_Melide.jpeg/1280px-Panor%C3%A1mica_da_Vila_de_Melide.jpeg","https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Santiago_cathedral_2021.jpg/1280px-Santiago_cathedral_2021.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Rio_Tambre.Portor.Ponte_Maceira.jpg/1280px-Rio_Tambre.Portor.Ponte_Maceira.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/20240126_090324_Santuario_de_Nuestra_Se%C3%B1ora_de_la_Barca.jpg/1280px-20240126_090324_Santuario_de_Nuestra_Se%C3%B1ora_de_la_Barca.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Finisterre.JPG/1280px-Finisterre.JPG"];
+var PH_IDX=[0,1,1,2,2,3,3,4,5,6,6,7,7,7,8,8,9,8,8,10,10,11,11,8,8,12,13,13,13];
+function stagePhoto(i){return PH_FILES[PH_IDX[i]]}
+
+/* ---- Server-Zustand (einzige Wahrheit) ---- */
+var DAYS={}, IDX=0, stateLoaded=false, openIdx=-1;
+var KM_JETZT=null, manualBeruehrt=false;
+function kmJetzt(){return (KM_JETZT!=null)?KM_JETZT:W[IDX].km;}
+function kmMerken(km){
+  KM_JETZT=km;
+  try{
+    if(km==null)localStorage.removeItem("camino_km_jetzt");
+    else localStorage.setItem("camino_km_jetzt",JSON.stringify({km:km,idx:IDX}));
+  }catch(e){}
+}
+function kmHolen(){
+  try{
+    var o=JSON.parse(localStorage.getItem("camino_km_jetzt")||"null");
+    if(o&&typeof o.km==="number"&&o.idx===IDX)KM_JETZT=o.km;else KM_JETZT=null;
+  }catch(e){KM_JETZT=null;}
+}
+var dirty={}, syncTimers={}, syncBusy={};
+var pendPhotos={}, pendMemos={};
+var KOMMENTARE=[];
+var jrDay=1;
+
+function jGet(d){var o=DAYS[d];if(!o){o={a:"",f:"",s:"",u:"",g:"",q:"",e:"",foto:"",fotos:[],memos:[]};}
+  if(!o.memos)o.memos=[];
+  if(!o.fotos)o.fotos=o.foto?[o.foto]:[];
+  return o;}
+function jFotos(o){return (o&&o.fotos&&o.fotos.length)?o.fotos:((o&&o.foto)?[o.foto]:[]);}
+function jSetLocal(d,o){DAYS[d]=o;}
+function jTxt(v){return !!(v&&String(v).trim())}
+function jHas(o){return !!(o&&(jFotos(o).length||(o.memos&&o.memos.length)||jTxt(o.a)||jTxt(o.q)||jTxt(o.e)||jTxt(o.f)||jTxt(o.s)||jTxt(o.u)||jTxt(o.g)))}
+function hasPend(d){return !!((pendPhotos[d]&&pendPhotos[d].length)||(pendMemos[d]&&pendMemos[d].length))}
+function dayComplete(o){return jTxt(o.a)&&jTxt(o.f)&&jTxt(o.s)&&jTxt(o.u)&&jTxt(o.g)&&jTxt(o.q)&&jTxt(o.e)}
+function anyDirty(){for(var k in dirty){if(dirty[k])return true;}return false;}
+
+function loadState(cb){
+  fetch(LIVE.state+"?code="+LIVE.appCode,{cache:"no-store"})
+    .then(function(r){return r.json();})
+    .then(function(j){
+      if(j&&j.ok){
+        IDX=Math.max(0,Math.min(W.length-1,j.idx||0));
+        (j.days||[]).forEach(function(d){
+          if(dirty[d.tag])return;
+          DAYS[d.tag]={a:d.a||"",f:d.f||"",s:d.s||"",u:d.u||"",g:d.g||"",q:d.q||"",e:d.e||"",
+            foto:d.foto||"",fotos:(d.fotos&&d.fotos.length)?d.fotos:(d.foto?[d.foto]:[]),memos:d.memos||[]};
+        });
+        KOMMENTARE=(j.kommentare||[]).slice();
+        renderKommentare();
+        stateLoaded=true;
+        document.getElementById("offline").style.display="none";
+      }
+      cb(true);
+    })
+    .catch(function(){
+      var of=document.getElementById("offline");
+      of.textContent="⚠️ Keine Verbindung zum Tagebuch-Speicher. Eingaben werden erst gesichert, wenn wieder Netz da ist — Seite bitte offen lassen.";
+      of.style.display="block";
+      cb(false);
+    });
+}
+
+var syncSeq={};
+function queueSync(d){
+  dirty[d]=1;updateSyncUI();
+  if(syncTimers[d])clearTimeout(syncTimers[d]);
+  syncTimers[d]=setTimeout(function(){syncDay(d);},2500);
+}
+function b64OfBlob(blob,cb){
+  var r=new FileReader();
+  r.onload=function(ev){var s=String(ev.target.result);var i=s.indexOf(",");cb(i>0?s.slice(i+1):null);};
+  r.onerror=function(){cb(null);};
+  r.readAsDataURL(blob);
+}
+function isoOf(day){
+  var d=new Date(START.getTime());d.setDate(d.getDate()+(day-1));
+  return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);
+}
+function stageOf(d){for(var i=0;i<W.length;i++){if(W[i].d===d)return W[i];}return null;}
+
+function syncDay(d){
+  if(!stateLoaded||syncBusy[d])return;
+  syncBusy[d]=true;updateSyncUI(true);
+  var o=jGet(d),st=stageOf(d);
+  var payload={key:LIVE.key,day:d,date:isoOf(d),stage:st?st.n:"",km:st?st.km:0,
+    a:o.a||"",f:o.f||"",s:o.s||"",u:o.u||"",g:o.g||"",q:o.q||"",e:o.e||"",
+    keepFotos:jFotos(o).slice(),keepFotoId:jFotos(o)[0]||"",keepMemos:o.memos||[]};
+  var pp=(pendPhotos[d]||[]).slice(),phOut=[],pi;
+  for(pi=0;pi<pp.length;pi++){var cm=String(pp[pi]).indexOf(",");if(cm>0)phOut.push({b64:String(pp[pi]).slice(cm+1)});}
+  if(phOut.length)payload.photos=phOut;
+  var pm=(pendMemos[d]||[]).slice(),out=[],i=0;
+  function next(){
+    if(i>=pm.length){send();return;}
+    var m=pm[i];i++;
+    b64OfBlob(m.blob,function(b){if(b)out.push({b64:b,mime:m.mime,name:m.name||"",dur:m.dur});next();});
+  }
+  function send(){
+    payload.memos=out;
+    fetch(LIVE.ingest,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+      .then(function(r){return r.json();})
+      .then(function(j){
+        syncBusy[d]=false;
+        if(j&&j.ok){
+          var cur=jGet(d);
+          cur.fotos=(j.fotos&&j.fotos.length)?j.fotos:(j.foto?[j.foto]:[]);
+          cur.foto=j.foto||cur.fotos[0]||"";cur.memos=j.memos||[];jSetLocal(d,cur);
+          pendPhotos[d]=(pendPhotos[d]||[]).slice(pp.length);
+          pendMemos[d]=(pendMemos[d]||[]).slice(pm.length);
+          dirty[d]=0;
+          if(d===jrDay){renderJournal();renderMemos();}
+        }
+        updateSyncUI();
+      })
+      .catch(function(){syncBusy[d]=false;updateSyncUI();});
+  }
+  next();
+}
+function flushDirty(){
+  if(!stateLoaded){loadState(function(ok){if(ok){render();renderJournal();renderMemos();flushDirty();}});return;}
+  for(var d in dirty){if(dirty[d])syncDay(parseInt(d,10));}
+}
+function updateSyncUI(sending){
+  var el=document.getElementById("syncNote");
+  if(!stateLoaded){el.textContent="⚠️ Noch keine Verbindung — Eingaben sind ungesichert.";return;}
+  var n=0;for(var k in dirty){if(dirty[k])n++;}
+  el.textContent=sending?"☁️ Speichere…":n?("⏳ "+n+" Tag"+(n>1?"e":"")+" noch nicht gesichert — wird automatisch nachgeholt."):"☁️ Alles in deiner Cloud gespeichert.";
+}
+function sendIdx(){
+  fetch(LIVE.ping+"?key="+LIVE.pingKey,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({setIdx:IDX})}).catch(function(){});
+}
+function sendPing(lat,lon,src){
+  return fetch(LIVE.ping+"?key="+LIVE.pingKey,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({src:src||"app",lat:lat,lon:lon})});
+}
+
+function dist(a,b,c,d){
+  var R=6371,r=Math.PI/180,dLat=(c-a)*r,dLon=(d-b)*r;
+  var x=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(a*r)*Math.cos(c*r)*Math.sin(dLon/2)*Math.sin(dLon/2);
+  return 2*R*Math.asin(Math.sqrt(x));
+}
+function nearRoute(lat,lon){
+  var bd=1e9;
+  for(var i=0;i<W.length;i++){var dd=dist(lat,lon,W[i].lat,W[i].lon);if(dd<bd)bd=dd;}
+  return bd<=120;
+}
+function autoPing(){
+  if(!navigator.geolocation)return;
+  navigator.geolocation.getCurrentPosition(function(p){
+    if(nearRoute(p.coords.latitude,p.coords.longitude))sendPing(p.coords.latitude,p.coords.longitude);
+  },function(){},{enableHighAccuracy:false,timeout:10000,maximumAge:120000});
+}
+
+/* ---- Konfetti & Feiern ---- */
+var confCanvas=null,confCtx=null,confParts=[],confRun=false;
+function confetti(n,big){
+  try{
+    if(!confCanvas){
+      confCanvas=document.createElement("canvas");
+      confCanvas.style.cssText="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999";
+      document.body.appendChild(confCanvas);
+      confCtx=confCanvas.getContext("2d");
+    }
+    confCanvas.width=window.innerWidth;confCanvas.height=window.innerHeight;
+    var cols=["#c9962e","#c26744","#7d8455","#2f7f8f","#e8c76a","#ffffff"];
+    for(var i=0;i<n;i++){
+      confParts.push({x:window.innerWidth/2+(Math.random()-0.5)*window.innerWidth*0.7,
+        y:window.innerHeight*(big?0.28:0.35),
+        vx:(Math.random()-0.5)*9,vy:-(4+Math.random()*9),g:0.25+Math.random()*0.15,
+        s:4+Math.random()*5,c:cols[Math.floor(Math.random()*cols.length)],
+        r:Math.random()*Math.PI,vr:(Math.random()-0.5)*0.3,life:80+Math.random()*60});
+    }
+    if(!confRun){confRun=true;requestAnimationFrame(confTick);}
+    if(navigator.vibrate)navigator.vibrate(big?[40,60,40]:30);
+  }catch(e){}
+}
+function confTick(){
+  confCtx.clearRect(0,0,confCanvas.width,confCanvas.height);
+  var alive=[];
+  for(var i=0;i<confParts.length;i++){var p=confParts[i];
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.r+=p.vr;p.life--;
+    if(p.life>0&&p.y<confCanvas.height+20){alive.push(p);
+      confCtx.save();confCtx.translate(p.x,p.y);confCtx.rotate(p.r);
+      confCtx.fillStyle=p.c;confCtx.globalAlpha=Math.min(1,p.life/40);
+      confCtx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.6);confCtx.restore();}}
+  confParts=alive;
+  if(confParts.length){requestAnimationFrame(confTick);}
+  else{confRun=false;confCtx.clearRect(0,0,confCanvas.width,confCanvas.height);}
+}
+function banner(txt){
+  var b=document.createElement("div");
+  b.style.cssText="position:fixed;top:18%;left:50%;transform:translateX(-50%) scale(.8);background:#fffaf1;border:2px solid #c9962e;border-radius:18px;padding:16px 26px;font-weight:800;font-size:17px;color:#2e2a24;box-shadow:0 14px 40px rgba(87,66,37,.25);z-index:10000;transition:all .25s ease;opacity:0;text-align:center;max-width:82vw";
+  b.textContent=txt;document.body.appendChild(b);
+  setTimeout(function(){b.style.opacity="1";b.style.transform="translateX(-50%) scale(1)";},20);
+  setTimeout(function(){b.style.opacity="0";},2400);
+  setTimeout(function(){if(b.parentNode)b.parentNode.removeChild(b);},2900);
+}
+
+function locate(){
+  var h=document.getElementById("hint");
+  if(!navigator.geolocation){h.className="hint err";h.textContent="Kein Standortzugriff in diesem Browser.";return;}
+  h.className="hint";h.textContent="Suche Standort…";
+  navigator.geolocation.getCurrentPosition(function(p){
+    var best=0,bd=1e9,i,d;
+    for(i=0;i<W.length;i++){d=dist(p.coords.latitude,p.coords.longitude,W[i].lat,W[i].lon);if(d<bd){bd=d;best=i;}}
+    if(bd>120){h.className="hint err";h.textContent="Über "+Math.round(bd)+" km vom Weg entfernt — noch zu Hause?";return;}
+    IDX=best;kmMerken(null);manualPrefill();sendIdx();render();
+    sendPing(p.coords.latitude,p.coords.longitude);
+    h.className="hint";h.textContent="Nächster Punkt: "+W[best].n+" ("+bd.toFixed(1)+" km entfernt)";
+  },function(){h.className="hint err";h.textContent="Standort nicht verfügbar — nimm die Knöpfe.";},
+  {enableHighAccuracy:true,timeout:12000,maximumAge:60000});
+}
+
+/* ---- Zwischenstand von Hand ---- */
+function posAtKm(km){
+  km=Math.max(0,Math.min(TOTAL,km));
+  for(var i=0;i<W.length-1;i++){
+    if(km>=W[i].km&&km<=W[i+1].km){
+      var d=W[i+1].km-W[i].km;
+      var t=d>0?(km-W[i].km)/d:0;
+      return {lat:W[i].lat+(W[i+1].lat-W[i].lat)*t,lon:W[i].lon+(W[i+1].lon-W[i].lon)*t};
+    }
+  }
+  return {lat:W[W.length-1].lat,lon:W[W.length-1].lon};
+}
+function idxAtKm(km){
+  var best=0;
+  for(var i=0;i<W.length;i++){if(W[i].km<=km)best=i;}
+  return best;
+}
+function manualNote(txt,art){
+  var el=document.getElementById("manualNote");
+  el.className="mnote"+(art?" "+art:"");
+  el.textContent=txt;
+}
+function manualInit(){
+  var sel=document.getElementById("manualTo");
+  if(!sel||sel.options.length)return;
+  var opt=document.createElement("option");
+  opt.value="";opt.textContent="Ort wählen …";
+  sel.appendChild(opt);
+  var gesehen={};
+  for(var i=0;i<W.length;i++){
+    var schluessel=W[i].n+"|"+W[i].km;
+    if(gesehen[schluessel])continue;
+    gesehen[schluessel]=1;
+    var o=document.createElement("option");
+    o.value=String(W[i].km);
+    o.textContent=W[i].n+" · km "+W[i].km;
+    sel.appendChild(o);
+  }
+  sel.onchange=function(){
+    if(sel.value!==""){document.getElementById("manualKm").value=sel.value;manualBeruehrt=true;}
+  };
+  document.getElementById("manualKm").oninput=function(){manualBeruehrt=true;};
+  manualPrefill();
+}
+function manualPrefill(){
+  var feld=document.getElementById("manualKm");
+  if(!feld||manualBeruehrt)return;
+  feld.value=kmJetzt();
+}
+function manualSave(){
+  var feld=document.getElementById("manualKm");
+  var km=parseInt(feld.value,10);
+  if(isNaN(km)||km<0||km>TOTAL){
+    manualNote("Bitte eine Zahl zwischen 0 und "+TOTAL+" eintragen.","err");
+    feld.focus();return;
+  }
+  var btn=document.getElementById("manualSave");
+  btn.disabled=true;
+  manualNote("Wird gespeichert …");
+  var p=posAtKm(km);
+  IDX=idxAtKm(km);
+  kmMerken(km);
+  manualBeruehrt=false;
+  sendIdx();
+  render();
+  sendPing(p.lat,p.lon,"manuell")
+    .then(function(){
+      btn.disabled=false;
+      manualNote("Eingetragen: "+km+" km — noch "+(TOTAL-km)+" km bis zum Kap. Die Familienseite zeigt es beim nächsten Laden.","ok");
+      confetti(80,false);
+    })
+    .catch(function(){
+      btn.disabled=false;
+      manualNote("Kein Netz — noch nicht gespeichert. Bitte später nochmal auf Übernehmen tippen.","err");
+    });
+}
+
+/* ---- Echte Karte (OSM-Kacheln) ---- */
+function lon2tx(lon,z){return (lon+180)/360*Math.pow(2,z)}
+function lat2ty(lat,z){var r=lat*Math.PI/180;return (1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*Math.pow(2,z)}
+function drawRealMap(canvas,curLat,curLon,kmNow){
+  var z=9,i;
+  var minLat=42.78,maxLat=43.52,minLon=-9.45,maxLon=-5.62;
+  var tx0=Math.floor(lon2tx(minLon,z)),tx1=Math.floor(lon2tx(maxLon,z));
+  var ty0=Math.floor(lat2ty(maxLat,z)),ty1=Math.floor(lat2ty(minLat,z));
+  canvas.width=(tx1-tx0+1)*256;canvas.height=(ty1-ty0+1)*256;
+  var ctx=canvas.getContext("2d");
+  ctx.fillStyle="#e9e4d8";ctx.fillRect(0,0,canvas.width,canvas.height);
+  function X(lon){return (lon2tx(lon,z)-tx0)*256}
+  function Y(lat){return (lat2ty(lat,z)-ty0)*256}
+  var routeDrawn=false;
+  function drawRoute(){
+    if(routeDrawn)return;routeDrawn=true;
+    ctx.lineCap="round";ctx.lineJoin="round";
+    ctx.strokeStyle="rgba(46,42,36,0.4)";ctx.lineWidth=5;
+    ctx.beginPath();
+    for(i=0;i<W.length;i++){i?ctx.lineTo(X(W[i].lon),Y(W[i].lat)):ctx.moveTo(X(W[i].lon),Y(W[i].lat));}
+    ctx.stroke();
+    if(kmNow>0){
+      ctx.strokeStyle=kmNow>=312?"#2f7f8f":kmNow>=259?"#7d8455":"#c9962e";ctx.lineWidth=7;
+      ctx.beginPath();var st=false;
+      for(i=0;i<W.length&&W[i].km<=kmNow;i++){st?ctx.lineTo(X(W[i].lon),Y(W[i].lat)):(ctx.moveTo(X(W[i].lon),Y(W[i].lat)),st=true);}
+      if(st&&curLat!=null)ctx.lineTo(X(curLon),Y(curLat));
+      if(st)ctx.stroke();
+    }
+    for(i=0;i<W.length;i++){
+      ctx.beginPath();ctx.arc(X(W[i].lon),Y(W[i].lat),4,0,7);
+      ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#8a7c66";ctx.lineWidth=2;ctx.stroke();
+    }
+    var L=[[0,"Oviedo",-16],[12,"Lugo",-16],[19,"Santiago",30],[25,"Muxía",-16],[28,"Kap Fisterra",30]];
+    ctx.font="600 22px system-ui,sans-serif";ctx.textAlign="center";
+    for(i=0;i<L.length;i++){var w=W[L[i][0]],x=X(w.lon),y=Y(w.lat)+L[i][2];
+      ctx.lineWidth=6;ctx.strokeStyle="rgba(255,255,255,0.92)";ctx.strokeText(L[i][1],x,y);
+      ctx.fillStyle="#2e2a24";ctx.fillText(L[i][1],x,y);}
+    var cx=curLat!=null?X(curLon):X(W[0].lon),cy=curLat!=null?Y(curLat):Y(W[0].lat);
+    ctx.beginPath();ctx.arc(cx,cy,12,0,7);
+    ctx.fillStyle=kmNow>=312?"#2f7f8f":"#c26744";ctx.fill();
+    ctx.lineWidth=4;ctx.strokeStyle="#fff";ctx.stroke();
+  }
+  var total=(tx1-tx0+1)*(ty1-ty0+1),done=0;
+  for(var tx=tx0;tx<=tx1;tx++){for(var ty=ty0;ty<=ty1;ty++){(function(tx,ty){
+    var img=new Image();
+    img.onload=function(){ctx.drawImage(img,(tx-tx0)*256,(ty-ty0)*256);done++;if(done>=total)drawRoute();};
+    img.onerror=function(){done++;if(done>=total)drawRoute();};
+    img.src="https://tile.openstreetmap.org/"+z+"/"+tx+"/"+ty+".png";
+  })(tx,ty);}}
+  setTimeout(drawRoute,4000);
+}
+function drawMap(){
+  drawRealMap(document.getElementById("map"),W[IDX].lat,W[IDX].lon,W[IDX].km);
+}
+
+/* ---- Höhenprofil ---- */
+var PW=1048,PH=230,PPAD=30,EMAX=1150;
+function ex(w){return PPAD+ w.km/TOTAL*(PW-2*PPAD)}
+function ey(w){return (PH-26) - w.e/EMAX*(PH-70)}
+function epts(a,b){var s=[],i;for(i=a;i<=b;i++){s.push(ex(W[i]).toFixed(1)+","+ey(W[i]).toFixed(1));}return s.join(" ")}
+function drawProfile(){
+  var m=document.getElementById("profile");
+  var s="",i,lv=[0,500,1000];
+  for(i=0;i<lv.length;i++){
+    var y=(PH-26)-lv[i]/EMAX*(PH-70);
+    s+='<line class="grid" x1="'+PPAD+'" y1="'+y.toFixed(1)+'" x2="'+(PW-PPAD)+'" y2="'+y.toFixed(1)+'"/>';
+    s+='<text class="gl" x="4" y="'+(y+3).toFixed(1)+'">'+lv[i]+'m</text>';
+  }
+  s+='<polygon class="fill" points="'+PPAD+','+(PH-26)+' '+epts(0,28)+' '+(PW-PPAD)+','+(PH-26)+'"/>';
+  s+='<polyline class="base" points="'+epts(0,28)+'"/>';
+  if(IDX>0)  s+='<polyline class="walk" stroke="#c9962e" points="'+epts(0,Math.min(IDX,16))+'"/>';
+  if(IDX>16) s+='<polyline class="walk" stroke="#7d8455" points="'+epts(16,Math.min(IDX,20))+'"/>';
+  if(IDX>20) s+='<polyline class="walk" stroke="#2f7f8f" points="'+epts(20,IDX)+'"/>';
+  var pk=[{i:8,t:"Hospitales"},{i:9,t:"Palo"},{i:10,t:"Fonsagrada"}];
+  for(i=0;i<pk.length;i++){var w=W[pk[i].i];
+    s+='<text class="lbl" x="'+ex(w).toFixed(1)+'" y="'+(ey(w)-8).toFixed(1)+'" text-anchor="middle">'+pk[i].t+'</text>';}
+  var c=W[IDX],col=IDX>=21?"#2f7f8f":"#c26744";
+  s+='<circle class="here" fill="'+col+'" cx="'+ex(c).toFixed(1)+'" cy="'+ey(c).toFixed(1)+'" r="6.5"/>';
+  m.innerHTML=s;
+}
+
+function dateOf(day){
+  var d=new Date(START.getTime()); d.setDate(d.getDate()+(day-1));
+  var wd=["So","Mo","Di","Mi","Do","Fr","Sa"][d.getDay()];
+  return wd+" "+("0"+d.getDate()).slice(-2)+"."+("0"+(d.getMonth()+1)).slice(-2)+".";
+}
+
+function render(){
+  var w=W[IDX],km=kmJetzt(),left=TOTAL-km,pct=Math.round(km/TOTAL*100);
+  var bk=document.getElementById("bigk");
+  bk.textContent=left===0?"0":left;
+  bk.className="bigk"+(left===0?" zero":"");
+  document.getElementById("sub").textContent=
+    left===0?"Der Weg hört hier auf. Du bist angekommen."
+    :IDX===0?"Noch nicht losgelaufen. Der Stein steht ganz am Anfang."
+    :"Du hast "+km+" km hinter dir. Der Rest ist nur noch Gehen.";
+  var seg1=Math.min(km,259),seg2=Math.min(Math.max(km-259,0),53),seg3=Math.max(km-312,0);
+  document.getElementById("bar").innerHTML=
+    '<i style="width:'+(seg1/TOTAL*100)+'%;background:#c9962e"></i>'+
+    '<i style="width:'+(seg2/TOTAL*100)+'%;background:#7d8455"></i>'+
+    '<i style="width:'+(seg3/TOTAL*100)+'%;background:#2f7f8f"></i>';
+  document.getElementById("sDay").textContent=w.d+"/29";
+  document.getElementById("sDone").textContent=km;
+  document.getElementById("sPct").textContent=pct+"%";
+  var hero=document.getElementById("heroImg"),hc=document.getElementById("heroCred");
+  hero.style.display="none";hc.style.display="none";
+  hero.onload=function(){hero.style.display="block";hc.style.display="block";};
+  hero.onerror=function(){hero.style.display="none";hc.style.display="none";};
+  hero.src=stagePhoto(IDX);
+  document.getElementById("nowName").textContent=w.n;
+  document.getElementById("nowMeta").textContent="Tag "+w.d+" · "+dateOf(w.d)+" · km "+w.km+" · "+w.e+" m";
+  var nn=document.getElementById("nowNote");
+  if(w.note){nn.textContent=w.note;nn.style.display="block";}else{nn.style.display="none";}
+  document.getElementById("pAlb").textContent=w.alb||"—";
+  document.getElementById("pBus").textContent=w.bus||"—";
+  function gmaps(q){return "https://www.google.com/maps/search/"+q+"/@"+w.lat+","+w.lon+",16z"}
+  document.getElementById("lnkEssen").href=gmaps("restaurant");
+  document.getElementById("lnkBar").href=gmaps("bar+cafeteria");
+  document.getElementById("lnkMarkt").href=gmaps("supermercado");
+  document.getElementById("lnkApo").href=gmaps("farmacia");
+  var nx=W[IDX+1];
+  var climb = nx ? (nx.e-w.e) : 0;
+  document.getElementById("nextLine").innerHTML=
+    nx?'Als Nächstes: <b>'+nx.n+'</b> — '+(nx.km-w.km)+' km, '+(climb>=0?'+':'')+climb+' m':'Nichts mehr. Nur noch Meer.';
+  var mh=document.getElementById("miles"),i;mh.innerHTML="";
+  for(i=0;i<MILES.length;i++){var m=MILES[i],sp=document.createElement("span");
+    sp.className="mile"+(IDX>=m.i?" on":"")+(m.sea?" sea":"");sp.textContent=m.t;mh.appendChild(sp);}
+  var sh=document.getElementById("stops");sh.innerHTML="";
+  for(i=0;i<W.length;i++){(function(i){
+    var x=W[i],r=document.createElement("div");
+    r.className="stop"+(i<IDX?" done":"")+(i===IDX?" here":"")+(i===openIdx?" open":"");
+    r.innerHTML='<div class="d">'+dateOf(x.d)+'</div><div class="n">'+x.n+'</div><div class="k">'+x.km+' km</div>';
+    r.onclick=function(){openIdx=(openIdx===i?-1:i);render();};
+    sh.appendChild(r);
+    var det=document.createElement("div");
+    det.className="stopDet"+(i===openIdx?" show":"");
+    var dh="";
+    if(x.note)dh+='<p><b>NOTIZ</b>'+x.note+'</p>';
+    dh+='<p><b>ETAPPE HIERHER</b>'+(i>0?W[i-1].n+' → '+x.n+' · '+(x.km-W[i-1].km)+' km, '+((x.e-W[i-1].e)>=0?'+':'')+(x.e-W[i-1].e)+' m':'Startpunkt · '+x.e+' m Höhe')+'</p>';
+    if(x.zw)dh+='<p><b>UNTERWEGS</b>'+x.zw+'</p>';
+    if(i<W.length-1)dh+='<p><b>WEITER</b>'+x.n+' → '+W[i+1].n+' · '+(W[i+1].km-x.km)+' km, '+((W[i+1].e-x.e)>=0?'+':'')+(W[i+1].e-x.e)+' m</p>';
+    if(x.alb&&x.alb!=="—")dh+='<p><b>SCHLAFEN</b>'+x.alb+'</p>';
+    if(x.bus&&x.bus!=="—")dh+='<p><b>VENTIL</b>'+x.bus+'</p>';
+    if(i!==IDX)dh+='<button type="button" id="setBtn'+i+'">Ich bin hier → setzen</button>';
+    det.innerHTML=dh;
+    sh.appendChild(det);
+    if(i!==IDX){det.querySelector("#setBtn"+i).onclick=function(ev){ev.stopPropagation();IDX=i;openIdx=-1;sendIdx();render();};}
+  })(i);}
+  drawMap();drawProfile();
+  document.getElementById("doneBtn").disabled=IDX>=W.length-1;
+  document.getElementById("backBtn").disabled=IDX<=0;
+}
+
+function advance(){
+  if(IDX>=W.length-1)return;
+  var prev=IDX;IDX++;kmMerken(null);manualPrefill();sendIdx();render();
+  var mile="";
+  for(var i=0;i<MILES.length;i++){if(MILES[i].i>prev&&MILES[i].i<=IDX)mile=MILES[i].t;}
+  if(IDX>=W.length-1){confetti(420,true);banner("🌊 Kilometer 0 — Ende der Welt!");}
+  else if(mile){confetti(260,true);banner("🏆 "+mile+" freigeschaltet!");}
+  else{confetti(120,false);banner("✓ "+W[IDX].n+" — noch "+(TOTAL-W[IDX].km)+" km");}
+}
+
+/* ---- Tagebuch ---- */
+function shrink(file,cb){
+  var r=new FileReader();
+  r.onload=function(ev){
+    var im=new Image();
+    im.onload=function(){
+      var max=760,w=im.width,h=im.height;
+      if(w>h&&w>max){h=Math.round(h*max/w);w=max;} else if(h>=w&&h>max){w=Math.round(w*max/h);h=max;}
+      var c=document.createElement("canvas");c.width=w;c.height=h;
+      c.getContext("2d").drawImage(im,0,0,w,h);
+      cb(c.toDataURL("image/jpeg",0.55));
+    };
+    im.onerror=function(){cb(null);};
+    im.src=ev.target.result;
+  };
+  r.onerror=function(){cb(null);};
+  r.readAsDataURL(file);
+}
+
+function fmtDur(s){var m=Math.floor(s/60);return m+":"+("0"+(s%60)).slice(-2)}
+var memURLs=[];
+function renderMemos(){
+  var host=document.getElementById("memList"),i;
+  for(i=0;i<memURLs.length;i++){try{URL.revokeObjectURL(memURLs[i]);}catch(e){}}
+  memURLs=[];host.innerHTML="";
+  var o=jGet(jrDay);
+  (o.memos||[]).forEach(function(m,mi){
+    var row=document.createElement("div");row.className="memRow";
+    var au=document.createElement("audio");au.controls=true;au.preload="none";au.src=mediaUrl(m.id);
+    var ln=document.createElement("span");ln.className="len";ln.textContent=fmtDur(m.dur||0);
+    var del=document.createElement("button");del.type="button";del.className="del";del.textContent="✕";
+    del.onclick=function(){
+      if(!confirm("Dieses Sprachmemo löschen?"))return;
+      var cur=jGet(jrDay);cur.memos.splice(mi,1);jSetLocal(jrDay,cur);
+      renderMemos();renderJournal();queueSync(jrDay);
+    };
+    row.appendChild(au);row.appendChild(ln);row.appendChild(del);
+    host.appendChild(row);
+  });
+  (pendMemos[jrDay]||[]).forEach(function(m,mi){
+    var row=document.createElement("div");row.className="memRow";
+    var u=URL.createObjectURL(m.blob);memURLs.push(u);
+    var au=document.createElement("audio");au.controls=true;au.src=u;
+    var ln=document.createElement("span");ln.className="len";ln.textContent=fmtDur(m.dur||0)+" ⏳";
+    var del=document.createElement("button");del.type="button";del.className="del";del.textContent="✕";
+    del.onclick=function(){
+      pendMemos[jrDay].splice(mi,1);
+      renderMemos();renderJournal();
+    };
+    row.appendChild(au);row.appendChild(ln);row.appendChild(del);
+    host.appendChild(row);
+  });
+}
+
+var recRec=null,recT0=0,recTimer=null,recChunks=[];
+function micLage(){
+  return {
+    standalone:(window.navigator.standalone===true)||
+               (!!window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches),
+    sicher:(window.isSecureContext!==false),
+    api:!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia),
+    rec:!!window.MediaRecorder
+  };
+}
+function micWarnung(){
+  var l=micLage();
+  if(!l.sicher)return "Die Seite läuft nicht über eine gesicherte Verbindung — ohne https gibt kein Browser das Mikrofon frei.";
+  if(!l.api||!l.rec)return "Dieser Browser gibt das Mikrofon nicht frei"+
+    (l.standalone?" — auf dem iPhone passiert das fast immer, wenn die Seite vom Home-Bildschirm gestartet wurde.":".");
+  if(l.standalone)return "Du hast die Seite vom Home-Bildschirm geöffnet. Das iPhone sperrt dort oft das Mikrofon. Wenn die Aufnahme nicht startet, öffne sie einmal direkt in Safari.";
+  return "";
+}
+function micWarnungZeigen(){
+  var w=document.getElementById("memWarn");
+  if(!w)return;
+  var t=micWarnung();
+  if(!t){w.style.display="none";return;}
+  w.innerHTML="";
+  var p=document.createElement("div");p.textContent=t;w.appendChild(p);
+  if(micLage().standalone){
+    var a=document.createElement("a");
+    a.href=location.href;a.target="_blank";a.rel="noopener";
+    a.textContent="Diese Seite in Safari öffnen";
+    a.style.cssText="display:inline-block;margin-top:6px;color:var(--sea)";
+    w.appendChild(a);
+  }
+  w.style.display="block";
+}
+function recHint(msg){
+  var h=document.getElementById("memHint");
+  if(msg){h.textContent=msg;h.style.display="block";}else{h.style.display="none";}
+}
+function recStop(){
+  if(recRec&&recRec.state!=="inactive"){try{recRec.stop();}catch(e){}}
+}
+function recStart(){
+  var btn=document.getElementById("memBtn");
+  if(recRec&&recRec.state==="recording"){recStop();return;}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){
+    recHint((micWarnung()||"Dieser Browser kann keine Aufnahme starten.")+
+      " Nimm solange „Aus Dateien wählen“ — die Anleitung darunter zeigt den Weg.");
+    return;
+  }
+  recHint("");
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    var mime="",cands=["audio/mp4","audio/webm;codecs=opus","audio/webm"],i;
+    for(i=0;i<cands.length;i++){
+      if(MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(cands[i])){mime=cands[i];break;}
+    }
+    try{recRec=mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream);}
+    catch(e){recRec=new MediaRecorder(stream);}
+    recChunks=[];
+    var recDay=jrDay;
+    recRec.ondataavailable=function(ev){if(ev.data&&ev.data.size)recChunks.push(ev.data);};
+    recRec.onstop=function(){
+      stream.getTracks().forEach(function(t){t.stop();});
+      if(recTimer){clearInterval(recTimer);recTimer=null;}
+      btn.className="";btn.textContent="🎙️ Sprachmemo aufnehmen";
+      var type=recRec.mimeType||mime||"audio/webm";
+      var blob=new Blob(recChunks,{type:type});
+      recRec=null;recChunks=[];
+      if(!blob.size){recHint("Aufnahme war leer — nochmal versuchen.");return;}
+      var dur=Math.max(1,Math.round((new Date().getTime()-recT0)/1000));
+      if(!pendMemos[recDay])pendMemos[recDay]=[];
+      pendMemos[recDay].push({blob:blob,mime:type,dur:dur});
+      confetti(40,false);
+      if(recDay===jrDay){renderMemos();}
+      renderJournal();
+      queueSync(recDay);
+    };
+    recRec.start();
+    recT0=new Date().getTime();
+    btn.className="rec";btn.textContent="■ Stopp · 0:00";
+    recTimer=setInterval(function(){
+      var s=Math.round((new Date().getTime()-recT0)/1000);
+      btn.textContent="■ Stopp · "+fmtDur(s);
+    },1000);
+  }).catch(function(err){
+    var grund=err&&err.name?err.name:"unbekannt",t;
+    if(grund==="NotAllowedError"||grund==="PermissionDeniedError")
+      t="Das Mikrofon ist für diese Seite gesperrt. In Safari links in der Adresszeile auf „aA“ tippen → Website-Einstellungen → Mikrofon → Erlauben, dann die Seite neu laden.";
+    else if(grund==="NotFoundError"||grund==="DevicesNotFoundError")
+      t="Es wurde kein Mikrofon gefunden.";
+    else if(grund==="NotReadableError"||grund==="TrackStartError")
+      t="Das Mikrofon ist gerade von einer anderen App belegt. Andere Apps schließen und nochmal versuchen.";
+    else if(grund==="SecurityError")
+      t="Der Browser blockiert das Mikrofon auf dieser Seite.";
+    else t="Aufnahme nicht möglich (Grund: "+grund+(err&&err.message?" – "+err.message:"")+").";
+    if(micLage().standalone)
+      t+=" Vom Home-Bildschirm aus sperrt das iPhone das Mikrofon oft ganz — probier die Seite einmal in Safari.";
+    recHint(t+" Solange nimm „Aus Dateien wählen“ — die Anleitung darunter zeigt, wie die Aufnahme dorthin kommt.");
+  });
+}
+
+var AUDIO_EXT=["m4a","mp3","wav","aac","caf","aif","aiff","opus","ogg","oga","webm","mp4","m4b","3gp","3gpp","amr","flac","wma"];
+function isAudioFile(f){
+  if(!f)return false;
+  var t=String(f.type||"").toLowerCase();
+  if(t.indexOf("audio/")===0)return true;
+  if(t.indexOf("image/")===0)return false;
+  var n=String(f.name||"").toLowerCase(),dot=n.lastIndexOf(".");
+  if(dot<0)return t.indexOf("video/")!==0;
+  return AUDIO_EXT.indexOf(n.slice(dot+1))>=0;
+}
+function addMemoFile(f){
+  if(!f)return;
+  var day=jrDay;
+  var url=URL.createObjectURL(f);
+  var au=new Audio();
+  function store(dur){
+    try{URL.revokeObjectURL(url);}catch(e){}
+    if(!pendMemos[day])pendMemos[day]=[];
+    pendMemos[day].push({blob:f,mime:f.type||"audio/mp4",name:f.name||"",dur:Math.max(1,Math.round(dur||0))});
+    recHint("");
+    confetti(40,false);
+    if(day===jrDay)renderMemos();
+    renderJournal();
+    queueSync(day);
+  }
+  au.onloadedmetadata=function(){store(isFinite(au.duration)?au.duration:0);};
+  au.onerror=function(){store(0);};
+  au.src=url;
+  setTimeout(function(){if(au.readyState===0)store(0);},4000);
+}
+
+function delPhoto(day,id){
+  if(!confirm("Dieses Foto löschen?"))return;
+  var o=jGet(day);
+  o.fotos=jFotos(o).filter(function(x){return x!==id;});
+  o.foto=o.fotos[0]||"";
+  jSetLocal(day,o);renderJournal();queueSync(day);
+}
+function delPendPhoto(day,idx){
+  (pendPhotos[day]||[]).splice(idx,1);
+  renderJournal();
+}
+function gbWhen(iso){
+  if(!iso)return "";
+  var d=new Date(iso);
+  if(isNaN(d.getTime()))return "";
+  return ["So","Mo","Di","Mi","Do","Fr","Sa"][d.getDay()]+" "+("0"+d.getDate()).slice(-2)+"."+
+    ("0"+(d.getMonth()+1)).slice(-2)+". "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);
+}
+function gbToggle(k,btn){
+  var ziel=!k.v;
+  btn.disabled=true;
+  fetch(LIVE.kommentar,{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({key:LIVE.key,action:"sicht",id:k.id,sichtbar:ziel})})
+    .then(function(r){return r.json();})
+    .then(function(j){
+      btn.disabled=false;
+      if(j&&j.ok){k.v=ziel;renderKommentare();
+        document.getElementById("gbNote").textContent=ziel?"Eintrag ist wieder auf der Familienseite sichtbar.":"Eintrag ist auf der Familienseite ausgeblendet.";}
+      else document.getElementById("gbNote").textContent=(j&&j.fehler)?j.fehler:"Hat nicht geklappt.";
+    })
+    .catch(function(){
+      btn.disabled=false;
+      document.getElementById("gbNote").textContent="Kein Netz — später nochmal versuchen.";
+    });
+}
+function renderKommentare(){
+  var host=document.getElementById("gbList");
+  if(!host)return;
+  host.innerHTML="";
+  if(!KOMMENTARE.length){
+    var e=document.createElement("div");e.className="gbEmpty";
+    e.textContent="Noch keine Einträge — deine Leute können auf der Familienseite schreiben.";
+    host.appendChild(e);return;
+  }
+  KOMMENTARE.forEach(function(k){
+    var row=document.createElement("div");row.className="gbItem"+(k.v?"":" aus");
+    var body=document.createElement("div");body.className="body";
+    var who=document.createElement("div");who.className="who";who.textContent=k.n||"Anonym";
+    var wh=document.createElement("span");wh.className="when";wh.textContent=gbWhen(k.z);
+    who.appendChild(wh);
+    var pp=document.createElement("p");pp.textContent=k.t||"";
+    body.appendChild(who);body.appendChild(pp);
+    var tog=document.createElement("button");tog.type="button";tog.className="tog";
+    tog.textContent=k.v?"🙈":"👁";
+    tog.title=k.v?"Auf der Familienseite ausblenden":"Wieder einblenden";
+    tog.onclick=function(){gbToggle(k,tog);};
+    row.appendChild(body);row.appendChild(tog);
+    host.appendChild(row);
+  });
+}
+function renderPhotos(){
+  var gal=document.getElementById("jrGal"),ph=document.getElementById("jrPh"),more=document.getElementById("jrMore");
+  var o=jGet(jrDay),saved=jFotos(o),pend=pendPhotos[jrDay]||[];
+  gal.innerHTML="";
+  saved.forEach(function(id){
+    var c=document.createElement("div");c.className="cell";
+    var im=document.createElement("img");im.src=mediaUrl(id);im.alt="";
+    var x=document.createElement("button");x.type="button";x.className="x";x.textContent="✕";
+    x.setAttribute("aria-label","Foto löschen");
+    x.onclick=function(){delPhoto(jrDay,id);};
+    c.appendChild(im);c.appendChild(x);gal.appendChild(c);
+  });
+  pend.forEach(function(src,idx){
+    var c=document.createElement("div");c.className="cell";
+    var im=document.createElement("img");im.src=src;im.alt="";
+    var t=document.createElement("span");t.className="tag";t.textContent="⏳";
+    var x=document.createElement("button");x.type="button";x.className="x";x.textContent="✕";
+    x.setAttribute("aria-label","Foto verwerfen");
+    x.onclick=function(){delPendPhoto(jrDay,idx);};
+    c.appendChild(im);c.appendChild(t);c.appendChild(x);gal.appendChild(c);
+  });
+  var n=saved.length+pend.length;
+  gal.style.display=n?"grid":"none";
+  ph.style.display=n?"none":"block";
+  more.style.display=n?"block":"none";
+}
+function renderJournal(){
+  var o=jGet(jrDay), st=stageOf(jrDay);
+  document.getElementById("jrTitle").textContent="TAG "+jrDay+" · "+dateOf(jrDay)+(st?" · "+st.n:"");
+  renderPhotos();
+  document.getElementById("jrA").value=o.a||"";
+  document.getElementById("jrF").value=o.f||"";
+  document.getElementById("jrS").value=o.s||"";
+  document.getElementById("jrU").value=o.u||"";
+  document.getElementById("jrG").value=o.g||"";
+  document.getElementById("jrQ").value=o.q||"";
+  document.getElementById("jrE").value=o.e||"";
+  var streak=0,d;
+  for(d=W[IDX].d;d>=1;d--){if(jHas(DAYS[d])||hasPend(d))streak++;else break;}
+  document.getElementById("jrStreak").textContent=streak>=2?"🔥 "+streak+" Tage":"";
+  var dh=document.getElementById("jrDays");dh.innerHTML="";
+  for(d=1;d<=29;d++){(function(d){
+    var b=document.createElement("div");
+    b.className="jrDay"+((jHas(DAYS[d])||hasPend(d))?" has":"")+(d===jrDay?" sel":"");
+    b.textContent=d;
+    b.onclick=function(){jrDay=d;renderJournal();renderMemos();};
+    dh.appendChild(b);
+  })(d);}
+  updateSyncUI();
+}
+
+function jSaveFields(){
+  var o=jGet(jrDay);
+  o.a=document.getElementById("jrA").value;
+  o.f=document.getElementById("jrF").value;
+  o.s=document.getElementById("jrS").value;
+  o.u=document.getElementById("jrU").value;
+  o.g=document.getElementById("jrG").value;
+  o.q=document.getElementById("jrQ").value;
+  o.e=document.getElementById("jrE").value;
+  if(dayComplete(o)&&!o.fx){o.fx=1;confetti(90,false);banner("✨ Tag "+jrDay+" komplett — alle 7 Fragen!");}
+  jSetLocal(jrDay,o);renderJournal();queueSync(jrDay);
+}
+
+function jShare(){
+  var o=jGet(jrDay), st=stageOf(jrDay);
+  var t="Camino · Tag "+jrDay+" von 29 — "+dateOf(jrDay)+"\n"+(st?st.n+" · km "+st.km+" · noch "+(TOTAL-st.km)+" km bis zum Kap\n":"");
+  if(jTxt(o.a))t+="\nAbsicht des Tages:\n"+o.a.trim()+"\n";
+  if(jTxt(o.f))t+="\nZum ersten Mal:\n"+o.f.trim()+"\n";
+  if(jTxt(o.s))t+="\nSchwer gefallen:\n"+o.s.trim()+"\n";
+  if(jTxt(o.u))t+="\nÜberrascht hat mich:\n"+o.u.trim()+"\n";
+  if(jTxt(o.g))t+="\nGelernt:\n"+o.g.trim()+"\n";
+  if(jTxt(o.q))t+="\nFrage des Tages:\n"+o.q.trim()+"\n";
+  if(jTxt(o.e))t+="\nErkenntnis:\n"+o.e.trim()+"\n";
+  t+="\nLive mitlaufen: https://aiva179.app.n8n.cloud/webhook/camino-live (Codewort: ultreia)\n";
+  if(navigator.share){navigator.share({text:t});return;}
+  try{navigator.clipboard.writeText(t);document.getElementById("jrNote").textContent="In die Zwischenablage kopiert.";}
+  catch(e){document.getElementById("jrNote").textContent="Teilen wird hier nicht unterstützt — Text markieren und kopieren.";}
+}
+
+function esc(s){return String(s).replace(/</g,"&lt;").replace(/\n/g,"<br>")}
+function jExport(){
+  var h='<!doctype html><meta charset="utf-8"><title>Camino Tagebuch</title>'+
+   '<style>body{font-family:system-ui,sans-serif;max-width:680px;margin:0 auto;padding:24px;background:#f6f0e4;color:#2e2a24}'+
+   'h1{font-size:22px}h2{font-size:15px;margin:32px 0 4px;color:#c26744}img{width:100%;border-radius:12px;margin:10px 0}'+
+   'audio{width:100%;margin:6px 0}'+
+   '.m{font-family:monospace;font-size:12px;color:#998c7b}p{line-height:1.55}b{font-size:11px;letter-spacing:.08em;color:#998c7b;display:block;margin-top:12px}</style>'+
+   '<h1>Camino Primitivo &rarr; Cabo Fisterra</h1><p class="m">Oviedo 15.08.2026 &ndash; Kap 12.09.2026 &middot; 430 km &middot; Fotos/Audio laden bei bestehender Internetverbindung</p>';
+  for(var d=1;d<=29;d++){
+    var o=DAYS[d];if(!jHas(o))continue;
+    var st=stageOf(d);
+    h+='<h2>Tag '+d+' &middot; '+dateOf(d)+(st?' &middot; '+st.n:'')+'</h2>';
+    if(st)h+='<p class="m">km '+st.km+' &middot; noch '+(TOTAL-st.km)+' km bis zum Kap</p>';
+    jFotos(o).forEach(function(fid){h+='<img src="'+mediaUrl(fid)+'">';});
+    if(jTxt(o.a))h+='<b>ABSICHT DES TAGES</b><p>'+esc(o.a)+'</p>';
+    if(jTxt(o.f))h+='<b>ZUM ERSTEN MAL</b><p>'+esc(o.f)+'</p>';
+    if(jTxt(o.s))h+='<b>SCHWER GEFALLEN</b><p>'+esc(o.s)+'</p>';
+    if(jTxt(o.u))h+='<b>ÜBERRASCHT</b><p>'+esc(o.u)+'</p>';
+    if(jTxt(o.g))h+='<b>GELERNT</b><p>'+esc(o.g)+'</p>';
+    if(jTxt(o.q))h+='<b>FRAGE DES TAGES</b><p>'+esc(o.q)+'</p>';
+    if(jTxt(o.e))h+='<b>ERKENNTNIS</b><p>'+esc(o.e)+'</p>';
+    (o.memos||[]).forEach(function(m){h+='<audio controls src="'+mediaUrl(m.id)+'"></audio>';});
+  }
+  try{
+    var b=new Blob([h],{type:"text/html"}),u=URL.createObjectURL(b),a=document.createElement("a");
+    a.href=u;a.download="camino-tagebuch.html";document.body.appendChild(a);a.click();
+    document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(u);},2000);
+    document.getElementById("jrNote").textContent="Tagebuch exportiert.";
+  }catch(e){document.getElementById("jrNote").textContent="Export hier nicht möglich.";}
+}
+
+document.getElementById("jrFile").onchange=function(ev){
+  var files=[],i;
+  for(i=0;i<(ev.target.files?ev.target.files.length:0);i++)files.push(ev.target.files[i]);
+  ev.target.value="";
+  if(!files.length)return;
+  var day=jrDay,note=document.getElementById("jrNote"),done=0,fail=0;
+  note.textContent=files.length>1?("Fotos werden verkleinert… (0/"+files.length+")"):"Foto wird verkleinert…";
+  function next(k){
+    if(k>=files.length){
+      note.textContent=fail?(fail+" von "+files.length+" Fotos konnten nicht gelesen werden."):"";
+      if(done){confetti(40,false);queueSync(day);}
+      renderJournal();
+      return;
+    }
+    shrink(files[k],function(data){
+      if(data){
+        if(!pendPhotos[day])pendPhotos[day]=[];
+        pendPhotos[day].push(data);done++;
+      }else fail++;
+      if(files.length>1)note.textContent="Fotos werden verkleinert… ("+(k+1)+"/"+files.length+")";
+      if(day===jrDay)renderPhotos();
+      next(k+1);
+    });
+  }
+  next(0);
+};
+document.getElementById("jrA").onblur=jSaveFields;
+document.getElementById("jrF").onblur=jSaveFields;
+document.getElementById("jrS").onblur=jSaveFields;
+document.getElementById("jrU").onblur=jSaveFields;
+document.getElementById("jrG").onblur=jSaveFields;
+document.getElementById("jrQ").onblur=jSaveFields;
+document.getElementById("jrE").onblur=jSaveFields;
+document.getElementById("jrShare").onclick=jShare;
+document.getElementById("jrExport").onclick=jExport;
+document.getElementById("jrClear").onclick=function(){
+  var o=jGet(jrDay);
+  if(!jFotos(o).length&&!(pendPhotos[jrDay]||[]).length)return;
+  if(!confirm("Wirklich alle Fotos von Tag "+jrDay+" löschen?"))return;
+  o.foto="";o.fotos=[];jSetLocal(jrDay,o);
+  pendPhotos[jrDay]=[];
+  renderJournal();queueSync(jrDay);
+};
+document.getElementById("memBtn").onclick=recStart;
+document.getElementById("memPick").onclick=function(){document.getElementById("memFile").click();};
+document.getElementById("memFile").onchange=function(ev){
+  var fs=[],i;
+  for(i=0;i<(ev.target.files?ev.target.files.length:0);i++)fs.push(ev.target.files[i]);
+  ev.target.value="";
+  var bad=0;
+  for(i=0;i<fs.length;i++){
+    if(isAudioFile(fs[i]))addMemoFile(fs[i]);
+    else bad++;
+  }
+  if(bad)recHint("Bitte eine Tonaufnahme auswählen (z. B. Sprachmemo .m4a) — "+bad+" Datei(en) waren keine Audiodatei.");
+  else if(fs.length)recHint("");
+};
+
+var APP_STAND="17.08.2026 · 5";
+(function stand(){
+  var t=document.getElementById("standTxt");
+  if(t)t.textContent="Stand "+APP_STAND;
+  var b=document.getElementById("standBtn");
+  if(!b)return;
+  b.onclick=function(){
+    if(anyDirty()&&!confirm("Es sind noch Eingaben ungesichert. Trotzdem neu laden?"))return;
+    var u=location.href.split("#")[0];
+    u=u.replace(/([?&])v=\d+(&|$)/,function(m,p1,p2){return p2==="&"?p1:(p1==="?"?"?":"");});
+    if(u.charAt(u.length-1)==="?"||u.charAt(u.length-1)==="&")u=u.slice(0,-1);
+    u+=(u.indexOf("?")>=0?"&":"?")+"v="+new Date().getTime();
+    location.replace(u);
+  };
+})();
+manualInit();
+micWarnungZeigen();
+document.getElementById("manualSave").onclick=manualSave;
+document.getElementById("geoBtn").onclick=locate;
+document.getElementById("doneBtn").onclick=advance;
+document.getElementById("backBtn").onclick=function(){if(IDX>0){IDX--;kmMerken(null);manualPrefill();sendIdx();render();}};
+window.addEventListener("online",flushDirty);
+window.addEventListener("beforeunload",function(e){
+  if(anyDirty()){e.preventDefault();e.returnValue="";}
+});
+setInterval(function(){if(document.visibilityState==="visible")flushDirty();},60000);
+setInterval(function(){if(document.visibilityState==="visible")autoPing();},300000);
+renderKommentare();
+loadState(function(){
+  jrDay=W[IDX].d;
+  kmHolen();manualPrefill();
+  render();renderJournal();renderMemos();renderKommentare();
+  autoPing();
+});
+</script>
+</body>
+</html>

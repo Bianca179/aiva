@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Bianca auf dem Camino</title>
+<link rel="apple-touch-icon" href="camino-media?code=ultreia&amp;id=1fZLtXmNB42CBCYqZWcMVpqAA_EFduVk0">
+<link rel="icon" href="camino-media?code=ultreia&amp;id=1fZLtXmNB42CBCYqZWcMVpqAA_EFduVk0">
+<meta name="apple-mobile-web-app-title" content="Camino">
+<meta name="theme-color" content="#f6f0e4">
+<style>
+:root{--bg:#f6f0e4;--card:#fffaf1;--ink:#2e2a24;--muted:#6f6558;--dim:#998c7b;
+--line:#e3d8c6;--line2:#ece2d2;--gold:#c9962e;--terra:#c26744;--olive:#7d8455;--sea:#2f7f8f;
+--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+--sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--shell:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M11 51 Q9.4 38.2 19.4 37.5 Q20.7 24.6 30.5 27.7 Q34.7 16 43.3 22.7 Q50 13 56.7 22.7 Q65.3 16 69.5 27.7 Q79.3 24.6 80.6 37.5 Q90.7 38.2 89 51 L50 86 Z' fill='%23c9962e'/%3E%3Cpath d='M50 86 19.4 37.5 M50 86 30.5 27.7 M50 86 43.3 22.7 M50 86 56.7 22.7 M50 86 69.5 27.7 M50 86 80.6 37.5' stroke='%23fffaf1' stroke-width='3.4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+--shellDim:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M11 51 Q9.4 38.2 19.4 37.5 Q20.7 24.6 30.5 27.7 Q34.7 16 43.3 22.7 Q50 13 56.7 22.7 Q65.3 16 69.5 27.7 Q79.3 24.6 80.6 37.5 Q90.7 38.2 89 51 L50 86 Z' fill='none' stroke='%23c26744' stroke-width='4'/%3E%3Cpath d='M50 86 19.4 37.5 M50 86 30.5 27.7 M50 86 43.3 22.7 M50 86 56.7 22.7 M50 86 69.5 27.7 M50 86 80.6 37.5' stroke='%23c26744' stroke-width='3' stroke-linecap='round' fill='none'/%3E%3C/svg%3E")}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);
+background-image:radial-gradient(900px 500px at 10% -10%,rgba(201,150,46,.10),transparent 60%),
+radial-gradient(800px 600px at 105% 25%,rgba(47,127,143,.08),transparent 55%);
+-webkit-font-smoothing:antialiased}
+.wrap{max-width:740px;margin:0 auto;padding:18px 14px 60px}
+.stone{background:var(--card);border:1px solid var(--line);border-radius:20px;
+box-shadow:0 10px 30px rgba(87,66,37,.10);padding:26px 18px 20px;text-align:center;position:relative;overflow:hidden}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--muted)}
+.bigk{font-family:var(--mono);font-weight:600;line-height:.95;color:var(--terra);
+font-size:clamp(60px,19vw,108px);letter-spacing:-.02em;margin-top:12px}
+.bigk.zero{color:var(--sea)}
+.unit{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted);margin-top:8px}
+.sub{color:var(--muted);font-size:14px;margin-top:12px;line-height:1.5}
+.livechip{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-family:var(--mono);
+font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:#fff}
+.livechip .p{width:9px;height:9px;border-radius:50%;background:#b9ada0}
+.livechip.on .p{background:#4a9e5c;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,158,92,.5)}70%{box-shadow:0 0 0 8px rgba(74,158,92,0)}100%{box-shadow:0 0 0 0 rgba(74,158,92,0)}}
+.stone::before{content:"";position:absolute;right:-34px;top:-30px;width:200px;height:200px;
+background:var(--shell) center/contain no-repeat;opacity:.07;transform:rotate(14deg);pointer-events:none}
+.stone::after{content:"";position:absolute;left:-46px;bottom:-6px;width:150px;height:150px;
+background:var(--shell) center/contain no-repeat;opacity:.05;transform:rotate(-18deg);pointer-events:none}
+.stone>*{position:relative;z-index:1}
+.bar{position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--line2);display:flex;z-index:2}
+.bar i{display:block;height:100%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center}
+.st b{display:block;font-family:var(--mono);font-size:19px;font-weight:600}
+.st span{font-size:10.5px;color:var(--dim);letter-spacing:.05em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+.card h2{margin:0;font-size:11.5px;font-family:var(--mono);letter-spacing:.14em;color:var(--dim);font-weight:600;
+padding-left:20px;background:var(--shell) left 1px/13px 13px no-repeat}
+#map{width:100%;height:auto;display:block}
+#map .base{fill:none;stroke:var(--line);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#map .walk{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+#map .dot{fill:#cdbfa8}
+#map .lbl{font-family:var(--mono);font-size:11.5px;fill:var(--muted)}
+#map .here{stroke:#fff;stroke-width:2}
+.mapwrap{position:relative;cursor:zoom-in;-webkit-tap-highlight-color:transparent}
+.mapwrap .mzhint{position:absolute;right:8px;bottom:8px;background:rgba(255,250,241,.93);border:1px solid var(--line);
+border-radius:999px;padding:6px 11px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--muted);pointer-events:none}
+.mapfull{position:fixed;top:0;right:0;bottom:0;left:0;z-index:9999;background:#e9e4d8}
+.mapfull[hidden]{display:none}
+#mapBig{display:block;width:100%;height:100%;touch-action:none;-webkit-user-select:none;user-select:none}
+.mfbtn{position:absolute;width:46px;height:46px;border-radius:15px;border:1px solid var(--line);background:rgba(255,250,241,.95);
+color:var(--ink);font-family:var(--sans);font-size:21px;font-weight:600;line-height:1;text-align:center;padding:0;
+box-shadow:0 4px 14px rgba(87,66,37,.18);cursor:pointer;-webkit-appearance:none;appearance:none}
+#mfClose{top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;font-size:19px}
+#mfIn{right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 122px)}
+#mfOut{right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
+#mfHere{right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);font-size:18px}
+#mfHere[disabled]{opacity:.4}
+.mfcred{position:absolute;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);font-size:10px;color:#5b5347;
+background:rgba(255,250,241,.85);padding:4px 8px;border-radius:9px}
+.day{margin-top:14px}
+.day .dh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.day .dh b{font-size:17px}
+.day .dh span{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.day img{width:100%;border-radius:14px;display:block;margin-top:10px}
+.day img.wm{max-height:220px;object-fit:cover}
+.hero{width:100%;border-radius:12px;display:none;margin-bottom:10px;max-height:300px;object-fit:cover}
+.cred{font-size:10px;color:var(--dim);text-align:right;margin-top:6px}
+.day audio{width:100%;margin-top:10px;height:38px}
+.qa{margin-top:12px}
+.qa b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--terra);margin-bottom:3px;
+padding-left:16px;background:var(--shellDim) left center/11px 11px no-repeat}
+.qa p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap}
+.empty{color:var(--dim);font-size:14px;text-align:center;padding:24px 0}
+footer{margin-top:18px;text-align:center;font-size:12px;color:var(--dim);line-height:1.6}
+.gb{margin-top:14px}
+.gb .row{display:flex;gap:8px;flex-wrap:wrap}
+.gb input,.gb textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;
+font-family:var(--sans);font-size:15px;color:var(--ink);background:#fff;-webkit-appearance:none;appearance:none}
+.gb input{flex:1 1 160px;width:auto;min-width:0}
+.gb textarea{margin-top:8px;min-height:80px;resize:vertical;line-height:1.45}
+.gb input:focus,.gb textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.gb button{margin-top:9px;font-family:var(--sans);font-size:14px;font-weight:600;color:#fff;background:var(--terra);
+border:none;border-radius:12px;padding:12px 18px;cursor:pointer;-webkit-appearance:none;appearance:none}
+.gb button[disabled]{opacity:.5;cursor:default}
+.gb .hint{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.5}
+.gbList{margin-top:6px}
+.gbItem{border-top:1px solid var(--line2);padding:12px 0}
+.gbItem:first-child{border-top:none}
+.gbItem .who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--terra)}
+.gbItem .when{font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-left:7px;letter-spacing:0}
+.gbItem p{margin:4px 0 0;font-size:14.5px;line-height:1.55;white-space:pre-wrap}
+.gbEmpty{color:var(--dim);font-size:14px;padding:14px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stone">
+    <div class="eyebrow">BIANCA AUF DEM CAMINO · BIS CABO FISTERRA</div>
+    <div class="bigk" id="bigk">–</div>
+    <div class="unit">KILOMETER</div>
+    <div class="sub" id="sub"></div>
+    <div class="livechip" id="chip"><span class="p"></span><span id="chipTxt">noch kein Signal</span></div>
+    <div class="bar" id="bar"></div>
+  </div>
+  <div class="stats">
+    <div class="st"><b id="sDay">–</b><span>TAG</span></div>
+    <div class="st"><b id="sDone">–</b><span>KM GELAUFEN</span></div>
+    <div class="st"><b id="sPct">–</b><span>GESCHAFFT</span></div>
+  </div>
+  <div class="card"><h2>WO SIE GERADE IST</h2><img class="hero" id="hero" alt="" loading="lazy"><div class="mapwrap" id="mapWrap" role="button" tabindex="0" aria-label="Karte vergrößern"><canvas id="map" style="width:100%;height:auto;display:block;border-radius:12px"></canvas><span class="mzhint">⤢ ANTIPPEN ZUM VERGRÖSSERN</span></div><div class="cred">Karte © OpenStreetMap-Mitwirkende</div></div>
+  <div class="card"><h2>TAGEBUCH VOM WEG</h2><div id="feed"><div class="empty">Noch keine Einträge — es geht bald los.</div></div></div>
+  <div class="card"><h2>GÄSTEBUCH</h2>
+    <div class="gb">
+      <div class="row"><input id="gbName" type="text" maxlength="40" placeholder="Dein Name" autocomplete="name"></div>
+      <textarea id="gbText" maxlength="1200" placeholder="Ein paar Zeilen für Bianca unterwegs…"></textarea>
+      <button type="button" id="gbSend">Eintrag abschicken</button>
+      <div class="hint" id="gbHint">Alle, die den Link haben, können hier schreiben. Bianca liest mit.</div>
+    </div>
+    <div class="gbList" id="gbList"></div>
+  </div>
+  <footer>Oviedo → Muxía → Cabo Fisterra · 430 km · 15.08.–12.09.2026<br>Position aktualisiert sich automatisch. Ortsbilder: Wikimedia Commons.</footer>
+</div>
+<div class="mapfull" id="mapFull" hidden>
+  <canvas id="mapBig"></canvas>
+  <button class="mfbtn" id="mfClose" type="button" aria-label="Karte schließen">✕</button>
+  <button class="mfbtn" id="mfIn" type="button" aria-label="Hineinzoomen">+</button>
+  <button class="mfbtn" id="mfOut" type="button" aria-label="Herauszoomen">−</button>
+  <button class="mfbtn" id="mfHere" type="button" aria-label="Zu Biancas Position springen">◎</button>
+  <div class="mfcred">Karte © OpenStreetMap-Mitwirkende</div>
+</div>
+<script id="__data" type="application/json">__DATA_PLACEHOLDER__</script>
+<script>
+function b64utf8(s){
+  var bin=atob(String(s).replace(/\s+/g,""));
+  try{
+    var by=new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++)by[i]=bin.charCodeAt(i);
+    return new TextDecoder("utf-8").decode(by);
+  }catch(e){
+    try{return decodeURIComponent(escape(bin));}catch(e2){return bin;}
+  }
+}
+var DATA=JSON.parse(b64utf8(document.getElementById("__data").textContent));
+try{localStorage.setItem("camino_code",DATA.code);}catch(e){}
+var START=new Date(2026,7,15,12,0,0),TOTAL=430;
+var W=[["Oviedo",43.362,-5.845,0,1],["Escamplero",43.395,-5.955,12,2],["Grado",43.388,-6.070,25,3],
+["Cornellana",43.395,-6.170,37,4],["Salas",43.410,-6.256,47,5],["Tineo",43.336,-6.415,67,6],
+["Campiello",43.297,-6.518,84,7],["Berducedo",43.267,-6.712,110,8],["Grandas de Salime",43.216,-6.876,130,9],
+["A Fonsagrada",43.125,-7.068,155,10],["O Cádavo",43.135,-7.278,179,11],["Castroverde",43.031,-7.335,191,12],
+["Lugo",43.012,-7.556,210,13],["Lugo",43.012,-7.556,210,14],["San Román",42.930,-7.669,230,15],
+["Ferreira",42.895,-7.795,244,16],["Melide",42.914,-8.014,259,17],["Arzúa",42.929,-8.163,273,18],
+["O Pedrouzo",42.909,-8.360,292,19],["Santiago",42.881,-8.545,312,20],["Santiago",42.881,-8.545,312,21],
+["Negreira",42.905,-8.735,333,22],["Vilaserío",42.965,-8.816,346,23],["Olveiroa",42.945,-9.048,366,24],
+["Dumbría",43.000,-9.114,376,25],["Muxía",43.105,-9.218,398,26],["Lires",43.005,-9.230,413,27],
+["Finisterre",42.905,-9.263,427,28],["Cabo Fisterra",42.883,-9.272,430,29]];
+var PH_FILES=["https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cathedral_of_Oviedo_2021_-_exterior.jpg/1280px-Cathedral_of_Oviedo_2021_-_exterior.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Ayuntamientu_de_Grau_%28Asturies%29.JPG/1280px-Ayuntamientu_de_Grau_%28Asturies%29.JPG","https://upload.wikimedia.org/wikipedia/commons/4/4e/Salas.png","https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Tineo.JPG/1280px-Tineo.JPG","https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/2009Somiedo_%287%29.JPG/1280px-2009Somiedo_%287%29.JPG","https://upload.wikimedia.org/wikipedia/commons/7/75/Grandas_de_Salime.png","https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Casa_concello_A_Fonsagrada.JPG/1280px-Casa_concello_A_Fonsagrada.JPG","https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Muralla_de_Lugo_-_03.jpg/1280px-Muralla_de_Lugo_-_03.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Durante_el_camino_de_Santiago.jpg/1280px-Durante_el_camino_de_Santiago.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Panor%C3%A1mica_da_Vila_de_Melide.jpeg/1280px-Panor%C3%A1mica_da_Vila_de_Melide.jpeg","https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Santiago_cathedral_2021.jpg/1280px-Santiago_cathedral_2021.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Rio_Tambre.Portor.Ponte_Maceira.jpg/1280px-Rio_Tambre.Portor.Ponte_Maceira.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/20240126_090324_Santuario_de_Nuestra_Se%C3%B1ora_de_la_Barca.jpg/1280px-20240126_090324_Santuario_de_Nuestra_Se%C3%B1ora_de_la_Barca.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Finisterre.JPG/1280px-Finisterre.JPG"];
+var PH_IDX=[0,1,1,2,2,3,3,4,5,6,6,7,7,7,8,8,9,8,8,10,10,11,11,8,8,12,13,13,13];
+function stagePhoto(i){return PH_FILES[PH_IDX[Math.max(0,Math.min(28,i))]]}
+function idxOfDay(t){for(var i=0;i<W.length;i++){if(W[i][4]===t)return i;}return 0;}
+var LON0=-5.845,LAT0=43.410,KC=Math.cos(43.1*Math.PI/180),SC=399.6,PAD=26;
+function px(lon){return PAD+(LON0-lon)*KC*SC}
+function py(lat){return PAD+(LAT0-lat)*SC}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function dateOf(day){var d=new Date(START.getTime());d.setDate(d.getDate()+(day-1));
+return ["So","Mo","Di","Mi","Do","Fr","Sa"][d.getDay()]+" "+("0"+d.getDate()).slice(-2)+"."+("0"+(d.getMonth()+1)).slice(-2)+"."}
+function project(lat,lon){
+  var best={d:1e18,km:0,name:W[0][0],x:px(W[0][2]),y:py(W[0][1])};
+  var X=px(lon),Y=py(lat),i;
+  for(i=0;i<W.length-1;i++){
+    var x1=px(W[i][2]),y1=py(W[i][1]),x2=px(W[i+1][2]),y2=py(W[i+1][1]);
+    var dx=x2-x1,dy=y2-y1,L2=dx*dx+dy*dy;
+    var t=L2?((X-x1)*dx+(Y-y1)*dy)/L2:0;t=Math.max(0,Math.min(1,t));
+    var qx=x1+t*dx,qy=y1+t*dy,dd=(X-qx)*(X-qx)+(Y-qy)*(Y-qy);
+    if(dd<best.d){best={d:dd,km:W[i][3]+t*(W[i+1][3]-W[i][3]),x:qx,y:qy,
+      name:(t<0.5?W[i][0]:W[i+1][0]),near:(t<0.5?i:i+1)};}
+  }
+  return best;
+}
+function segColor(km){return km>=312?"#2f7f8f":km>=259?"#7d8455":"#c9962e"}
+function agoTxt(iso){
+  var m=Math.round((new Date().getTime()-new Date(iso).getTime())/60000);
+  if(m<1)return "gerade eben";if(m<60)return "vor "+m+" min";
+  var h=Math.floor(m/60);if(h<48)return "vor "+h+" Std";return "vor "+Math.floor(h/24)+" Tagen";
+}
+var loc=DATA.loc,pos=null,km=0;
+if(loc&&loc.lat){pos=project(loc.lat,loc.lon);km=Math.round(pos.km);}
+else if(DATA.days.length){var last=DATA.days[DATA.days.length-1];km=last.km||0;}
+var left=TOTAL-km,pct=Math.round(km/TOTAL*100);
+var dayNow=Math.max(1,Math.min(29,Math.floor((new Date().getTime()-START.getTime())/86400000)+1));
+var started=new Date().getTime()>=START.getTime()-43200000;
+document.getElementById("bigk").textContent=left<=0?"0":left;
+if(left<=0)document.getElementById("bigk").className="bigk zero";
+document.getElementById("sub").textContent=
+  left<=0?"Angekommen. Ende der Welt erreicht.":
+  !started?"Es geht am 15. August los. Der Stein wartet in Oviedo.":
+  "Bianca hat "+km+" km hinter sich"+(pos?" — gerade bei "+pos.name:"")+".";
+var chip=document.getElementById("chip");
+if(loc&&loc.zeit){
+  var manuell=String(loc.quelle||"")==="manuell";
+  var fresh=(new Date().getTime()-new Date(loc.zeit).getTime())<1800000;
+  chip.className="livechip"+((fresh&&!manuell)?" on":"");
+  document.getElementById("chipTxt").textContent=
+    (manuell?"von Bianca eingetragen ":"zuletzt gesehen ")+agoTxt(loc.zeit)+
+    (loc.batt?" · Akku "+loc.batt+"%":"");
+}
+document.getElementById("sDay").textContent=(started?Math.min(dayNow,29):0)+"/29";
+document.getElementById("sDone").textContent=km;
+document.getElementById("sPct").textContent=pct+"%";
+var seg1=Math.min(km,259),seg2=Math.min(Math.max(km-259,0),53),seg3=Math.max(km-312,0);
+document.getElementById("bar").innerHTML=
+  '<i style="width:'+(seg1/TOTAL*100)+'%;background:#c9962e"></i>'+
+  '<i style="width:'+(seg2/TOTAL*100)+'%;background:#7d8455"></i>'+
+  '<i style="width:'+(seg3/TOTAL*100)+'%;background:#2f7f8f"></i>';
+function lon2tx(lon,z){return (lon+180)/360*Math.pow(2,z)}
+function lat2ty(lat,z){var r=lat*Math.PI/180;return (1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*Math.pow(2,z)}
+(function drawMap(){
+  var canvas=document.getElementById("map"),z=9,i;
+  var minLat=42.78,maxLat=43.52,minLon=-9.45,maxLon=-5.62;
+  var tx0=Math.floor(lon2tx(minLon,z)),tx1=Math.floor(lon2tx(maxLon,z));
+  var ty0=Math.floor(lat2ty(maxLat,z)),ty1=Math.floor(lat2ty(minLat,z));
+  canvas.width=(tx1-tx0+1)*256;canvas.height=(ty1-ty0+1)*256;
+  var ctx=canvas.getContext("2d");
+  ctx.fillStyle="#e9e4d8";ctx.fillRect(0,0,canvas.width,canvas.height);
+  function X(lon){return (lon2tx(lon,z)-tx0)*256}
+  function Y(lat){return (lat2ty(lat,z)-ty0)*256}
+  var curLat=loc&&loc.lat?loc.lat:null,curLon=loc&&loc.lat?loc.lon:null;
+  var routeDrawn=false;
+  function drawRoute(){
+    if(routeDrawn)return;routeDrawn=true;
+    ctx.lineCap="round";ctx.lineJoin="round";
+    ctx.strokeStyle="rgba(46,42,36,0.4)";ctx.lineWidth=5;
+    ctx.beginPath();
+    for(i=0;i<W.length;i++){i?ctx.lineTo(X(W[i][2]),Y(W[i][1])):ctx.moveTo(X(W[i][2]),Y(W[i][1]));}
+    ctx.stroke();
+    if(km>0){
+      ctx.strokeStyle=segColor(km);ctx.lineWidth=7;
+      ctx.beginPath();var st=false;
+      for(i=0;i<W.length&&W[i][3]<=km;i++){st?ctx.lineTo(X(W[i][2]),Y(W[i][1])):(ctx.moveTo(X(W[i][2]),Y(W[i][1])),st=true);}
+      if(st&&curLat!=null)ctx.lineTo(X(curLon),Y(curLat));
+      if(st)ctx.stroke();
+    }
+    for(i=0;i<W.length;i++){
+      ctx.beginPath();ctx.arc(X(W[i][2]),Y(W[i][1]),4,0,7);
+      ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#8a7c66";ctx.lineWidth=2;ctx.stroke();
+    }
+    var L=[[0,"Oviedo",-16],[12,"Lugo",-16],[19,"Santiago",30],[25,"Muxía",-16],[28,"Kap Fisterra",30]];
+    ctx.font="600 22px system-ui,sans-serif";ctx.textAlign="center";
+    for(i=0;i<L.length;i++){var w=W[L[i][0]],x=X(w[2]),y=Y(w[1])+L[i][2];
+      ctx.lineWidth=6;ctx.strokeStyle="rgba(255,255,255,0.92)";ctx.strokeText(L[i][1],x,y);
+      ctx.fillStyle="#2e2a24";ctx.fillText(L[i][1],x,y);}
+    var cx=curLat!=null?X(curLon):X(W[0][2]),cy=curLat!=null?Y(curLat):Y(W[0][1]);
+    ctx.beginPath();ctx.arc(cx,cy,12,0,7);
+    ctx.fillStyle=segColor(km);ctx.fill();
+    ctx.lineWidth=4;ctx.strokeStyle="#fff";ctx.stroke();
+  }
+  var total=(tx1-tx0+1)*(ty1-ty0+1),done=0;
+  for(var tx=tx0;tx<=tx1;tx++){for(var ty=ty0;ty<=ty1;ty++){(function(tx,ty){
+    var img=new Image();
+    img.onload=function(){ctx.drawImage(img,(tx-tx0)*256,(ty-ty0)*256);done++;if(done>=total)drawRoute();};
+    img.onerror=function(){done++;if(done>=total)drawRoute();};
+    img.src="https://tile.openstreetmap.org/"+z+"/"+tx+"/"+ty+".png";
+  })(tx,ty);}}
+  setTimeout(drawRoute,4000);
+})();
+function tx2lon(t,z){return t/Math.pow(2,z)*360-180}
+function ty2lat(t,z){var n=Math.PI-2*Math.PI*t/Math.pow(2,z);return 180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n)))}
+(function bigMap(){
+  var ov=document.getElementById("mapFull"),cv=document.getElementById("mapBig");
+  if(!ov||!cv||!cv.getContext)return;
+  var ctx=cv.getContext("2d");
+  var curLat=loc&&loc.lat?loc.lat:null,curLon=loc&&loc.lat?loc.lon:null;
+  var MINZ=7,MAXZ=16,BIG=["Oviedo","Lugo","Santiago","Cabo Fisterra","Muxía"];
+  var BB={s:42.78,n:43.52,w:-9.45,e:-5.62};
+  var z=10,cLat=(BB.s+BB.n)/2,cLon=(BB.w+BB.e)/2;
+  var tiles={},tileCount=0,pending={},raf=0,vw=0,vh=0,dpr=1,open=false;
+
+  function size(){
+    dpr=Math.min(2,window.devicePixelRatio||1);
+    vw=ov.clientWidth||window.innerWidth;vh=ov.clientHeight||window.innerHeight;
+    cv.width=Math.round(vw*dpr);cv.height=Math.round(vh*dpr);
+    cv.style.width=vw+"px";cv.style.height=vh+"px";
+  }
+  function wx(lon){return lon2tx(lon,z)*256}
+  function wy(lat){return lat2ty(lat,z)*256}
+  function sx(lon){return wx(lon)-wx(cLon)+vw/2}
+  function sy(lat){return wy(lat)-wy(cLat)+vh/2}
+  function schedule(){if(!raf)raf=window.requestAnimationFrame?requestAnimationFrame(render):setTimeout(render,16);}
+  function getTile(x,y,zz){
+    var k=zz+"/"+x+"/"+y;
+    if(tiles[k])return tiles[k];
+    if(pending[k])return null;
+    if(tileCount>500){tiles={};tileCount=0;}
+    pending[k]=1;
+    var im=new Image();
+    im.onload=function(){tiles[k]=im;tileCount++;delete pending[k];if(open)schedule();};
+    im.onerror=function(){delete pending[k];};
+    im.src="https://tile.openstreetmap.org/"+zz+"/"+x+"/"+y+".png";
+    return null;
+  }
+  function clamp(){
+    cLat=Math.max(BB.s-0.7,Math.min(BB.n+0.7,cLat));
+    cLon=Math.max(BB.w-0.9,Math.min(BB.e+0.9,cLon));
+  }
+  function fitZoom(){
+    for(var zz=MAXZ;zz>=MINZ;zz--){
+      var w=(lon2tx(BB.e,zz)-lon2tx(BB.w,zz))*256,h=(lat2ty(BB.s,zz)-lat2ty(BB.n,zz))*256;
+      if(w<=vw-14&&h<=vh-14)return zz;
+    }
+    return MINZ;
+  }
+  function render(){
+    raf=0;
+    if(!vw)size();
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.fillStyle="#e9e4d8";ctx.fillRect(0,0,vw,vh);
+    var n=Math.pow(2,z),left=wx(cLon)-vw/2,top=wy(cLat)-vh/2;
+    var tx0=Math.floor(left/256),tx1=Math.floor((left+vw)/256);
+    var ty0=Math.floor(top/256),ty1=Math.floor((top+vh)/256);
+    for(var x=tx0;x<=tx1;x++)for(var y=ty0;y<=ty1;y++){
+      if(y<0||y>=n)continue;
+      var xx=((x%n)+n)%n,px=x*256-left,py=y*256-top;
+      var im=getTile(xx,y,z);
+      if(im){ctx.drawImage(im,px,py,256,256);continue;}
+      var pim=tiles[(z-1)+"/"+Math.floor(xx/2)+"/"+Math.floor(y/2)];
+      if(pim)ctx.drawImage(pim,(xx%2)*128,(y%2)*128,128,128,px,py,256,256);
+    }
+    overlay();
+  }
+  function overlay(){
+    var i,lw=z<10?4:(z<13?6:8),r=z<10?3.5:(z<13?5:6.5);
+    ctx.lineCap="round";ctx.lineJoin="round";
+    ctx.strokeStyle="rgba(46,42,36,0.45)";ctx.lineWidth=lw;
+    ctx.beginPath();
+    for(i=0;i<W.length;i++){i?ctx.lineTo(sx(W[i][2]),sy(W[i][1])):ctx.moveTo(sx(W[i][2]),sy(W[i][1]));}
+    ctx.stroke();
+    if(km>0){
+      ctx.strokeStyle=segColor(km);ctx.lineWidth=lw+2;
+      ctx.beginPath();var st=false;
+      for(i=0;i<W.length&&W[i][3]<=km;i++){st?ctx.lineTo(sx(W[i][2]),sy(W[i][1])):(ctx.moveTo(sx(W[i][2]),sy(W[i][1])),st=true);}
+      if(st&&curLat!=null)ctx.lineTo(sx(curLon),sy(curLat));
+      if(st)ctx.stroke();
+    }
+    for(i=0;i<W.length;i++){
+      var dx=sx(W[i][2]),dy=sy(W[i][1]);
+      if(dx<-30||dx>vw+30||dy<-30||dy>vh+30)continue;
+      ctx.beginPath();ctx.arc(dx,dy,r,0,7);
+      ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#8a7c66";ctx.lineWidth=2;ctx.stroke();
+    }
+    var fs=z<10?12:(z<12?14:16),seen={},placed=[],order=[],b;
+    if(z<10){
+      for(b=0;b<BIG.length;b++){for(i=0;i<W.length;i++){if(W[i][0]===BIG[b]){order.push(i);break;}}}
+    }else{for(i=0;i<W.length;i++)order.push(i);}
+    ctx.font="600 "+fs+"px system-ui,-apple-system,sans-serif";ctx.textAlign="center";
+    function free(x,y,w){
+      for(var q=0;q<placed.length;q++){
+        var pl=placed[q];
+        if(Math.abs(pl.y-y)<fs+4&&Math.abs(pl.x-x)<(pl.w+w)/2+7)return false;
+      }
+      return true;
+    }
+    for(b=0;b<order.length;b++){
+      var wp=W[order[b]],nm=wp[0];
+      if(seen[nm])continue;
+      var px0=sx(wp[2]),py0=sy(wp[1]);
+      if(px0<-90||px0>vw+90||py0<-30||py0>vh+30)continue;
+      var tw=ctx.measureText(nm).width;
+      var lx=Math.max(tw/2+8,Math.min(vw-tw/2-8,px0)),ly=0,got=false;
+      var cand=[py0-(r+8),py0+(r+8)+fs,py0-(r+8)-(fs+6),py0+(r+8)+2*fs+6];
+      for(var c=0;c<cand.length;c++){
+        if(cand[c]<fs||cand[c]>vh-4)continue;
+        if(free(lx,cand[c],tw)){ly=cand[c];got=true;break;}
+      }
+      if(!got)continue;
+      seen[nm]=1;placed.push({x:lx,y:ly,w:tw});
+      ctx.lineWidth=5;ctx.strokeStyle="rgba(255,255,255,0.92)";ctx.strokeText(nm,lx,ly);
+      ctx.fillStyle="#2e2a24";ctx.fillText(nm,lx,ly);
+    }
+    if(curLat!=null){
+      var hx=sx(curLon),hy=sy(curLat);
+      ctx.beginPath();ctx.arc(hx,hy,11,0,7);
+      ctx.fillStyle=segColor(km);ctx.fill();
+      ctx.lineWidth=4;ctx.strokeStyle="#fff";ctx.stroke();
+    }
+  }
+  function panBy(dx,dy){
+    cLon=tx2lon((wx(cLon)-dx)/256,z);cLat=ty2lat((wy(cLat)-dy)/256,z);
+    clamp();schedule();
+  }
+  function zoomAt(nz,px,py){
+    nz=Math.max(MINZ,Math.min(MAXZ,Math.round(nz)));
+    if(nz===z)return;
+    var lon=tx2lon((wx(cLon)+(px-vw/2))/256,z),lat=ty2lat((wy(cLat)+(py-vh/2))/256,z);
+    z=nz;
+    cLon=tx2lon((wx(lon)-(px-vw/2))/256,z);cLat=ty2lat((wy(lat)-(py-vh/2))/256,z);
+    clamp();schedule();
+  }
+  function show(){
+    ov.hidden=false;open=true;window.__caminoMapOpen=true;
+    document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";
+    size();
+    z=fitZoom();cLat=(BB.s+BB.n)/2;cLon=(BB.w+BB.e)/2;
+    schedule();
+  }
+  function hide(){
+    ov.hidden=true;open=false;window.__caminoMapOpen=false;
+    document.documentElement.style.overflow="";document.body.style.overflow="";
+  }
+  var wrap=document.getElementById("mapWrap");
+  wrap.addEventListener("click",show);
+  wrap.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();show();}});
+  document.getElementById("mfClose").addEventListener("click",hide);
+  document.getElementById("mfIn").addEventListener("click",function(){zoomAt(z+1,vw/2,vh/2);});
+  document.getElementById("mfOut").addEventListener("click",function(){zoomAt(z-1,vw/2,vh/2);});
+  var hereBtn=document.getElementById("mfHere");
+  if(curLat==null)hereBtn.disabled=true;
+  hereBtn.addEventListener("click",function(){
+    if(curLat==null)return;
+    cLat=curLat;cLon=curLon;z=Math.max(z,13);clamp();schedule();
+  });
+  document.addEventListener("keydown",function(e){if(open&&e.key==="Escape")hide();});
+  window.addEventListener("resize",function(){if(open){size();schedule();}});
+  window.addEventListener("orientationchange",function(){if(open)setTimeout(function(){size();schedule();},250);});
+
+  var md=false,lx0=0,ly0=0;
+  cv.addEventListener("mousedown",function(e){md=true;lx0=e.clientX;ly0=e.clientY;cv.style.cursor="grabbing";});
+  window.addEventListener("mousemove",function(e){
+    if(!md)return;panBy(e.clientX-lx0,e.clientY-ly0);lx0=e.clientX;ly0=e.clientY;
+  });
+  window.addEventListener("mouseup",function(){md=false;cv.style.cursor="";});
+  cv.addEventListener("wheel",function(e){
+    e.preventDefault();
+    var rc=cv.getBoundingClientRect();
+    zoomAt(z+(e.deltaY<0?1:-1),e.clientX-rc.left,e.clientY-rc.top);
+  },{passive:false});
+
+  var tPts=null,tDist=0,tMid=null,tMoved=false,lastTap=0;
+  function tp(e){
+    var rc=cv.getBoundingClientRect(),a=[],i;
+    for(i=0;i<e.touches.length&&i<2;i++)a.push({x:e.touches[i].clientX-rc.left,y:e.touches[i].clientY-rc.top});
+    return a;
+  }
+  cv.addEventListener("touchstart",function(e){
+    tPts=tp(e);tMoved=false;
+    if(tPts.length===2){
+      tDist=Math.hypot(tPts[1].x-tPts[0].x,tPts[1].y-tPts[0].y);
+      tMid={x:(tPts[0].x+tPts[1].x)/2,y:(tPts[0].y+tPts[1].y)/2};
+    }
+  },{passive:true});
+  cv.addEventListener("touchmove",function(e){
+    e.preventDefault();
+    var p=tp(e);
+    if(!tPts||!p.length)return;
+    tMoved=true;
+    if(p.length===2&&tPts.length===2){
+      var d=Math.hypot(p[1].x-p[0].x,p[1].y-p[0].y);
+      var mid={x:(p[0].x+p[1].x)/2,y:(p[0].y+p[1].y)/2};
+      if(tDist>0&&Math.abs(Math.log(d/tDist))>0.28){zoomAt(z+(d>tDist?1:-1),mid.x,mid.y);tDist=d;}
+      panBy(mid.x-tMid.x,mid.y-tMid.y);tMid=mid;
+    }else if(p.length===1&&tPts.length===1){
+      panBy(p[0].x-tPts[0].x,p[0].y-tPts[0].y);
+    }
+    tPts=p;
+  },{passive:false});
+  cv.addEventListener("touchend",function(e){
+    if(!tMoved&&e.changedTouches&&e.changedTouches.length===1){
+      var now=new Date().getTime(),rc=cv.getBoundingClientRect();
+      if(now-lastTap<320)zoomAt(z+1,e.changedTouches[0].clientX-rc.left,e.changedTouches[0].clientY-rc.top);
+      lastTap=now;
+    }
+    tPts=e.touches.length?tp(e):null;
+    if(tPts&&tPts.length===2){
+      tDist=Math.hypot(tPts[1].x-tPts[0].x,tPts[1].y-tPts[0].y);
+      tMid={x:(tPts[0].x+tPts[1].x)/2,y:(tPts[0].y+tPts[1].y)/2};
+    }
+  },{passive:true});
+})();
+(function hero(){
+  var h=document.getElementById("hero");
+  var i=pos?pos.near:(DATA.days.length?idxOfDay(DATA.days[DATA.days.length-1].tag):0);
+  h.onload=function(){h.style.display="block";};
+  h.onerror=function(){h.style.display="none";};
+  h.src=stagePhoto(i);
+})();
+(function feed(){
+  var QA=[["a","ABSICHT DES TAGES"],["f","ZUM ERSTEN MAL"],["s","SCHWER GEFALLEN"],
+    ["u","ÜBERRASCHT"],["g","GELERNT"],["q","FRAGE DES TAGES"],["e","ERKENNTNIS"]];
+  var days=DATA.days.slice().sort(function(a,b){return b.tag-a.tag});
+  if(!days.length)return;
+  var h="",i,j;
+  for(i=0;i<days.length;i++){var d=days[i];
+    h+='<div class="day"><div class="dh"><b>Tag '+d.tag+'</b><span>'+dateOf(d.tag)+
+      (d.etappe?' · '+esc(d.etappe):'')+(d.km?' · km '+d.km:'')+'</span></div>';
+    var fotos=(d.fotos&&d.fotos.length)?d.fotos:(d.foto?[d.foto]:[]);
+    if(fotos.length){
+      for(j=0;j<fotos.length;j++)
+        h+='<img loading="lazy" src="camino-media?id='+encodeURIComponent(fotos[j])+'&code='+encodeURIComponent(DATA.code)+'" alt="Foto '+(j+1)+' von Tag '+d.tag+'">';
+      if(fotos.length>1)h+='<div class="cred">'+fotos.length+' Fotos an diesem Tag</div>';
+    }
+    else h+='<img class="wm" loading="lazy" src="'+stagePhoto(idxOfDay(d.tag))+'" alt="" onerror="this.style.display=\'none\'">';
+    for(j=0;j<(d.memos||[]).length;j++)
+      h+='<audio controls preload="none" src="camino-media?id='+encodeURIComponent(d.memos[j].id)+'&code='+encodeURIComponent(DATA.code)+'"></audio>';
+    for(j=0;j<QA.length;j++){var v=d[QA[j][0]];
+      if(v&&String(v).trim())h+='<div class="qa"><b>'+QA[j][1]+'</b><p>'+esc(v)+'</p></div>';}
+    h+='</div>';
+  }
+  document.getElementById("feed").innerHTML=h;
+})();
+(function gaestebuch(){
+  var list=document.getElementById("gbList"),hint=document.getElementById("gbHint");
+  var nameEl=document.getElementById("gbName"),textEl=document.getElementById("gbText"),btn=document.getElementById("gbSend");
+  var items=(DATA.kommentare||[]).slice();
+  try{var gn=localStorage.getItem("camino_gb_name");if(gn)nameEl.value=gn;}catch(e){}
+  function whenTxt(iso){
+    if(!iso)return "";
+    var d=new Date(iso);
+    if(isNaN(d.getTime()))return "";
+    return ["So","Mo","Di","Mi","Do","Fr","Sa"][d.getDay()]+" "+("0"+d.getDate()).slice(-2)+"."+("0"+(d.getMonth()+1)).slice(-2)+". "+
+      ("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);
+  }
+  function draw(){
+    if(!items.length){list.innerHTML='<div class="gbEmpty">Noch kein Eintrag — schreib den ersten.</div>';return;}
+    var h="",i;
+    for(i=0;i<items.length;i++){
+      h+='<div class="gbItem"><div class="who">'+esc(items[i].n||"Anonym")+
+         '<span class="when">'+esc(whenTxt(items[i].z))+'</span></div><p>'+esc(items[i].t||"")+'</p></div>';
+    }
+    list.innerHTML=h;
+  }
+  draw();
+  var busy=false;
+  btn.addEventListener("click",function(){
+    if(busy)return;
+    var nm=nameEl.value.replace(/\s+/g," ").trim(),tx=textEl.value.trim();
+    if(tx.length<2){hint.textContent="Bitte schreib noch ein paar Worte mehr.";textEl.focus();return;}
+    busy=true;btn.disabled=true;hint.textContent="Wird gesendet…";
+    fetch("camino-kommentar",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({code:DATA.code,name:nm,text:tx})})
+      .then(function(r){return r.json();})
+      .then(function(j){
+        busy=false;btn.disabled=false;
+        if(j&&j.ok){
+          items.unshift({id:j.id||"",n:j.name||nm||"Anonym",t:j.text||tx,z:j.zeit||new Date().toISOString()});
+          textEl.value="";draw();
+          hint.textContent="Danke — dein Eintrag steht jetzt da. ✨";
+          try{localStorage.setItem("camino_gb_name",nm);}catch(e){}
+        }else{
+          hint.textContent=(j&&j.fehler)?j.fehler:"Das hat leider nicht geklappt. Nochmal versuchen?";
+        }
+      })
+      .catch(function(){
+        busy=false;btn.disabled=false;
+        hint.textContent="Keine Verbindung — der Eintrag wurde nicht gespeichert. Bitte nochmal versuchen.";
+      });
+  });
+})();
+setInterval(function(){if(document.visibilityState==="visible"&&!window.__caminoMapOpen)location.reload();},120000);
+</script>
+</body>
+</html>
