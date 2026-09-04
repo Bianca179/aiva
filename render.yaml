@@ -16,5 +16,7 @@ services:
       # ablegt — er steht nirgends im Repository.
       - key: ANTHROPIC_API_KEY
         sync: false
-      - key: ZUGANGSCODE
-        sync: false
+      # ZUGANGSCODE ist bewusst nicht aufgeführt: ohne ihn ist die App über
+      # ihre Adresse offen erreichbar. Wer eine Schwelle möchte, trägt ihn in
+      # Render unter "Environment" nach — er darf dann auch im Link stehen
+      # (.../#mein-code), siehe ben/README.md.

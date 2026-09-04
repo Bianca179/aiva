@@ -269,6 +269,25 @@ async function zugangPruefen(eingabe) {
   return daten.namen || namen;
 }
 
+// Der Code darf im Link stehen: .../#mein-code. Dann muss dem Klienten
+// nichts diktiert werden, er tippt nur einen Link an.
+function codeAusLink() {
+  const roh = location.hash.replace(/^#/, "");
+  if (!roh) return "";
+  try {
+    return decodeURIComponent(roh).trim();
+  } catch {
+    return roh.trim();
+  }
+}
+
+// Nach dem Einlösen aus der Adresszeile nehmen — er soll nicht bei jedem
+// Screenshot mit im Bild sein.
+function linkAufraeumen() {
+  if (!location.hash) return;
+  history.replaceState(null, "", location.pathname + location.search);
+}
+
 function zugangVerloren() {
   laeuft = false;
   el.sendenKnopf.disabled = false;
@@ -411,16 +430,30 @@ function starten() {
 }
 
 async function vorstart() {
-  const gemerkt = lesen(SCHLUESSEL.code, "");
-  if (!gemerkt) return;
-  try {
-    const gefunden = await zugangPruefen(gemerkt);
-    if (gefunden) {
-      code = gemerkt;
-      namen = gefunden;
-      starten();
+  // Der Reihe nach: Code aus dem Link, dann der gemerkte, dann der leere.
+  // Der leere greift, wenn der Server ohne ZUGANGSCODE läuft — dann gibt es
+  // gar keine Schwelle und die Adresse ist die einzige Hürde.
+  const kandidaten = [...new Set([codeAusLink(), lesen(SCHLUESSEL.code, "") || "", ""])];
+
+  for (const versuch of kandidaten) {
+    let gefunden;
+    try {
+      gefunden = await zugangPruefen(versuch);
+    } catch {
+      return; // offline: die Schwelle bleibt stehen
     }
-  } catch { /* offline: die Schwelle bleibt stehen */ }
+    if (!gefunden) continue;
+    code = versuch;
+    namen = gefunden;
+    if (versuch) schreiben(SCHLUESSEL.code, versuch);
+    linkAufraeumen();
+    starten();
+    return;
+  }
+
+  // Nichts hat gepasst: die Schwelle bleibt. Der falsche Code soll aber
+  // nicht in der Adresszeile stehen bleiben.
+  linkAufraeumen();
 }
 
 vorstart();

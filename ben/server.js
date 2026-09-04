@@ -33,10 +33,9 @@ if (!process.env.ANTHROPIC_API_KEY) {
   console.error("ANTHROPIC_API_KEY fehlt. Ohne Schlüssel kann Ben nicht antworten.");
   process.exit(1);
 }
-if (!konfig.zugangscode) {
-  console.error("ZUGANGSCODE fehlt. Ohne Zugangscode wäre die App offen im Netz.");
-  process.exit(1);
-}
+// Ohne ZUGANGSCODE ist die App offen erreichbar. Das ist eine bewusste
+// Möglichkeit, keine Panne — dann ist die Adresse selbst die einzige Hürde.
+const offen = !konfig.zugangscode;
 
 // --- Systemprompt ---------------------------------------------------------
 // prompt.md enthält den Text der Coachin wörtlich. Namen werden nur ersetzt,
@@ -67,9 +66,10 @@ const anthropic = new Anthropic({
 
 // --- Zugang ---------------------------------------------------------------
 
-const codeDigest = crypto.createHash("sha256").update(konfig.zugangscode).digest();
+const codeDigest = offen ? null : crypto.createHash("sha256").update(konfig.zugangscode).digest();
 
 function codeStimmt(eingabe) {
+  if (offen) return true;
   if (typeof eingabe !== "string" || eingabe.length === 0) return false;
   const digest = crypto.createHash("sha256").update(eingabe).digest();
   return crypto.timingSafeEqual(digest, codeDigest);
@@ -293,7 +293,7 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST" && urlPfad === "/api/zugang") {
     koerperLesen(req)
       .then((koerper) => {
-        if (codeStimmt(koerper.code)) jsonAntwort(res, 200, { ok: true, namen });
+        if (codeStimmt(koerper.code)) jsonAntwort(res, 200, { ok: true, offen, namen });
         else jsonAntwort(res, 401, { fehler: "Der Zugangscode stimmt nicht." });
       })
       .catch(() => jsonAntwort(res, 400, { fehler: "Die Anfrage war unlesbar." }));
@@ -315,4 +315,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(konfig.port, () => {
   console.log(`Ben läuft auf Port ${konfig.port} (Modell ${konfig.modell}).`);
+  if (offen) {
+    console.log("Kein ZUGANGSCODE gesetzt — wer die Adresse kennt, kommt rein.");
+  }
 });

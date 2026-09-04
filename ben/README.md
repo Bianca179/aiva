@@ -13,28 +13,50 @@ an jemanden weitergegeben wird.
 
 ## Schnellweg (geht am Handy)
 
-Drei Dinge, sonst nichts. Zwischen zehn und fünfzehn Minuten.
-
-**1. API-Schlüssel holen.** Auf [console.anthropic.com](https://console.anthropic.com)
-anmelden → **API Keys** → **Create Key** → kopieren. Er wird nur einmal
-angezeigt. Unter **Billing** etwas Guthaben aufladen; zwanzig Euro reichen für
-viele Durchgänge.
-
-**2. Zugangscode ausdenken.** Das ist, was die Coachin dem Klienten nennt.
-Etwas, das man am Telefon durchgeben kann, aber nicht zu kurz — zum Beispiel
-drei Wörter mit Bindestrichen.
-
-**3. Auf diesen Knopf tippen:**
+**Auf diesen Knopf tippen:**
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Bianca179/aiva)
 
-Render fragt nach GitHub-Anmeldung und dann genau nach den zwei Werten aus
-Schritt 1 und 2. Alles andere — Region Frankfurt, Unterordner, Build-Befehl —
-steht in `render.yaml` und wird automatisch übernommen. Nach ein bis zwei
-Minuten nennt Render eine Adresse wie `https://ben-xyz.onrender.com`. Die
-bekommt der Klient zusammen mit dem Zugangscode.
+Render fragt nach GitHub-Anmeldung und dann nach genau einem Wert:
+`ANTHROPIC_API_KEY`. Liegt der Schlüssel bei Render schon in einer
+**Environment Group**, kannst du die stattdessen nach dem Anlegen unter
+**Environment** anhängen, statt ihn erneut einzufügen.
+
+Alles andere — Region Frankfurt, Unterordner, Build-Befehl — steht in
+`render.yaml` und wird automatisch übernommen. Nach ein bis zwei Minuten nennt
+Render eine Adresse wie `https://ben-xyz.onrender.com`. Die bekommt der
+Klient. Mehr braucht er nicht.
 
 Fertig. Der Rest dieser Datei ist Nachschlagewerk.
+
+### Wer noch keinen Schlüssel hat
+
+Auf [console.anthropic.com](https://console.anthropic.com) anmelden →
+**API Keys** → **Create Key** → kopieren. Er wird nur einmal angezeigt. Unter
+**Billing** etwas Guthaben aufladen; zwanzig Euro reichen für viele
+Durchgänge.
+
+### Wer eine Schwelle vor der App möchte
+
+Ohne Zugangscode kommt jeder rein, der die Adresse kennt. Das ist eine
+bewusste Möglichkeit — verlass dich dabei aber nicht darauf, dass die Adresse
+geheim bleibt: **jeder Render-Hostname landet beim Ausstellen des
+TLS-Zertifikats in den öffentlichen Certificate-Transparency-Logs** und ist
+darüber innerhalb von Minuten auffindbar. Scanner klappern die ab. Marcs
+Antworten liegen in seinem Browser und sind so nicht erreichbar; offen liegt
+der Endpunkt, der auf dein Anthropic-Guthaben geht.
+
+Wenn du eine Schwelle willst, ohne dem Klienten etwas diktieren zu müssen:
+setze in Render unter **Environment** die Variable `ZUGANGSCODE` und häng den
+Code hinten an den Link:
+
+```
+https://ben-xyz.onrender.com/#drei-woerter-mit-bindestrichen
+```
+
+Er tippt weiterhin nur einen Link an. Die App löst den Code ein, merkt ihn
+sich und nimmt ihn aus der Adresszeile, damit er nicht bei jedem Screenshot
+mit im Bild ist.
 
 > Der Knopf zieht den Stand aus dem `main`-Branch. Solange die Änderung noch
 > in einem Pull Request liegt, nimm stattdessen
@@ -67,11 +89,11 @@ Programmierkenntnisse brauchst du nicht. Rechne mit einer halben Stunde.
 4. Unter **Billing** etwas Guthaben aufladen. Zwanzig Euro reichen für viele
    Durchgänge (siehe **Was es kostet**).
 
-### Schritt 2: Zugangscode ausdenken
+### Schritt 2: Zugangscode ausdenken (optional)
 
-Der Code ist das, was die Coachin dem Klienten nennt. Nimm etwas, das man am
-Telefon durchgeben kann, aber nicht zu kurz — zum Beispiel drei Wörter mit
-Bindestrichen. Er ist die einzige Schwelle vor der App.
+Nur, wenn du eine Schwelle möchtest — siehe oben. Nimm etwas, das man am
+Telefon durchgeben kann, aber nicht zu kurz, zum Beispiel drei Wörter mit
+Bindestrichen. Ohne Code ist die App über ihre Adresse offen erreichbar.
 
 ### Schritt 3: Von Hand auf Render veröffentlichen
 
@@ -98,7 +120,7 @@ Bindestrichen. Er ist die einzige Schwelle vor der App.
    | Key | Value |
    |---|---|
    | `ANTHROPIC_API_KEY` | dein Schlüssel aus Schritt 1 |
-   | `ZUGANGSCODE` | dein Code aus Schritt 2 |
+   | `ZUGANGSCODE` | dein Code aus Schritt 2, oder ganz weglassen |
 
 5. **Create Web Service**. Der erste Start dauert ein bis zwei Minuten.
 6. Render zeigt dir eine Adresse wie `https://ben-xyz.onrender.com`. Die
@@ -125,7 +147,7 @@ Guthaben.
 | Variable | Pflicht | Voreinstellung | Wofür |
 |---|---|---|---|
 | `ANTHROPIC_API_KEY` | ja | — | Schlüssel aus der Anthropic Console. Bleibt auf dem Server. |
-| `ZUGANGSCODE` | ja | — | Der Code, den die Coachin dem Klienten nennt. |
+| `ZUGANGSCODE` | nein | — | Schwelle vor der App. Nicht gesetzt heißt: wer die Adresse kennt, kommt rein. Gesetzt darf er im Link stehen (`.../#code`). |
 | `ANTHROPIC_MODEL` | nein | `claude-opus-5` | `claude-sonnet-5` ist rund halb so teuer und für dieses Gespräch gut geeignet. |
 | `EFFORT` | nein | `low` | Wie ausführlich das Modell nachdenkt: `low` bis `max`. Höher heißt langsamer und teurer. |
 | `MAX_TOKENS` | nein | `16000` | Obergrenze für eine einzelne Antwort. |
@@ -135,8 +157,9 @@ Guthaben.
 | `PARTNERIN_NAME` | nein | — | Ersetzt „Sophie“. |
 | `PORT` | nein | `8080` | Setzt Render selbst. Nicht anfassen. |
 
-Der Server startet nicht ohne `ANTHROPIC_API_KEY` und `ZUGANGSCODE` — das ist
-Absicht. Eine App ohne Zugangscode stünde offen im Netz.
+Ohne `ANTHROPIC_API_KEY` startet der Server nicht — ohne Schlüssel könnte Ben
+ohnehin nicht antworten. Läuft er ohne `ZUGANGSCODE`, schreibt er beim Start
+eine Zeile ins Log, die daran erinnert, dass die App offen erreichbar ist.
 
 ---
 
@@ -168,10 +191,10 @@ gemeint, auch wo er unbequem ist.
 er den Tab schließen und Tage später weitermachen. Es gibt keine Kopie
 irgendwo sonst. Zwei Folgen daraus:
 
-- Wer sein entsperrtes Handy in der Hand hat, kann mitlesen. Der Zugangscode
-  schützt gegen Fremde im Netz, nicht gegen Menschen im selben Haushalt.
-  Wenn das ein Thema ist: privates Fenster benutzen, PDF sichern, danach
-  löschen.
+- Wer sein entsperrtes Handy in der Hand hat, kann mitlesen. Auch ein
+  Zugangscode schützt nur gegen Fremde im Netz, nicht gegen Menschen im
+  selben Haushalt. Wenn das ein Thema ist: privates Fenster benutzen, PDF
+  sichern, danach löschen.
 - Löscht er die Browserdaten oder wechselt er das Gerät, ist das Gespräch
   weg. Es lässt sich nicht wiederherstellen. Der **Löschen**-Knopf in der App
   weist vor dem Löschen darauf hin.
@@ -199,6 +222,12 @@ kein Schalter in dieser App. Prüf den aktuellen Stand vor dem Gespräch unter
 verarbeitet. Render selbst ist ein US-Unternehmen — EU ist hier der
 Ausführungsort, nicht die Firmensitz-Jurisdiktion. Render sieht die
 Zugriffe seines Routers (Zeitpunkt, Pfad, Statuscode), nicht die Inhalte.
+
+Läuft die App **ohne** `ZUGANGSCODE`, kommt jeder rein, der die Adresse kennt
+— und Render-Adressen sind über die Certificate-Transparency-Logs öffentlich
+auffindbar. Ein Fremder liest damit nicht Marcs Antworten, die liegen in
+seinem Browser. Er kann aber Gespräche auf deine Rechnung führen. Wenn dir am
+Ende der Arbeit die Kosten auffallen: Dienst in Render pausieren oder löschen.
 
 **Kurz für ein Gespräch mit dem Klienten:** „Was du schreibst, bleibt auf
 deinem Gerät. Es geht nur an das KI-Modell, damit es antworten kann, und wird
