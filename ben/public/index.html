@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<title>Gespräch</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div id="schwelle" class="schwelle">
+  <div class="schwelle-innen">
+    <p class="schwelle-text">Bitte gib den Zugangscode ein, den du bekommen hast.</p>
+    <form id="zugang-form" autocomplete="off">
+      <input id="zugang-feld" type="password" inputmode="text" autocomplete="off"
+             spellcheck="false" aria-label="Zugangscode">
+      <button type="submit" id="zugang-knopf">Weiter</button>
+    </form>
+    <p id="zugang-fehler" class="fehlerzeile" hidden></p>
+  </div>
+</div>
+
+<div id="anwendung" hidden>
+  <header class="kopf">
+    <p id="dateizeile" class="dateizeile"></p>
+    <nav class="werkzeuge">
+      <button type="button" id="pdf-knopf">Als PDF sichern</button>
+      <button type="button" id="txt-knopf">Als Textdatei</button>
+      <button type="button" id="loeschen-knopf">Löschen</button>
+    </nav>
+  </header>
+
+  <main id="verlauf" class="verlauf" aria-live="polite" aria-atomic="false"></main>
+
+  <form id="eingabe-form" class="eingabe">
+    <label class="unsichtbar" for="eingabe-feld">Deine Antwort</label>
+    <textarea id="eingabe-feld" rows="2" spellcheck="true"
+              placeholder="Schreib, was dir in den Sinn kommt."></textarea>
+    <div class="eingabe-fuss">
+      <p class="hinweis">Wenn dir zu einem Thema gerade nichts einfällt, schreib „überspringen“.</p>
+      <button type="submit" id="senden-knopf">Senden</button>
+    </div>
+  </form>
+</div>
+
+<script src="/app.js" type="module"></script>
+</body>
+</html>

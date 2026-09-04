@@ -1,0 +1,263 @@
+/* Ruhig, papierhaft, mobil zuerst. Keine Bubbles, keine Avatare, keine
+   Animationen. Bens Text liest sich wie ein Brief, die eigenen Antworten
+   stehen daneben wie eine Notiz am Rand. */
+
+:root {
+  --papier: #faf8f4;
+  --papier-tief: #f2eee6;
+  --tinte: #2b2724;
+  --tinte-leise: #6e675f;
+  --tinte-sehr-leise: #979087;
+  --linie: #ddd6ca;
+  --akzent: #4a4038;
+  --warnung: #8a4b3a;
+  --spalte: 34rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --papier: #17161a;
+    --papier-tief: #1e1d22;
+    --tinte: #e6e1d9;
+    --tinte-leise: #a49d93;
+    --tinte-sehr-leise: #756e66;
+    --linie: #322f36;
+    --akzent: #cfc7bb;
+    --warnung: #c08b78;
+  }
+}
+
+* { box-sizing: border-box; }
+
+/* .schwelle und #anwendung setzen display selbst — ohne das hier bliebe das
+   verborgene von beiden sichtbar. */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--papier);
+  color: var(--tinte);
+}
+
+body {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+button, input, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+.unsichtbar {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* --- Zugangsschwelle --- */
+
+.schwelle {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.schwelle-innen {
+  width: 100%;
+  max-width: 22rem;
+}
+
+.schwelle-text {
+  margin: 0 0 1rem;
+  color: var(--tinte-leise);
+}
+
+#zugang-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#zugang-feld {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.6rem 0.7rem;
+  background: var(--papier-tief);
+  border: 1px solid var(--linie);
+  border-radius: 2px;
+}
+
+#zugang-feld:focus-visible,
+#eingabe-feld:focus-visible {
+  outline: 2px solid var(--akzent);
+  outline-offset: 1px;
+}
+
+#zugang-knopf, #senden-knopf {
+  flex: 0 0 auto;
+  padding: 0.6rem 1.1rem;
+  background: var(--akzent);
+  color: var(--papier);
+  border: 1px solid var(--akzent);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+#zugang-knopf:disabled, #senden-knopf:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.fehlerzeile {
+  margin: 0.75rem 0 0;
+  color: var(--warnung);
+  font-size: 0.9375rem;
+}
+
+/* --- Rahmen --- */
+
+#anwendung {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.kopf {
+  border-bottom: 1px solid var(--linie);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.dateizeile {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--tinte-sehr-leise);
+}
+
+.werkzeuge {
+  display: flex;
+  gap: 1rem;
+}
+
+.werkzeuge button {
+  padding: 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--linie);
+  color: var(--tinte-leise);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.werkzeuge button:hover { color: var(--tinte); }
+.werkzeuge button:disabled { opacity: 0.4; cursor: default; }
+
+/* --- Verlauf --- */
+
+.verlauf {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: var(--spalte);
+  margin: 0 auto;
+  padding: 2rem 1.25rem 1rem;
+}
+
+.beitrag { margin: 0 0 1.75rem; }
+
+.beitrag p { margin: 0 0 0.9rem; }
+.beitrag p:last-child { margin-bottom: 0; }
+
+/* Ben: fließender Text, gut lesbar gesetzt. */
+.beitrag-ben { max-width: 32rem; }
+
+/* Seine eigenen Antworten: abgesetzt, leiser, wie am Rand notiert. */
+.beitrag-klient {
+  padding-left: 1rem;
+  border-left: 2px solid var(--linie);
+  color: var(--tinte-leise);
+  font-size: 0.9375rem;
+}
+
+.beitrag-fehler {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  font-size: 0.875rem;
+  color: var(--warnung);
+}
+
+.beitrag-fehler button {
+  margin-left: 0.5rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.wartet::after {
+  content: "…";
+  color: var(--tinte-sehr-leise);
+}
+
+.leerzeile {
+  color: var(--tinte-sehr-leise);
+  font-size: 0.9375rem;
+}
+
+/* --- Eingabe --- */
+
+.eingabe {
+  position: sticky;
+  bottom: 0;
+  background: var(--papier);
+  border-top: 1px solid var(--linie);
+  padding: 0.875rem 1.25rem calc(0.875rem + env(safe-area-inset-bottom));
+}
+
+.eingabe > * {
+  width: 100%;
+  max-width: var(--spalte);
+  margin: 0 auto;
+}
+
+#eingabe-feld {
+  display: block;
+  padding: 0.6rem 0.7rem;
+  background: var(--papier-tief);
+  border: 1px solid var(--linie);
+  border-radius: 2px;
+  resize: none;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.eingabe-fuss {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.625rem;
+}
+
+.hinweis {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--tinte-sehr-leise);
+}
+
+@media (min-width: 40rem) {
+  .verlauf { padding-top: 3rem; }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "ben",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Geführtes Gespräch für ein Beziehungscoaching. Der Server speichert nichts.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.72.0"
+  }
+}
