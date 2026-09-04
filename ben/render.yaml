@@ -1,0 +1,20 @@
+# Diese Datei beschreibt Render den Dienst. Wer die Anleitung im README
+# Schritt für Schritt durchgeht, muss sie nicht anfassen.
+services:
+  - type: web
+    name: ben
+    runtime: node
+    # Frankfurt: die App läuft in der EU.
+    region: frankfurt
+    plan: starter
+    rootDir: ben
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      # sync: false bedeutet, dass Render den Wert abfragt und verschlüsselt
+      # ablegt — er steht nirgends im Repository.
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ZUGANGSCODE
+        sync: false
