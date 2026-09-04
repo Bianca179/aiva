@@ -11,7 +11,43 @@ an jemanden weitergegeben wird.
 
 ---
 
-## Was du brauchst
+## Schnellweg (geht am Handy)
+
+Drei Dinge, sonst nichts. Zwischen zehn und fünfzehn Minuten.
+
+**1. API-Schlüssel holen.** Auf [console.anthropic.com](https://console.anthropic.com)
+anmelden → **API Keys** → **Create Key** → kopieren. Er wird nur einmal
+angezeigt. Unter **Billing** etwas Guthaben aufladen; zwanzig Euro reichen für
+viele Durchgänge.
+
+**2. Zugangscode ausdenken.** Das ist, was die Coachin dem Klienten nennt.
+Etwas, das man am Telefon durchgeben kann, aber nicht zu kurz — zum Beispiel
+drei Wörter mit Bindestrichen.
+
+**3. Auf diesen Knopf tippen:**
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Bianca179/aiva)
+
+Render fragt nach GitHub-Anmeldung und dann genau nach den zwei Werten aus
+Schritt 1 und 2. Alles andere — Region Frankfurt, Unterordner, Build-Befehl —
+steht in `render.yaml` und wird automatisch übernommen. Nach ein bis zwei
+Minuten nennt Render eine Adresse wie `https://ben-xyz.onrender.com`. Die
+bekommt der Klient zusammen mit dem Zugangscode.
+
+Fertig. Der Rest dieser Datei ist Nachschlagewerk.
+
+> Der Knopf zieht den Stand aus dem `main`-Branch. Solange die Änderung noch
+> in einem Pull Request liegt, nimm stattdessen
+> [diesen Link](https://render.com/deploy?repo=https://github.com/Bianca179/aiva/tree/claude/new-session-6zfzbc)
+> — oder merge den Pull Request zuerst.
+
+---
+
+## Der ausführliche Weg
+
+Wenn beim Schnellweg etwas hakt oder du lieber jedes Feld selbst setzt.
+
+### Was du brauchst
 
 1. Ein Konto bei **Anthropic** (console.anthropic.com) mit einem API-Schlüssel
    und etwas Guthaben.
@@ -22,7 +58,7 @@ Programmierkenntnisse brauchst du nicht. Rechne mit einer halben Stunde.
 
 ---
 
-## Schritt 1: API-Schlüssel holen
+### Schritt 1: API-Schlüssel holen
 
 1. Auf console.anthropic.com anmelden.
 2. Links auf **API Keys**, dann **Create Key**.
@@ -31,13 +67,13 @@ Programmierkenntnisse brauchst du nicht. Rechne mit einer halben Stunde.
 4. Unter **Billing** etwas Guthaben aufladen. Zwanzig Euro reichen für viele
    Durchgänge (siehe **Was es kostet**).
 
-## Schritt 2: Zugangscode ausdenken
+### Schritt 2: Zugangscode ausdenken
 
 Der Code ist das, was die Coachin dem Klienten nennt. Nimm etwas, das man am
 Telefon durchgeben kann, aber nicht zu kurz — zum Beispiel drei Wörter mit
 Bindestrichen. Er ist die einzige Schwelle vor der App.
 
-## Schritt 3: Auf Render veröffentlichen
+### Schritt 3: Von Hand auf Render veröffentlichen
 
 1. Auf render.com anmelden und GitHub verbinden.
 2. **New** → **Web Service** → dieses Repository auswählen.
@@ -75,7 +111,7 @@ wäre die Seite kaputt. Für jemanden, der sich abends überwindet, ist das der
 falsche Moment. Wenn die Arbeit abgeschlossen ist, lässt sich der Dienst in
 Render löschen oder pausieren.
 
-## Schritt 4: Ausprobieren
+### Schritt 4: Ausprobieren
 
 Adresse im Browser öffnen, Zugangscode eingeben. Ben sollte sich innerhalb
 weniger Sekunden melden. Tut er das nicht, steht der Grund in Render unter
@@ -222,10 +258,10 @@ Dann `http://localhost:8080` öffnen.
 ## Was drin steckt
 
 ```
+render.yaml          Beschreibt Render den Dienst (liegt im Wurzelverzeichnis)
 ben/
   server.js          Statische Dateien + Durchreiche-Endpunkt zur Anthropic-API
   prompt.md          Der Systemprompt, wörtlich. Von der Coachin editierbar.
-  render.yaml        Beschreibt Render den Dienst
   .env.example       Vorlage für die Umgebungsvariablen
   public/
     index.html       Zugangsschwelle und Gesprächsfenster
