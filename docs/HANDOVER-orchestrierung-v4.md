@@ -959,3 +959,14 @@ Bianca fragte „wurden meine Freigaben wirklich versendet?" → Diagnose des 09
 - **Betroffen & gefixt (beide auf `FIRST_DEGREE` ODER `DISTANCE_1`, combinator or):** Direkt-DM `vj13lz8c2fhiuaMB` (Node „Vernetzt (1. Grad)?") UND Vernetzt-Check `UOBCmmA27mOOdQOs` (Node „Verbunden?" — hätte kalte Annahmen NIE erkannt → post-Annahme-DM wäre nie gelaufen). Beide publiziert.
 - **Verifiziert (Exec 15564):** 4 echte DMs (`ChatStarted`) an die 4 tatsächlichen 1.-Grad-Kontakte — **Julia Japec, Elisabeth Schlachter, Iris Bode, Lidija Pavlicic** → Status „Gesendet"/„Im Gespräch", `Kontaktiert am`+`Angenommen am` = 2026-09-22. (Der Datumsstempel greift also auch.)
 - Die übrigen Freigaben waren `SECOND_DEGREE` (nicht vernetzt) → korrekt KEINE DM; sie laufen über die Invite-Kette (5 heute früh 08:00 UTC raus, Rest metered). **Lehre: Unipile-Werte je Endpunkt unterschiedlich — nie über Endpunkte hinweg annehmen.**
+
+---
+
+## 22 · Donna-Telefonie VERIFIZIERT + DE-Nummer live (22.09.)
+Read-only-Check (ElevenLabs-API via Probe-WF, danach archiviert) + n8n-Prüfung: **Donnas Telefonie ist vollständig eingerichtet und empfangsbereit.**
+- **DE-Festnetznummer LIVE: `+49 7156 4229016`** (Twilio, Label „AIVas Team"), `supports_inbound:true`, **assigned_agent = Donna** (`agent_1801kznxw02af899y3exzwytmsxq`). → Das 07156-Ticket aus §17.6 ist also durch, Nummer gekauft + importiert + Donna als Inbound-Agent zugewiesen.
+- **Donna-Agent vollständig konfiguriert:** first_message `{{begruessung}}`, Sprache de, dynamic vars (modus/bekannt/anrufer_info/begruessung), voller Dual-Modus-Prompt (inkl. Preis-/Tagessatz-Regel 2790€, Lexware), **8 Webhook-Tools** auf die donna-*/lexware-/sophia-produkt-Webhooks (kalender_lesen+todos mit `system__caller_id`), System-Tools **transfer_to_agent → Sophia** (`agent_4801…`), end_call, language_detection.
+- **Conversation-Initiation-Webhook** `/donna-anruf-init` in workspace_overrides + Flag **`enable_conversation_initiation_client_data_from_webhook: true`** ✅ (ohne Flag würde Init bei Twilio-Inbound nicht abgerufen).
+- **n8n Voice-Tools `eTQjKoyHfxuUV1vA` AKTIV**, Gate scharf: Biancas Handynummer `015114759899` fest in „Modus bestimmen" + „Zugangs-Gate" (kein Platzhalter) → interne Tools nur für ihre Caller-ID.
+- **OFFEN = nur der echte Testanruf** (nie gemacht): Bianca ruft `+49 7156 4229016` (a) vom eigenen Handy → „Hallo Bianca…", Kalender abfragbar; (b) von fremder Nummer → Empfang, Kalender verweigert.
+- **Heads-ups (optional, nicht angefasst):** (1) Donna nutzt weiter **Sophias Stimme** `fBs1tCpaSMsPcbMkLQlk` — bei Bedarf im Dashboard tauschen. (2) In der ElevenLabs-Nummernliste ist **nur noch die DE-Nummer**; die alte US-Nummer `+15715865442` (`phnum_0101…`) fehlt → **Sophias Outbound-Trigger `i9JHfn8I4jmKkmPR` zeigt evtl. auf eine tote `phone_number_id`** — in der Sophia-Session prüfen/umstellen (ggf. auf die DE-Nummer, die auch `supports_outbound:true` ist).
