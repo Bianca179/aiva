@@ -933,3 +933,10 @@ Der Direkt-DM-Motor ist da, hat aber noch **keinen Treibstoff**: Biancas ~25 ver
 - **Entwuerfe-Pipeline erneut getriggert** (Exec 15543) für die 12 → Entwürfe + „Wartet auf Freigabe".
 - **Lehre bestätigt:** Execution-Status hängt in der MCP-Anzeige deutlich nach (mehrere Minuten „running", obwohl längst `success`). Ergebnis immer über Airtable/Datenlage gegenprüfen, nicht über die Status-Anzeige takten.
 - **Versand-Robustheit gefixt (GO Bianca):** `UHpsLw9QOhAA6wLE` — neuer Node **„Invite fehlgeschlagen"**; die Error-Outputs von „Vernetzen ohne Notiz" (Arm B) UND „Vernetzen ohne Notiz (Fallback)" (Arm A) setzen den Datensatz jetzt auf **Akquise-Status „Übersprungen"** statt ihn still auf „Freigegeben" liegen zu lassen (kein stilles Dauer-Retry; Fehler sichtbar, per erneuter Freigabe wiederholbar). Publiziert.
+
+### 21.7 Vollautomatik-Rhythmus festgelegt (22.09.)
+Biancas Modell: täglich generieren, ~wöchentlich in einem Rutsch freigeben (Dashboard), Versand meter-t sich selbst über die Tageslimits.
+- **Alles Tägliche läuft schon autonom:** Lead-Search 06:30 → Entwürfe 07:30 → Direkt-DM 09:45/15:45 → Invite 10:00/16:00 → Vernetzt-Check alle 4 h. Entwürfe sammeln sich in „Wartet auf Freigabe".
+- **NEU: Vernetzungs-Import `wcGsnuPbT5dbcaTz` jetzt geplant + aktiv** — zweiter Trigger **„Woechentlich Montag 06:00"** (`weeks`, Tag 1, 06:00) → `Relations Seite 1`; Manuell-Trigger „Start" bleibt zusätzlich. Zieht montags neue 1.-Grad-Vernetzungen → Sam qualifiziert → Entwürfe 07:30 → warten auf Freigabe. Import re-klassifiziert bewusst auch die Nicht-Aufgenommenen erneut (kein „seen"-Marker) — bei 1×/Woche vernachlässigbar.
+- **Reminder: von Bianca abgelehnt** (sie schaut selbst ins Dashboard) — kein Erinnerungs-Workflow gebaut.
+- **Freigabe-Kontrolle bleibt der einzige manuelle Schritt** (bewusst). Große Wochen-Batches sind sicher: Invite ~10/Tag (5/Arm×2), Direkt-DM bis 25/Lauf — Versand verteilt sich automatisch über Folgetage.
