@@ -1015,3 +1015,8 @@ Bianca fragte „wurden meine Freigaben wirklich versendet?" → Diagnose des 09
 - **Donna nativ:** Exec 15579 (`J22CV0Ovkjj9Zd6f`, 28 s, Agent-Lauf mit Antwort) auf Biancas Live-Nachricht.
 - **Dirigent-Weiterleitung:** Exec 15583 (Donna-Workflow, Weiterleitung) → **Dirigent Exec 15584 = success** (6 s, Langdock-Antwort im Kanal).
 - Biancas Rückmeldung: „echtzeit positiv". Donna-Check damit abgeschlossen; Restpunkte aus 22.6 Nr. 5 bleiben offen (kein GO).
+
+### 22.8 Restpunkte umgesetzt (GO Bianca, 22.09. mittags)
+- **Kalender-Wächter `SxSYRyWaqH9tc58u` → v1.1, publiziert.** Dubletten-Ursache: stündlicher Lauf (:07) mit **75-min**-Fenster im Code-Filter → Einträge, die 60–75 min alt waren, meldete der Folgelauf erneut. Fenster jetzt **62 min** (Google-`updatedMin` bleibt 75 min als Vorfilter). Slack-Text hatte literales `\n` statt Zeilenumbruch → echte Umbrüche. `includeLinkToWorkflow=false` → kein „Automated with this n8n workflow"-Footer mehr.
+- **Registry bereinigt:** Slack-Kanal-ID ohne führendes Tab-Zeichen bei **Gaia** (`recxlqMD9okXBBzV7` → `A0BLLLVNSE6`) und **Soreia** (`recfGvm1MupIe3lck` → `A0BLLHF1H34`). Beide sind DM-Bot-Agentinnen (App-IDs, kein Kanal) — der Dirigent ignoriert sie damit sauber statt per Zufall.
+- **Bewusst unverändert:** Donnas Kanal-ID = App-ID (siehe 22.6 Nr. 5); Dirigenten-Draft bleibt unpubliziert.
