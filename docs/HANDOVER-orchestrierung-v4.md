@@ -1085,3 +1085,71 @@ Anlass: Thema „Marketing-Team produktionsfähig machen, automatisiert". Nach R
 **D — Recherche (`dXHZnY0KaS9iNgSo`):** beide SerpAPI-Tool-Nodes ersetzt durch **Brave-Search-Tool** (`@brave/n8n-nodes-brave-search.braveSearchTool` v1.1, Web, DE/de, `count 10`, Frische News=`pw`, Trends=`pm`), Credential automatisch „Gateway credits" (kein eigener Key). **Testlauf Exec 15658 = success (3 Min)**: 2 Einträge im Redaktionsplan (`recZL0acvfgU5ma23` Peter-Parker-Recherche, `recr6cvDIMmMTwKgY` Trend-Scout-Recherche), beide `Wartet auf Themenwahl` mit CC-Top-Empfehlung (Prio Hoch) → sichtbar in der Cockpit-Themenwahl. **Publiziert/aktiv: Montag 08:00.** Nebenbefund: Wochen-Datensatz „KW 39" wurde mit `Wochenstart` = Testtag (Di) angelegt — kosmetisch, montags korrekt.
 
 **Ablauf ab jetzt (vollautomatisch, zwei Klicks bei Bianca):** Mo 08:00 Recherche → Ideen + Vorauswahl · #max jederzeit → Ideen · **Klick „Produzieren"** (Cockpit) · 09:00 Produktion → `Wartet auf Freigabe` · **Klick „Freigeben" nach Lesen** · 08:34 Slot (1/Tag) → 08:40 Bild → 08:45 LinkedIn → Redaktionsplan `Gepostet` + Link. Instagram/Substack/Podcast: Entwürfe entstehen, Veröffentlichung bleibt manuell (kein Publishing-Weg, bekannt).
+
+### 24.5 Ergebnis des zweiten Produktionslaufs + Biancas Stopp (22.09., nachmittags)
+- **Exec 15661 = success, 12 Min, 6/6 Einträge → „Wartet auf Freigabe"** (Owner Linni ×4 / Soreia ×2, je 1 Feedback-Runde, Nora-Feedback befüllt). Die Kette Themenwahl → Produktion → Freigabe-Liste im Cockpit funktioniert damit erstmals Ende-zu-Ende. Die 6 Entwürfe liegen im Cockpit unter „Zur Freigabe" mit Volltext.
+- **Bianca-Stopp:** „viel zu lange, kostet ein Vermögen an Token." Berechtigt — siehe §25.2. **Keine weiteren Läufe gestartet, Produktion nicht weiter angefasst.** Die Produktion läuft nur, wenn Einträge auf „Ausgewählt" stehen (= nach Biancas „Produzieren"-Klick); ohne Klick verbraucht sie nichts. Die Recherche (Mo 08:00, ~3 Min, 3 Agent-Aufrufe) läuft automatisch — bei Bedarf deaktivieren.
+- **Bianca-Entscheidung:** gesamte Struktur in Ruhe überdenken und nachhaltig/belastbar auf Senior-Level neu aufsetzen. §25 ist die Grundlage dafür.
+
+---
+
+## 25 · Gesamtprotokoll Marketing-Team (Stand 22.09.2026 abends) — Grundlage für den Senior-Neuaufbau
+
+### 25.1 Was heute live ist und was es tut
+| Baustein | Workflow | Läuft wann | Zustand |
+|---|---|---|---|
+| Aufträge aus #max → Ideen | `0mJg6hf46o29NdsD` Marketing-Eingang | alle 15 Min | stabil, seit 10.08. (Sonnet, 1 Aufruf je neuer Nachricht) |
+| Recherche → Ideen + Vorauswahl | `dXHZnY0KaS9iNgSo` Recherche | Mo 08:00 | **NEU aktiv** (Brave Search via Gateway; 3 Sonnet-Agenten) |
+| Themenwahl + Freigabe (UI) | `HPl4FtmXeISou9FN` Cockpit | Klick | **NEU zweistufig**, Text-Guard, verifiziert |
+| Produktion Entwürfe | `9pi1p59HQWc6ASXJ` Produktion | tgl. 09:00, nur bei „Ausgewählt" | funktioniert (Exec 15661), **teuer** |
+| Kanal-Agentinnen (eigene Workflows) | Ina `ZToSb9K4kbu3olf6`, Soreia `UBv3GFZnIBZ5Sc7V`, Podcast `3a8YdcWUtj2cMRbc` | als Werkzeug von CC Top / per Chat | Memory-Fix heute; Ina/Podcast in Exec 15661 nicht aufgerufen (nur LinkedIn/Substack-Einträge) |
+| Linni (LinkedIn-Stimme) | intern in Produktion (agentTool) + Alt-Workflow `11UxePeldz86cqxp` (142 Nodes) | Produktion / 08:34 Übergabe / Slack-DM | Alt-Workflow: Manni-Chat-Teil defekt, Guardrail heute gehärtet |
+| Freigegeben → Slot | Linni-Kette 08:34 | tgl. | **NEU**: ohne Datumszwang, Text-Pflicht, 1/Tag |
+| Slot → Bild | `sxqFjkGedC1ph17C` | tgl. 08:40 | unverändert (Magnific, Prompt nur aus Titel) |
+| Slot → LinkedIn | `NINDaWVJOWJuCvrA` | tgl. 08:45 | **NEU**: schreibt Redaktionsplan „Gepostet" + Link (ungetestet, greift beim nächsten Post) |
+| Instagram / Substack / Podcast / Video Veröffentlichung | — | — | **existiert nicht** (Entwürfe ja, Posten manuell) |
+
+**Daten (Redaktionsplan `tbld1fEJeD29wy4PT`, 17 Einträge):** Wartet auf Freigabe 6 · Wartet auf Themenwahl 2 (Recherche) · Idee 4 · Entwurf 2 (Alt, 02.08.) · Freigegeben 1 (Newsletter, Alt) · Gepostet 1 · Verworfen 1.
+**Freigabe-Gates (Status-Wörter, die nur Bianca setzt):** `Ausgewählt` (Produktion darf laufen) und `Freigegeben` (Veröffentlichung darf laufen). Beide nur über Cockpit-Klick; kein Agent kann sie noch setzen (C + Ina/Soreia/Podcast-Tools haben Default „Entwurf"; Ina/Soreia/Podcast-Tools erlauben „Freigegeben" theoretisch noch per Chat-Zustimmung — siehe 25.4 #6).
+
+### 25.2 Kosten- und Laufzeitbefund (der eigentliche Grund für den Neuaufbau)
+- **Exec 15618 (alte Version, Fehler):** 17 Min, 0 Ergebnis. Modell-Aufrufe: CC Top **60**, Nora 21, Selma 12, Claudia 3 = **96 Sonnet-Aufrufe für 6 Einträge**, jeder mit wachsendem Verlauf (Tool-Ergebnisse + Feedback-Texte werden in jeden Folgeaufruf mitgeschleppt). Abbruch durch Max-Iterations.
+- **Exec 15661 (neue Version):** 12 Min, 6/6 Ergebnis, ~2 Min je Eintrag. Weiterhin Agenten-Schleife: je Eintrag ~8–12 Aufrufe (CC Top mehrfach + Kanal-Agentin 2× + 2 Personas), Kontext je Aufruf mehrere tausend Tokens.
+- **Ursache strukturell, nicht ein Bug:** Ein LLM-Orchestrator (CC Top), der andere LLMs als Werkzeuge in Schleifen aufruft, hat quadratisch wachsenden Kontext und nicht-deterministische Laufzeit. Das ist das „Manni-Muster" aus der Vorlage — es sieht organisatorisch schön aus (Team, Delegation), ist aber für einen Batch-Produktionsschritt das teuerste denkbare Design.
+- **Was es stattdessen bräuchte:** feste Kette mit bekannter Aufrufzahl (Entwurf → 2 Feedbacks parallel → 1 Überarbeitung = 4 Aufrufe/Eintrag), kleine Modelle für Nebenrollen (Personas: Haiku 4.5), harte Deckel (Einträge/Lauf, Zeichen), kein Verlauf-Mitschleppen. Geschätzte Ersparnis Faktor 5–10. (Vorschlag lag Bianca vor, **nicht gebaut** — Bianca will erst die Gesamtstruktur überdenken.)
+
+### 25.3 Architektur-Lehren aus dem Marketing-Team (heute + seit Juli)
+1. **Status-Wort = Gate, sonst gibt es kein Gate.** Ein Freigabe-Gate ist nur echt, wenn (a) das Wort nur ein Mensch setzen kann und (b) jeder Verbraucher genau dieses Wort prüft. Heute gebrochen gefunden: Cockpit setzte „Freigegeben" auf leere Ideen; Manni-Tool hatte „Freigegeben" als Default. Regel für neu: **Status-Enum zentral dokumentieren, pro Status festlegen wer schreiben darf, und jeden Workflow-Filter dagegen abgleichen.**
+2. **Agent-als-Werkzeug über Sub-Workflows ist fragil.** Beide Kanal-Werkzeuge scheiterten still (Memory-Referenz, toJsonString) — der Orchestrator merkte es nicht und kompensierte teuer. Regel: **Werkzeuge müssen deterministisch scheitern (Fehler sichtbar, Lauf bricht kontrolliert ab) und der Aufrufer darf nicht „kreativ" um Fehler herumarbeiten.**
+3. **Orchestrator-Loops nur für echte Gespräche, nie für Batch.** (§11-Regel bestätigt und verschärft: Donna darf Loop; Produktion ist Pipeline.)
+4. **Ein UI, ein Wahrheitsort.** Cockpit + Redaktionsplan reichen. Alles, was nicht im Cockpit sichtbar ist (z. B. „Wartet auf Themenwahl" vor heute), existiert für Bianca nicht.
+5. **Jede Kette braucht einen Datumsstempel je Übergang** (heute: `Datum gepostet` nur noch beim Posten, `Kontaktiert am` bei Sam). Ohne Stempel kein Report, kein Debugging.
+6. **Vorlagen-Kopien nicht reparieren, sondern ersetzen.** Der 142-Node-Linni-Workflow („Manni") hat seit Juli bekannte Defekte, wurde dreimal partiell geflickt und heute schließlich aus der Produktion herausgenommen. Was davon noch lebt: die 4-Node-Übergabe-Kette und der Slack-DM-Chat. Beides gehört in einen sauberen, kleinen Workflow.
+7. **Prompts liegen fest im Workflow, nicht in der Registry** (§11 Lücke 2, unverändert). Heute wieder: Linnis Rolle wurde inline neu geschrieben, weil die Registry nur Stichworte hat. Für Senior-Level: **Stellenbeschreibung + Skills + Markenkern als Quelle in Airtable, Workflows ziehen sie zur Laufzeit.**
+8. **Kosten müssen Designkriterium sein:** je Rolle Modellklasse festlegen (Sonnet nur für Biancas Stimme/Orchestrierung, Haiku für Feedback/Klassifikation), Aufrufzahl pro Eintrag fix, Deckel pro Lauf, Kosten pro Lauf im Wochenreport sichtbar (n8n Execution-Metadaten reichen dafür nicht — Token-Zähler aus den Agent-Outputs mitschreiben).
+9. **Ergebnis erst nach `status:success` über die Daten prüfen** (bestätigt: Statusanzeige hing heute mehrfach minutenlang nach; Airtable war die Wahrheit).
+10. **Unipile-Werte je Endpunkt verschieden** (Regel 4, gilt weiter; heute nicht berührt).
+
+### 25.4 Offene Punkte / Risiken (ehrlich, nach Priorität)
+1. **Kosten der Produktion** (25.2) — vor jedem größeren Batch entscheiden: Pipeline-Umbau oder Deckel.
+2. **Veröffentlichen-Erweiterung ungetestet** (Redaktionsplan „Gepostet" + Link-Format) — beim ersten echten Post prüfen; Link-Annahme (Unipile-ID = LinkedIn-Activity-ID) kann falsch sein.
+3. **Bild-Kette** unverändert: Prompt nur aus Slot-Titel; Bild wird an jeden Slot gehängt, auch wenn Text kein Bild braucht. Keine Freigabe des Bildes vor dem Post.
+4. **Instagram/Substack/Podcast/Video haben keinen Veröffentlichungsweg.** Entwürfe entstehen und bleiben auf „Wartet auf Freigabe/Freigegeben" liegen — manuell kopieren. Instagram via Unipile wäre möglich (Konto verbinden), Substack hat keine sinnvolle API (Mail-Draft-Weg denkbar).
+5. **Alt-Workflow Linni `11UxePeldz86cqxp`** (142 Nodes): Manni-Chat-Teil defekt (OpenAI-Nodes mit ungültigen Optionen, doppelte Model-Verbindungen, OpenRouter/Memory unverbunden), Slack-DM-Weg ungetestet seit Juli. Empfehlung: nur die 4-Node-Übergabe-Kette in einen neuen kleinen Workflow überführen, Rest archivieren.
+6. **Ina/Soreia/Podcast-Tools erlauben „Freigegeben" per Chat-Zustimmung** (Prompt-Regel, kein technischer Schutz). Wenn das Gate technisch sein soll: Whitelist wie bei Manni (C) auch dort setzen (3 Nodes, 5 Min).
+7. **Recherche-Vorauswahl re-bewertet jede Woche ALLE „Idee"-Einträge** (Filter `{Status}="Idee"`), nicht nur die neuen — bei wachsendem Ideen-Pool steigende Kosten + Statuswechsel alter Ideen auf „Wartet auf Themenwahl". Für neu: nur Einträge der aktuellen Woche (Wochenplan-Link) bewerten.
+8. **Wochen-Datensatz** wird bei Testläufen mit falschem Wochenstart angelegt (heute „KW 39 (Mon 22.09.26)", Dienstag). Kosmetisch.
+9. **Cockpit-Key im Klartext** in Code/URLs (seit Bau). Für Senior-Level: Secret in n8n-Variable, Aktions-Links signiert oder POST.
+10. **Kein Alarm bei Produktions-Fehlern:** Exec 15618 scheiterte still (nur im n8n-Log). Für neu: Error-Workflow mit Slack-DM (wie bei Veröffentlichen).
+11. **Marketing fehlt im Wochenreport** (`ih2dTBAkGkUPLnOY` zeigt nur Sales).
+
+### 25.5 Vorschlag Zielbild „Senior-Level" (zur Diskussion, nichts gebaut)
+- **Rollenmodell:** Agentinnen = Prompt-Rollen (Stellenbeschreibung + Skills + Markenkern aus Airtable), nicht eigene Workflows. Eigener Workflow nur für Rollen mit echter Beziehung/Gedächtnis (Donna, evtl. Linni-Chat).
+- **Pipeline statt Orchestrator:** Produktion als feste n8n-Kette: `Ausgewählt` laden (max N) → Kanal-Prompt (Sonnet) → 2 Persona-Prompts parallel (Haiku) → Überarbeitung (Sonnet) → Parser → `Wartet auf Freigabe` + Stempel + Token-Zähler. CC Top als Qualitätsrahmen im Prompt, nicht als Loop. Fehler → `Überarbeitung` + Slack-Alarm.
+- **Statusmaschine als Vertrag:** eine Tabelle „Status → wer darf setzen → welcher Workflow konsumiert", im Handover und als Sticky-Note in jedem Workflow.
+- **Ein Cockpit, zwei Klicks:** Themenwahl + Freigabe (heute vorhanden), plus Kosten/Laufzeit je Lauf sichtbar.
+- **Publishing je Kanal als eigener kleiner Workflow** mit identischem Muster (Freigegeben + Kanal + Text → Slot → Post → Gepostet + Link); LinkedIn ist die Vorlage, Instagram via Unipile der nächste.
+- **Kostenbudget je Woche** als Designziel festlegen (z. B. maximal X Läufe / Y Einträge), Deckel technisch erzwingen.
+- **Aufräumen:** Manni-Workflow archivieren (nach Überführung der Übergabe-Kette), doppelte Morgenpost-Workflows löschen, Alt-Einträge vom 02.08. entscheiden.
+
+**Regelbestätigung 22.09. abends:** nach Biancas Stopp nichts mehr gebaut oder gestartet. Alle heutigen Änderungen sind in n8n-Versionshistorien benannt (Versionsnamen in §24.4) und rückrollbar.
