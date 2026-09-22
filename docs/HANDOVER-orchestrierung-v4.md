@@ -1056,3 +1056,32 @@ Anlass: Thema „Marketing-Team produktionsfähig machen, automatisiert". Nach R
 **Aufwand-Schätzung:** A ~45 Min · B ~30 Min · C ~5 Min · D ~20 Min (+ Testlauf) · E 1 Airtable-Update. Reihenfolge-Empfehlung: **C (Sicherheit) → B → A → E → D.** Test-Plan: nach A–C eine Idee per Cockpit auf „Produzieren" → Produktion manuell triggern → Text im Cockpit lesen/freigeben → Linni-Kette manuell triggern → Slot prüfen → **Veröffentlichen NICHT manuell triggern**, sondern den 08:45-Lauf abwarten (echter Post!).
 
 **Regelbestätigung:** nichts gebaut, keine Workflows/Datensätze geändert. Nächster Schritt erst nach Biancas GO zu A–E.
+
+### 24.4 UMGESETZT 22.09. (GO Bianca für C, B, A, E, D in dieser Reihenfolge)
+
+**C — Guardrail Manni-Tools (Linni `11UxePeldz86cqxp`, publiziert `c0b190d1`):** „Create a record in Airtable" + „Update record in Airtable": Status-Ausdruck jetzt Whitelist `Entwurf | Wartet auf Freigabe | Überarbeitung`, Default **„Entwurf"**, alles andere (auch „Freigegeben") wird auf „Entwurf" geklemmt. Kein Agent kann mehr „Freigegeben" erzeugen.
+
+**B — Linni-Übergabe + Veröffentlichen:**
+- Linni Schedule-Kette 08:34: Filter `AND({Status}="Freigegeben", {Kanal}="LinkedIn", LEN({Text/Entwurf}&"")>0, OR({Datum geplant}=BLANK(), IS_BEFORE({Datum geplant}, DATEADD(TODAY(),1,'days'))))`, `returnAll:false, limit:1` (= max 1 LinkedIn-Post/Tag). Slot `Datum/Uhrzeit geplant` = `Datum geplant` oder heute. `Datum gepostet` wird NICHT mehr beim Slot-Anlegen gesetzt.
+- `ORCH - LinkedIn Veröffentlichen - v1` `NINDaWVJOWJuCvrA` (publiziert `89546baa`): neuer Node **„Redaktionsplan auf Gepostet setzen"** nach „Status auf Gepostet setzen" → Redaktionsplan `Status=Gepostet`, `Datum gepostet=heute`, `Link zum Post` = `https://www.linkedin.com/feed/update/urn:li:activity:<unipile-post-id>/` (Annahme: Unipile-ID = Activity-ID; beim ersten echten Post prüfen).
+- Nicht live getestet (kein Post erzwungen) — greift beim nächsten echten Freigabe-Post.
+
+**A — Cockpit (`HPl4FtmXeISou9FN`, publiziert `fc183789`):**
+- Marketing-Karte zweistufig: **„Zur Freigabe"** = nur `Wartet auf Freigabe`, Entwurf-Volltext standardmäßig aufgeklappt + Owner/Runden + letztes Zielgruppen-Feedback; Buttons **✅ Freigeben** (nur wenn Text vorhanden) / **↩ Überarbeiten** (→ `Ausgewählt`) / Verwerfen. **„Themenwahl"** = `Idee` + `Wartet auf Themenwahl` (Recherche-Pill), Empfehlung + Rohmaterial aufklappbar; Buttons **🎯 Produzieren** (→ `Ausgewählt`) / Verwerfen. Kein Freigeben auf Ideen mehr. „+ n weitere" statt stiller Kappung. KPI-Kachel „Marketing-Themenwahl" ergänzt.
+- Aktions-Zweig: neue Aktionen `produzieren`/`ueberarbeiten`; vor „Plan-Status setzen" jetzt **„Plan-Eintrag laden"** (Airtable get) → **„Plan-Guard (Text-Pflicht)"** (Code, wirft „Freigabe abgelehnt: … hat keinen Entwurfstext" bei `freigeben` ohne Text).
+- Verifiziert: Render-Test Exec 15615 (beide Listen korrekt), Guard-Test Exec 15616 (Freigabe von „Die Zukunft beginnt jetzt" ohne Text → abgelehnt, nichts geändert), Produzieren-Test Exec 15617 (recAXQ8jAyPJjt2WO → `Ausgewählt`).
+
+**E — Datenbereinigung (Airtable direkt):** 6 leere „Freigegebene" → `Ausgewählt` (recAXQ8jAyPJjt2WO per Cockpit-Test, die übrigen 5 per Update). `recwZyQD6rtItNLie` („Arbeit, die dich nicht mehr…", real gepostet 11.08.) → `Gepostet` + Datum + Link nachgetragen. Unberührt: `recam1Tu5pogR9Zqj` (Newsletter mit Text, Freigegeben — kein Publishing-Weg, harmlos) und die 2 „Entwurf" vom 02.08. (Biancas Entscheidung).
+
+**E — Produktionstest deckte 3 weitere Bugs auf (Exec 15618, 17 Min, `error`, 0 Entwürfe):**
+1. Werkzeug „Linni (LinkedIn)" (Aufruf des 142-Node-Linni-Workflows/Manni) → `toJsonString can't be used on null value` bei jedem Aufruf (Manni-Chat-Teil hat die aus §11 bekannten Altfehler: doppelte Model-Verbindungen, OpenAI-`builtInTools` ungültig).
+2. Werkzeug „Ina (Instagram)" → `Error in sub-node Gespraechsgedaechtnis` (Memory-SessionKey per Node-Referenz `$('Chat mit Ina').isExecuted ? … : $('Von CC Top aufgerufen')…` scheitert beim Werkzeug-Aufruf).
+3. CC Top schrieb daraufhin selbst, holte Persona-Feedback in Schleifen → **Max iterations (10)** → Abbruch des ganzen Agent-Nodes = alle 6 Einträge ohne Ergebnis (ein Fehler killt alle).
+**Fixes (publiziert):**
+- Produktion `9pi1p59HQWc6ASXJ` (`2d673aec`): **Linni ist jetzt ein internes Agent-Werkzeug** (agentTool + eigenes Claude-Sonnet-Modell, Stellenbeschreibung: LinkedIn-Stimme, Executive-Ton, 600–1300 Zeichen, keine Preise/Codes, Feedback präzise einarbeiten) statt Aufruf des Linni-Workflows — konsistent mit §11-Regel „stateless Auftrag braucht keinen eigenen Workflow" und ohne Manni-Risiko. `maxIterations` 25. Agent-Node `onError: continueRegularOutput` → ein fehlgeschlagener Eintrag fällt über „Ergebnis parsen" auf `Überarbeitung` + Hinweis, die anderen laufen weiter. Prompt strikt: Kanal-Vorgabe beachten, GENAU eine Kanal-Agentin, GENAU zwei Personas, max 2 Runden, keine Preise/Codes, CC-Top-Empfehlung wird mitgegeben.
+- Ina `ZToSb9K4kbu3olf6` (`b6dedcaa`), Soreia `UBv3GFZnIBZ5Sc7V` (`c921a2d1`), Podcast Producer `3a8YdcWUtj2cMRbc` (`5630b616`): Memory-SessionKey = `$json.sessionKey || $json.sessionId || '<name>-' + $execution.id` (keine Node-Referenzen mehr).
+- Der Linni-Workflow `11UxePeldz86cqxp` bleibt aktiv für die 08:34-Übergabe-Kette und Biancas DM-Chat; sein Manni-Teil wird von der Produktion nicht mehr aufgerufen.
+
+**D — Recherche (`dXHZnY0KaS9iNgSo`):** beide SerpAPI-Tool-Nodes ersetzt durch **Brave-Search-Tool** (`@brave/n8n-nodes-brave-search.braveSearchTool` v1.1, Web, DE/de, `count 10`, Frische News=`pw`, Trends=`pm`), Credential automatisch „Gateway credits" (kein eigener Key). **Testlauf Exec 15658 = success (3 Min)**: 2 Einträge im Redaktionsplan (`recZL0acvfgU5ma23` Peter-Parker-Recherche, `recr6cvDIMmMTwKgY` Trend-Scout-Recherche), beide `Wartet auf Themenwahl` mit CC-Top-Empfehlung (Prio Hoch) → sichtbar in der Cockpit-Themenwahl. **Publiziert/aktiv: Montag 08:00.** Nebenbefund: Wochen-Datensatz „KW 39" wurde mit `Wochenstart` = Testtag (Di) angelegt — kosmetisch, montags korrekt.
+
+**Ablauf ab jetzt (vollautomatisch, zwei Klicks bei Bianca):** Mo 08:00 Recherche → Ideen + Vorauswahl · #max jederzeit → Ideen · **Klick „Produzieren"** (Cockpit) · 09:00 Produktion → `Wartet auf Freigabe` · **Klick „Freigeben" nach Lesen** · 08:34 Slot (1/Tag) → 08:40 Bild → 08:45 LinkedIn → Redaktionsplan `Gepostet` + Link. Instagram/Substack/Podcast: Entwürfe entstehen, Veröffentlichung bleibt manuell (kein Publishing-Weg, bekannt).
