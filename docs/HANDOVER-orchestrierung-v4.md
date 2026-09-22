@@ -915,3 +915,9 @@ Der Direkt-DM-Motor ist da, hat aber noch **keinen Treibstoff**: Biancas ~25 ver
 2. Entwuerfe-Pipeline `jtpl5UP0IvsESOCn` schreibt Entwürfe (07:30 oder on-demand triggern).
 3. Biancas Freigabe (Dashboard) → Status „Freigegeben".
 4. Direkt-DM-Workflow aktivieren → Versand (max 25/Lauf).
+
+### 21.5 Verlauf 22.09. (live durchgezogen)
+- **Reconnect bestätigt:** Nach Biancas Unipile-Reconnect Versand `UHpsLw9QOhAA6wLE` manuell angestoßen (Exec 15511) → **5 Vernetzungsanfragen real gesendet** (`UserInvitationSent`): Birgitt Wölbing, Sabine Mesletzky, Nina W., Maribel Soto Sobrino-Bahri, Laura Held → Status „Vernetzungsanfrage gesendet"/„Kontaktiert". 9 weitere Freigegebene laufen über die nächsten Schedule-Läufe nach (5/Lauf). Kein 401 mehr.
+- **Unipile v1 Relations-Endpunkt verifiziert** (Probe-WF `xbeJew9xpmRHaLu0`, danach archivierbar): `GET /api/v1/users/relations?account_id=…&limit=&cursor=` → `{object:UserRelationsList, items:[{member_id, first_name, last_name, headline, public_identifier, public_profile_url}], cursor}`, neueste Vernetzung zuerst.
+- **Vernetzungen-Import gebaut:** `ORCH - Sam Vernetzungen-Import (Leadership Circle) - v1` (`wcGsnuPbT5dbcaTz`, manuell auslösbar). Kette: Relations 2 Seiten → flatten → Bestand → Dubletten raus (Cap **50/Lauf**) → Sam-Classifier (Claude Sonnet, **maxTokens 8192**) → Auswahl (max 25) → Kontakt anlegen (Leadership Circle / Anschreiben). Claude-Cred `IvYauXZeJ06D4E0u`; Modell-Subnode + Unipile-Creds mussten per update_workflow nachgezogen werden (SDK verdrahtet Agent-Subnode/HTTP-Creds nicht automatisch).
+- **Lehre (wichtig für künftige Classifier-Builds):** 98 Kandidaten in EINEM Classifier-Call → Antwort bei maxTokens 4096 abgeschnitten → JSON-Parse scheiterte → 0 angelegt (Exec 15514). Fix: Kandidaten pro Lauf deckeln + Token-Budget hoch. Re-Run Exec 15517.
