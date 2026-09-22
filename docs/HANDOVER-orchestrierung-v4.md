@@ -886,3 +886,32 @@ Nach Bauplan 20.4, komplett automatisch (kein manueller Trigger):
 - n8n-Instanz: `aiva179.app.n8n.cloud`
 - Frühere Docs: HANDOVER v3 (07.07.), DIRIGENT-v2-Plan (14.07.), SESSION 07.07. (Morgenpost-Spez).
 - Master-Ordner (Langdock/Drive): CLAUDE.md, BIANCA.md, Angebotsarchitektur-v1.
+
+---
+
+## 21 · Update 22.09.2026 — Versand tot (Unipile-Konto getrennt) + Direkt-DM-Weg gebaut
+
+### 21.1 ROOT CAUSE: LinkedIn in Unipile getrennt → nichts geht raus
+Bianca meldete: freigegebene Entwürfe → keine DMs. Diagnose (read-only) in n8n:
+- **Versand `UHpsLw9QOhAA6wLE` läuft „success" (2×/Tag 10:00+16:00)**, aber **14 Kontakte hängen auf „Freigegeben"** (Sales-Funnel „Neu"), viele Leadership Circle.
+- Execution 15408 (Node „Vernetzen ohne Notiz"): **jeder Unipile-Invite → `401 errors/disconnected_account` „The account appears to be disconnected from the provider service."** → **Biancas LinkedIn-Session in Unipile ist abgerissen** (vermutlich Anfang Sept.; letzte neu angelegte Leads 01.09.). Betrifft ALLES (Invites, DMs, Lead-Suche).
+- **Fix ist auf Biancas Seite:** in Unipile einloggen → LinkedIn-Konto **neu verbinden** (Checkpoint bestätigen). Kein n8n-Zugriff darauf.
+- **Sekundär-Bug (später, nur mit GO):** In WF2 ist der **Error-Output der Invite-Nodes nicht verdrahtet** → fehlgeschlagene Invites lassen den Datensatz still auf „Freigegeben" (keine Sichtbarkeit). Nach Reconnect prüfen, ob Free-Invite-Limits zusätzlich greifen.
+
+### 21.2 Statusfeld-Stand (Kontakte, geprüft 22.09.)
+- Akquise-Status hat jetzt zusätzlich **„Vernetzungsanfrage gesendet"** (`sel1jxGn5aWddvAX4`). Freigegeben=`selJFFg7c5UgtbaGP`.
+- Akquise-Produkt jetzt 4 Optionen inkl. **„Leadership Circle (Jahresbegleitung)"** (`selO1qiFzKeVSjZZf`) + „Speaking Coach App (CEO-Sprech)" (`sel3bTGFDRVhRtUTt`).
+- Die 14 Freigegebenen sind KALT (Lead-Search, DISTANCE_2/3) + haben **keine Akquise-Variante** → laufen in WF2 über Arm B (ohne Notiz).
+
+### 21.3 GEBAUT (mit Biancas GO): Direkt-DM an bestehende Vernetzungen
+Bianca will heute 25 Menschen für die Jahresbegleitung anschreiben — **bereits vernetzte (1. Grad)**. Für 1.-Grad-Kontakte ist kein Invite nötig → **direkte DM**. 25 kalte Invites/Tag wären fürs Free-Konto zu riskant; DMs an bestehende Vernetzungen sind sicher.
+- **Neuer Workflow `ORCH - Sam Sales Direkt-DM (Vernetzte) - v1` (`vj13lz8c2fhiuaMB`, INAKTIV angelegt).** Schedule 09:45 (vor WF2 10:00, damit Vernetzte dort nicht doppelt laufen — sie sind dann schon auf „Gesendet").
+- Kette: Schedule → **Freigegebene laden** (`Akquise-Status='Freigegeben'` & Member ID) → **Verbindungsgrad prüfen** (Unipile GET /users/{id}, neverError) → **IF `network_distance='DISTANCE_1'`** → **Max 25/Lauf** (Limit) → **DM senden** (Unipile POST /chats multipart, `text`=freigegebener Entwurf, exakt aus WF3 kopiert) → **Status „Gesendet" + Funnel „Im Gespräch" + Angenommen am=heute**. Nicht-Vernetzte (kalt) bleiben unberührt auf „Freigegeben" für die Invite-Kette. Unipile-Cred `pDCflyLLBRNGHz8u` an beiden HTTP-Knoten. Fehler-DM → Datensatz bleibt „Freigegeben" (Auto-Retry nächster Lauf).
+- **Sendet nichts, bis:** (1) Bianca LinkedIn in Unipile neu verbindet, (2) Workflow aktiviert wird, (3) freigegebene, vernetzte Kontakte vorliegen.
+
+### 21.4 OFFEN / Fuel fehlt (nächster GO)
+Der Direkt-DM-Motor ist da, hat aber noch **keinen Treibstoff**: Biancas ~25 vernetzte Wunsch-Kontakte sind noch NICHT als Kontakte im CRM (die 14 Freigegebenen sind kalt). Nötig, damit heute 25 DMs rausgehen:
+1. Die 25 vernetzten Kontakte in `Kontakte` bringen (Member ID + Profil-URL + Akquise-Produkt „Leadership Circle" + Status „Anschreiben"). Entweder **Auto-Import der 1.-Grad-Vernetzungen aus Unipile** (eigener kleiner Build, braucht reconnected Konto) ODER Bianca liefert die Liste/URLs.
+2. Entwuerfe-Pipeline `jtpl5UP0IvsESOCn` schreibt Entwürfe (07:30 oder on-demand triggern).
+3. Biancas Freigabe (Dashboard) → Status „Freigegeben".
+4. Direkt-DM-Workflow aktivieren → Versand (max 25/Lauf).
