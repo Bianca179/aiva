@@ -940,3 +940,10 @@ Biancas Modell: täglich generieren, ~wöchentlich in einem Rutsch freigeben (Da
 - **NEU: Vernetzungs-Import `wcGsnuPbT5dbcaTz` jetzt geplant + aktiv** — zweiter Trigger **„Woechentlich Montag 06:00"** (`weeks`, Tag 1, 06:00) → `Relations Seite 1`; Manuell-Trigger „Start" bleibt zusätzlich. Zieht montags neue 1.-Grad-Vernetzungen → Sam qualifiziert → Entwürfe 07:30 → warten auf Freigabe. Import re-klassifiziert bewusst auch die Nicht-Aufgenommenen erneut (kein „seen"-Marker) — bei 1×/Woche vernachlässigbar.
 - **Reminder: von Bianca abgelehnt** (sie schaut selbst ins Dashboard) — kein Erinnerungs-Workflow gebaut.
 - **Freigabe-Kontrolle bleibt der einzige manuelle Schritt** (bewusst). Große Wochen-Batches sind sicher: Invite ~10/Tag (5/Arm×2), Direkt-DM bis 25/Lauf — Versand verteilt sich automatisch über Folgetage.
+
+### 21.8 Wochen-Report gebaut (22.09., GO Bianca)
+- **`ORCH - Sam Sales Wochenreport - v1` (`ih2dTBAkGkUPLnOY`), AKTIV** — Schedule **Montag 08:00** (nach Import 06:00 + Entwürfe 07:30). Kette: Kontakte laden + Leads laden (executeOnce) → Code „Report bauen" → Slack-DM an Bianca (`U094G4R4W2X`, Cred **Donna `K59QwGFIa6Oqk2gm`**, mrkdwn).
+- Inhalt: Diese Woche (Angenommen/DM gesendet via `Angenommen am`≤7 Tage, Antworten via `Antwort erhalten`), Wartet-auf-Freigabe + Freigegeben (mit Dashboard-Link), Akquise-Pipeline-Snapshot (nach `Akquise-Status`), Funnel-Snapshot (nach `Sales-Funnel-Status`), offene Inbound-Leads.
+- **Testlauf Exec 15560 = success**, Slack-DM zugestellt (`ok:true`, Kanal D0996QVLTL5).
+- **Snapshot 22.09.:** 78 Entwürfe warten auf Freigabe (großer Alt-Backlog über alle Produkte!), 14 Freigegeben, 9 Vernetzungsanfrage gesendet, 9 Übersprungen; Funnel Kontaktiert 167 / Neu 106 / **Kunde 6**.
+- **Limitierung v1:** „Invites diese Woche gesendet" ist nicht exakt datiert (kein Sende-Datumsstempel auf Invites; nur `Angenommen am` existiert). Für echte Wochen-Deltas später Datumsstempel „Kontaktiert am" in WF2/Direkt-DM ergänzen — dann kann der Report echte versendet-diese-Woche-Zahlen zeigen.
