@@ -995,3 +995,18 @@ Bianca fragte „wurden meine Freigaben wirklich versendet?" → Diagnose des 09
 **Prüfen nach Fix:** Registry-Zeilen mit Tab-Zeichen vor der ID (Gaia, Soreia) bereinigen; Qualitaetia-Kanal (`C0BF88DTWQ2`) hat keine Langdock-ID → wird vom Dirigenten ignoriert (gewollt, §9).
 
 **Lehre:** Bei geteilter Slack-App hängen alle Webhook-Konsumenten an EINER Event-URL. Jede Umstellung der URL muss im Handover als Cutover mit Liste der betroffenen Workflows dokumentiert werden — der 08.08.-Cutover war nirgends notiert.
+
+### 22.6 GEBAUT (GO Bianca 22.09., alle drei Punkte) — verifiziert
+1. **Twilio-Wächter `mQ9rnbeCcRVYOd7x` deaktiviert** (`unpublish_workflow`, `success:true`). Kein DM-Spam mehr ab heute 17:00.
+2. **`ORCH - Donna - v1` (`J22CV0Ovkjj9Zd6f`) → v1.2, publiziert (`activeVersionId 598bcbb8…`), danach v1.2.1:**
+   - IF „Kein Bot-Echo" lässt jetzt DM (`channel_type=im`) **ODER** Kanal `#donna` (`C0994PQCAHZ`) zu Donna durch (Text vorhanden, kein bot_id/subtype — Schleifenschutz bleibt).
+   - **Neuer Zweig** am False-Ausgang: IF „Kanal-Event fuer Dirigent?" (`type=message` ∧ `channel_type≠im` ∧ `channel≠C0994PQCAHZ`) → HTTP „An Dirigent weiterleiten" (`POST https://aiva179.app.n8n.cloud/webhook/slack-dirigent`, Body = roher Slack-Body 1:1, Timeout 15 s, neverError, onError continue). Damit bekommt der Dirigent wieder alle Kanal-Events — **ohne Änderung an der Slack-App**.
+   - „Antwort in Slack": `thread_ts = event.thread_ts || event.ts` (Thread-Antworten bleiben im Thread, auch in Assistenten-Threads).
+   - v1.2.1: User-Text bekommt Präfix `[Absender: Bianca]` bzw. `[Absender: Slack-User <id> (NICHT Bianca)]` — im Test wusste Donna sonst nicht, dass Bianca schreibt.
+   - Sticky Note im Canvas auf v1.2 aktualisiert (Warnung: Event-URL in Slack NICHT umstellen, sonst verliert einer der beiden Konsumenten alles).
+3. **Tests (production, echte Webhook-Replays, Ergebnis nach `status:success` gelesen):**
+   - **Exec 15575** (Replay `#qualitaetia` 24.08.): „Kein Bot-Echo" → False → „Kanal-Event fuer Dirigent?" → True → HTTP `data:"ok"`. **Dirigent Exec 15576 = success** (erste Execution seit 08.08.!) — Routing endete still (Qualitaetia hat keine Langdock-ID → kein Post, gewollt).
+   - **Exec 15577** (Replay `#donna` 07.09. „Link zum Onlinekurs Future Me"): Donna nativ → 1 Tool-Call (Registry/Projekte) → **Antwort im Thread `1788774343.815619` gepostet (`ok:true`)**, 13 s Laufzeit. Inhalt: Link nicht gefunden, Verweis auf Website + Zeeg. (Bianca sieht die Antwort im `#donna`-Thread der 07.09.-Nachricht.)
+4. **Damit wieder live:** aurea, Ophra, Petra, Dagobert Duck, Future Me, Harvey Specter, Elena, CC Top, Voca, Max, Leandra (Kanal) über den Dirigenten; Donna per DM **und** in `#donna` nativ (eine Donna, Gedächtnis pro Kanal via Session-Key = Channel-ID).
+5. **Nicht gemacht (kein GO / außerhalb der drei Punkte):** Kalender-Wächter-Footer/Dubletten; Registry-Bereinigung (Tab-Zeichen bei Gaia/Soreia; Donnas Kanal-ID bleibt bewusst die App-ID, damit der Dirigent `#donna` nicht doppelt beantwortet); der Dirigenten-Draft (Route „Nativ") bleibt unpubliziert.
+6. **Hinweis:** Der Dirigent wird jetzt wieder Langdock-Donna-frei betrieben — `#donna` läuft nicht mehr über Langdock. Sollte die Langdock-Donna je wieder gewünscht sein: Registry-Kanal-ID auf `C0994PQCAHZ` UND im Donna-Workflow den `#donna`-Zweig entfernen (sonst zwei Antworten).
