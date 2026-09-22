@@ -947,3 +947,9 @@ Biancas Modell: täglich generieren, ~wöchentlich in einem Rutsch freigeben (Da
 - **Testlauf Exec 15560 = success**, Slack-DM zugestellt (`ok:true`, Kanal D0996QVLTL5).
 - **Snapshot 22.09.:** 78 Entwürfe warten auf Freigabe (großer Alt-Backlog über alle Produkte!), 14 Freigegeben, 9 Vernetzungsanfrage gesendet, 9 Übersprungen; Funnel Kontaktiert 167 / Neu 106 / **Kunde 6**.
 - **Limitierung v1:** „Invites diese Woche gesendet" ist nicht exakt datiert (kein Sende-Datumsstempel auf Invites; nur `Angenommen am` existiert). Für echte Wochen-Deltas später Datumsstempel „Kontaktiert am" in WF2/Direkt-DM ergänzen — dann kann der Report echte versendet-diese-Woche-Zahlen zeigen.
+
+### 21.9 Datumsstempel „Kontaktiert am" + Backlog-Aufschlüsselung (22.09., GO Bianca)
+- **Neues Feld `Kontaktiert am` (`fldOhOecKW24bjBuw`, date/iso)** in Kontakte.
+- **Gestempelt beim Versand:** WF2 `UHpsLw9QOhAA6wLE` (alle drei Status-Nodes: mit Notiz / Fallback / Arm B) + Direkt-DM `vj13lz8c2fhiuaMB` (Status: Gesendet) setzen `Kontaktiert am = $now (yyyy-MM-dd)`. Alle publiziert.
+- **Report erweitert:** `ih2dTBAkGkUPLnOY` zeigt jetzt „Erstansprache raus (Anfrage/DM)" der Woche (via `Kontaktiert am` ≤7 Tage) zusätzlich zu „Angenommen/DM zugestellt" (`Angenommen am`). Nicht erneut getestet (um Doppel-DM zu vermeiden) — füllt sich mit dem nächsten Versand.
+- **Backlog „Wartet auf Freigabe" (78) nach Produkt:** Leadership Circle 35 (20 warme Vernetzungen + 15 kalte) · Speaking Coach App 26 · Research-Team 13 · Retreat 4. Empfehlung an Bianca: produktweise freigeben, Leadership Circle (warm) zuerst. **Keine Leads eigenmächtig übersprungen** — Cleanup-Methode ist Biancas Entscheidung (offen).
