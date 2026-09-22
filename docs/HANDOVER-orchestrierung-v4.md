@@ -1010,3 +1010,8 @@ Bianca fragte „wurden meine Freigaben wirklich versendet?" → Diagnose des 09
 4. **Damit wieder live:** aurea, Ophra, Petra, Dagobert Duck, Future Me, Harvey Specter, Elena, CC Top, Voca, Max, Leandra (Kanal) über den Dirigenten; Donna per DM **und** in `#donna` nativ (eine Donna, Gedächtnis pro Kanal via Session-Key = Channel-ID).
 5. **Nicht gemacht (kein GO / außerhalb der drei Punkte):** Kalender-Wächter-Footer/Dubletten; Registry-Bereinigung (Tab-Zeichen bei Gaia/Soreia; Donnas Kanal-ID bleibt bewusst die App-ID, damit der Dirigent `#donna` nicht doppelt beantwortet); der Dirigenten-Draft (Route „Nativ") bleibt unpubliziert.
 6. **Hinweis:** Der Dirigent wird jetzt wieder Langdock-Donna-frei betrieben — `#donna` läuft nicht mehr über Langdock. Sollte die Langdock-Donna je wieder gewünscht sein: Registry-Kanal-ID auf `C0994PQCAHZ` UND im Donna-Workflow den `#donna`-Zweig entfernen (sonst zwei Antworten).
+
+### 22.7 Echtzeit-Abnahme durch Bianca (22.09., 12:05–12:08 CEST): POSITIV
+- **Donna nativ:** Exec 15579 (`J22CV0Ovkjj9Zd6f`, 28 s, Agent-Lauf mit Antwort) auf Biancas Live-Nachricht.
+- **Dirigent-Weiterleitung:** Exec 15583 (Donna-Workflow, Weiterleitung) → **Dirigent Exec 15584 = success** (6 s, Langdock-Antwort im Kanal).
+- Biancas Rückmeldung: „echtzeit positiv". Donna-Check damit abgeschlossen; Restpunkte aus 22.6 Nr. 5 bleiben offen (kein GO).
