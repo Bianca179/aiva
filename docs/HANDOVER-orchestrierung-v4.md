@@ -970,3 +970,38 @@ Read-only-Check (ElevenLabs-API via Probe-WF, danach archiviert) + n8n-Prüfung:
 - **n8n Voice-Tools `eTQjKoyHfxuUV1vA` AKTIV**, Gate scharf: Biancas Handynummer `015114759899` fest in „Modus bestimmen" + „Zugangs-Gate" (kein Platzhalter) → interne Tools nur für ihre Caller-ID.
 - **OFFEN = nur der echte Testanruf** (nie gemacht): Bianca ruft `+49 7156 4229016` (a) vom eigenen Handy → „Hallo Bianca…", Kalender abfragbar; (b) von fremder Nummer → Empfang, Kalender verweigert.
 - **Heads-ups (optional, nicht angefasst):** (1) Donna nutzt weiter **Sophias Stimme** `fBs1tCpaSMsPcbMkLQlk` — bei Bedarf im Dashboard tauschen. (2) In der ElevenLabs-Nummernliste ist **nur noch die DE-Nummer**; die alte US-Nummer `+15715865442` (`phnum_0101…`) fehlt → **Sophias Outbound-Trigger `i9JHfn8I4jmKkmPR` zeigt evtl. auf eine tote `phone_number_id`** — in der Sophia-Session prüfen/umstellen (ggf. auf die DE-Nummer, die auch `supports_outbound:true` ist).
+
+---
+
+## 23 · Befund 22.09.2026 — Leandra / Angebot A (Bestandsaufnahme, NICHTS gebaut)
+
+Anlass: Thema „Leandra Angebot A". Nach Regel 1 zuerst Live-Stand in n8n, Airtable und Gmail geprüft (read-only). **Kein GO vorhanden → nichts verändert.** Dieser Abschnitt ist die Entscheidungsgrundlage.
+
+### 22.1 Was zu „Angebot A" heute live ist
+- **Der A-Zweig lebt NICHT in Leandras Workflow, sondern in `Lead-Routing A/B/C – Bianca Enderlin` (`FmC7exobAoPLIdVK`, aktiv, Version `4311d0c4` vom 12.08., seither unverändert).** Kette: Route (A) → „Angebote laden (A)" (Produkte, Filter `{Einstiegsangebot (A-Zweig)}`) → „Angebots-Kontext (A)" → „KI: Angebot erstellen (A)" (claude-sonnet-5, maxTokens 4000, includeMergedResponse) → **„Angebot an Lead (A)" = Gmail DIREKT an die Lead-Adresse** (HTML, Absender „Bianca Enderlin", Betreff „Dein Angebot von Bianca Enderlin – {Anliegen}") → „A: Status + Angebot speichern" (Lead-Status „Angebot gesendet (automatisch)" + Angebot-Entwurf ins CRM). Autonom, ohne Freigabe — Biancas bewusste Entscheidung vom 10.08. (16.27).
+- **Produkte mit Haken „Einstiegsangebot (A-Zweig)": genau 2** — „Der Identitätscheck (Einstieg, 49 €)" (`rec6apQ9NckLKsAqe`, Preis 49, Link = Zeeg) und „Voca – Speaking Coach App" (`recKc9MeUtzKEp5zD`, KEIN Preis, FOUNDER30, Link voca-mxp6.onrender.com). **Future-Self (149 €, Stripe-Kauflink live seit 14.08., `rec6HeCrzGtGqr1OS`) hat KEINEN Haken** — wäre der naheliegende dritte A-Kandidat mit Direktverkauf.
+- **Leandras eigener Empfang `sGGeiWqO1BJMxhJe`** (Webhook `/lead-eingang`, A → Status „Entwurf – Wartet auf Freigabe" + Donna-DM) ist weiter aktiv, unverändert seit 09.08., **ohne jeden Traffic** — kein Formular POSTet dorthin. Das ist die Strecke MIT Freigabe-Gate; sie liegt brach.
+- **Chatbot „Leandra (Website-Chat)"** verschickt keine A-Angebote; ihre Werkzeuge sind lexware_artikel, produkt_info, zeeg_link_senden, lead_anlegen (→ Lead-Status „Anruf offen" → Sophia). Ein Chat-Lead löst also den B-Weg aus, nie das automatische A-Angebot.
+
+### 22.2 Zahlen (alle 22.09. geprüft)
+- **Leads (Inbound) `tblmDGs9lgCdivqpE`: 2 Datensätze, beide Tests vom 10.08. (Spur B).** Kein A-Lead je im CRM. Kein echter Website-Lead überhaupt.
+- **Executions `FmC7exobAoPLIdVK`: 0 im Retention-Fenster.** Das Fenster reicht nachweislich mindestens bis 17.08. (andere Workflows zeigen Executions von da) → **seit mindestens 17.08. kein einziger POST auf `/webhook/website-lead`**, weder Lead noch 403-Abweisung. Ebenso 0 Executions bei Leandra-Empfang und beim C-Angebots-Entwurf `YqIRx1eIjEfr0tXG`.
+- **Gmail, Betreff „Dein Angebot von Bianca Enderlin": 2 Mails (10.08., 11.08.), beide Tests an bianca@, beide nur mit FALLBACK-Text** („Leider konnte dein persönliches Angebot gerade nicht erstellt werden") — das war der merged_response/maxTokens-Bug, gefixt erst 12.08. (20.13). **Seit dem Fix ist der A-Zweig nie wieder gelaufen; ein echtes A-Angebot ist nie an einen Kunden gegangen.**
+- Tabelle „Anmeldungen" (Identitätscheck-Buchungen): 0 Datensätze.
+
+### 22.3 Schwachstellen im A-Zweig (beim Lesen gefunden, NICHT gefixt — je ein GO nötig)
+1. **Leere Kunden-Mail möglich:** Gmail-Node nutzt `$json.merged_response ?? …`. Bei leerem String `""` (Thinking frisst Budget, wie in Exec 2585) greift `??` nicht → Mail mit leerem Body geht an den Lead. Fix: `||`-Kette bzw. Guard „kein Text → Fallback-Text + Hinweis an Bianca".
+2. **Kein Bianca-Kopie/Alarm bei A:** Anders als B und C bekommt Bianca bei einem automatischen A-Angebot keine Mail/DM — sie sieht es nur im Cockpit/CRM.
+3. **Betreff = roher Formular-Selectwert** („Dein Angebot von Bianca Enderlin – Identitätscheck oder KI-Coach (Einstieg)") — technisch, nicht kundentauglich.
+4. **Sticky Note im Workflow veraltet** („Identitätscheck 49 €, Voca, Bots") — die Angebote kommen längst aus der Produkte-Tabelle.
+5. **Zwei Strecken, eine tot:** Freigabe-Gate existiert nur in `sGGeiWqO1BJMxhJe` (ohne Traffic); der produktive A-Zweig sendet autonom. Falls Bianca A doch prüfen will, ist das Gate schon da (Status „Entwurf – Wartet auf Freigabe" + Cockpit).
+6. **Voca ohne Preis** im Angebot („besprechen wir persönlich"); Future-Self hat Preis + Kauflink, wird aber nicht angeboten.
+
+### 22.4 Entscheidungen für Bianca (GO-Fragen, in Reihenfolge)
+- **(a) Kanal-Check zuerst:** 5+ Wochen ohne POST ist auffällig. Bitte einmal das Live-Formular auf biancaenderlin.de mit eigenen Daten absenden (curl/Formular gehen nur von Biancas Rechner, Proxy blockt hier). Erwartung: Execution in `FmC7exobAoPLIdVK` + Lead im CRM + bei „Identitätscheck oder KI-Coach (Einstieg)" eine A-Mail mit 49 €. Kommt nichts an, ist der Kanal (Formular-Version/Secret/Onepage) das eigentliche Thema, nicht der Angebotstext.
+- **(b) Inhalt von „Angebot A":** Future-Self mit Haken versehen (ein Klick in Produkte, kein Bau)? Voca-Preis nachtragen? Weitere Einstiegsprodukte (Umsetzungsshift 279 €, Werkstatt 18.09. ist vorbei)?
+- **(c) Freigabe ja/nein:** A bleibt autonom (Stand 16.27) ODER Umschalten auf „Entwurf – Wartet auf Freigabe" + Cockpit-Knopf (Gate + Status existieren bereits; nur der A-Zweig müsste statt Gmail den Status setzen und ein kleiner A-Versand-Workflow nach Freigabe mailen — die in 16.3 offene „A-Versand"-Idee).
+- **(d) Robustheit (22.3 Punkt 1–3):** kleiner Fix-Block am A-Zweig, ~20 Minuten, danach ein Testlauf über das Live-Formular.
+- **(e) Chat-Leandra + Angebot A:** Soll der Website-Chat bei Einstiegs-Anliegen das A-Angebot per Mail auslösen (neues Tool → POST an `/webhook/website-lead` mit Secret) statt nur „Anruf offen"?
+
+**Regelbestätigung:** nichts gebaut, keine Datensätze angelegt/geändert, keine Workflows angefasst. Nächster Schritt erst nach Biancas GO zu (a)–(e).
