@@ -20,3 +20,10 @@ Es gab keine Läufe und keine Änderungen.
 2. B2: Jacoby-CV nach Behebung von B1 erneut verarbeiten (manueller Lauf, braucht Go).
 3. B5: Welche gesendete Mail mit Vertrag (Postfach, Datum, Klient)?
 4. Bau-Vorschläge B3–B6 erst planen und roasten, dann bauen.
+
+## Nachtrag 25.09. (nachmittags)
+
+- **Anthropic-Zugang:** Die Verbindung „Anthropic Rhineshore" `SAq68yfgETKLhMev` wurde heute um 10:26 (MESZ) zuletzt gespeichert. Der Proxy v2 (Drive `1NM_2Leg-YBuoGg9KchJyb7L91WYzbBoY`) reicht laut Code den Schlüssel aus n8n nur durch. Proxy und Direktaufruf verwenden also denselben Schlüssel. Verlauf: 12:37 „credit balance too low" (Bravo 6, Exec 5801); 13:47 Bravo 6 wieder erfolgreich (Exec 5819). Zu welchem Konto der Schlüssel gehört, ist über die API nicht sichtbar.
+- **Neue Fehler 15:01/15:07:** `PD - Entwurf schreiben` darf von einem aufrufenden Workflow nicht gerufen werden („cannot be called by this workflow", Exec 5842). `PD - Verbrauch zählen` hat keinen Zugriff auf die Verbindung (Exec 5845). Die Ursache ist nicht geklärt.
+- **CV-Trigger:** Einen Drive-Trigger auf den CV-Ordner `1gT3Q8xP7nKLCJppFXfD4HGnJ4osDb_hV` gibt es nicht. Der einzige Drive-Trigger ist Flow I (Transkripte-Ordner). CV-Intake wird nur von Flow F (08:10) aufgerufen.
+- **Backhaus:** Das Mandat `rec2lNnjG3TeZNOcZ` („Leadership-Assessment Frau Backhaus (Durable)", active) existiert seit 19.09. (Datenlücke-Import). Im Postausgang ist keine Mail mit Vertrag zu Backhaus/Durable gespeichert.
