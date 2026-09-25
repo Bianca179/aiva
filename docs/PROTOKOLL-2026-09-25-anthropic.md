@@ -88,3 +88,15 @@
 18. **Vorprüfung Wächter:** alle 55 aktiven Workflows speichern Erfolgs- und Fehlerdaten (Standard) → Wächter kann Laufinhalte lesen.
     `PD - Fehleralarm` schreibt mit Slack-Credential „Slack account" `4uKZNVEDjJYBbPWa` in Kanal `C0BJE4M6Y92` (#maschinenraum).
     Sitzungs-API-Key läuft am 01.10.2026 ab → Wächter braucht eigenen, dauerhaften Key (Credential legt Bianca an).
+19. **Korrekturen Bianca zum Wächter-Plan:** Slack-Credential ist „Slack account" `4uKZNVEDjJYBbPWa` (das einzige in rhineshore).
+    Datenmenge ernst nehmen; keine Kostenrückkehr; alles direkt in rhineshore bauen, nichts verschieben; Philipp nicht @-erwähnen.
+    Dauerhafter API-Key für den Wächter: Bianca holt ihn bei Gelegenheit nach. Sitzungs-Key gilt bis 01.10.2026 22:00 UTC.
+20. **Wächter lokal gebaut (noch NICHT auf rhineshore):** `n8n/waechter/` (auswaehlen.js, auswerten.js, workflow.json, test-waechter.mjs).
+    Stündlich Mo–Fr 06–21 Uhr (≈ 330 Ausführungen/Monat), kein KI-Modell, speichert eigene Erfolgsläufe nicht.
+    Liest nur Läufe der 23 Anthropic-Workflows mit Inhalt; prüft strukturell (Knotenfehler, `json.error` bei „weitermachen",
+    Anthropic-Fehlerantwort bei neverError, leere Agenten-Antwort, Zeitplan nicht gelaufen). Sperre 6 h je Workflow+Kategorie.
+    - Tests mit echten Läufen: 9/9 bestanden (u. a. zitierter Alarmtext in Centcom 5667 wird NICHT gemeldet).
+    - Probe über alle 110 relevanten Läufe 23.09. 16:45 – 25.09. 14:20: 11 Befunde, alle echt, darunter bisher unbekannt:
+      **Router 5672 „credit balance" (Lauf grün)**; **CENTCOM still 5340: Airtable-Filter „Unknown field names: geschäftsbereich"
+      im Werkzeug Mandate_lesen (Lauf grün)**; CV-Intake 5401 „Invalid URL" (Lauf grün).
+    - Datenmenge real: 110 Läufe = 51 MB in 45 h (≈ 1,1 MB/h). Größter Brocken Inbox-Pass: bis 7,3 MB je Lauf (3× werktags).
