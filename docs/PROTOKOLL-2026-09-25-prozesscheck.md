@@ -52,3 +52,21 @@ Sicherungen: n8n-Versionierung und lokale Sicherung im Scratchpad dieser Sitzung
 **Neuer Befund:** „CENTCOM Flow G — Kondensate“ `TEzt3sVQgttVydv0` (aktiv, sonntags 18:00) nutzt ebenfalls die abgeschaltete Langdock Assistant API; letzter Lauf am 20.09. rot (Exec 4657). Nicht angefasst.
 
 **BAUSTELLEN:** Die Sitzungen „Search“ und „Memory-Pilot“ hatten um 17:55 gleichzeitig je eine neue Fassung angelegt. Zusammengeführt um 18:05 in Drive `1E7zZCocQ2L9ezKcAyTxMHiq1r8Imr0GOjDWEf-KfuAw`; die beiden Forks heißen jetzt VERALTET-….
+
+## D3b und Altfälle (Go Bianca 25.09., abends)
+
+| Zeit | Was | Ergebnis |
+|---|---|---|
+| 18:13 | Nachlauf Gerlach (`pchVutUGtT8reEZ7`, einmalig, Exec 5868) – gleichzeitig End-to-End-Test D3b | Transkript `reczgwwSHMVVUSukS` ergänzt (Typ Kandidaten-Interview, Mandat Interroll Mitteldeutschland). Person neu angelegt; Funnel `recPi2zdhocQBglE4` neu angelegt (Stufe erstgespraech, Datum 24.09.). Scorecard (McGonnagal, 93 s): Doc `1R8DNaxBpciXZCU6WGipFny2USm-Dbo01K6yB1u4IdDo`, Vorschlag „Weiter“ (Vorbehalt: CV fehlt, K.-o.-Kriterien Wohnort/Berufsjahre offen). Kandidatenprofil `1GTJ5MiapDppuqYxF3j_brQ0thmaLfB1M5vpQXEzb_dU`. Kandidatenvorstellung (Entwurf, lang) `1hMwjym-VQnSKO3NTOwjB_3W30kXbP32eeJb1iGti1uc`. Meldung im #maschinenraum. |
+| 18:14 | Flow I `gwWSt4dyvyXnFgQd`: D3b live | Kette nach „Gedaechtnis schreiben“: Auswertung noetig? (nur Kandidaten-Interview mit Kandidat und Mandat) → Person suchen/anlegen → Funnel suchen / PD - Funnel anlegen → Scorecard (McGonnagal) → Scorecard-Doc im Mandatsordner → PD - Funnel aktualisieren (Datum, Vorschlag als Notiz; die Bewertung setzt Philipp) → Scorecard-Link → Dossier bauen → Fletcher (Entwurf) → Meldung. Fehler-Workflow auf PD - Fehleralarm gesetzt. Erkennung des Vorschlags korrigiert (McGonnagal schreibt **fett**). Version 8fe3a218. |
+| 18:15 | IntraFind (Airtable direkt) | Klient `rec8VI9GstS70XhM2` „IntraFind Software AG“; Mandat `recvZFSFL8QN422LY` „IntraFind – Position offen“, Status in Anbahnung, Message-ID in Notes (damit D1 keine Dublette anlegt). |
+| 18:16 | CV-Intake `sC0Oha2cKFcTCjgw`: Korrektur | Der Knoten „Kandidat anfragen (Claude direkt)“ enthielt „}}“ im Ausdruck → „invalid syntax“. Seit dem Umbau am Morgen wäre damit jeder CV gescheitert (erster echter CV: Jacoby, Exec 5880). Korrigiert zu „} }“. Version 51d65be7. |
+| 18:17 | Nachlauf Jacoby (`9odwwx8fpuvXhh51`, Exec 5883) | Person `recNjvLkI80mbCBI1` Nico Jacoby (Crown Gabelstapler, Augsburg). Mandat nicht eindeutig (Interroll Mitte oder Süd) → Task für Philipp „welches Mandat ist gemeint?“. |
+
+Beide Nachlauf-Workflows sind deaktiviert und in „ZZ-ARCHIV …“ umbenannt.
+
+**Hinweise für Philipp:**
+- Gerlach: Laut McGonnagal steht in den Notizen des Süddeutschland-Mandats „Telefonat mit Markus Gerlach“ (24.09.). Möglicherweise eine Verwechslung Markus/Maximilian, bitte prüfen.
+- Jacoby: Wohnort Augsburg spricht eher für Interroll Süd; die Zuordnung per Task bestätigen.
+
+**BAUSTELLEN:** aktuelle Fassung 18:25 in Drive `1zvPGyJwuSlNSs7tEgtf3_JKYYwgaVnvDig5Iq1FIBQ4`.
