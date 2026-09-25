@@ -70,3 +70,21 @@ Beide Nachlauf-Workflows sind deaktiviert und in „ZZ-ARCHIV …“ umbenannt.
 - Jacoby: Wohnort Augsburg spricht eher für Interroll Süd; die Zuordnung per Task bestätigen.
 
 **BAUSTELLEN:** aktuelle Fassung 18:25 in Drive `1zvPGyJwuSlNSs7tEgtf3_JKYYwgaVnvDig5Iq1FIBQ4`.
+
+## Jacoby-Audio und Nachbesserungen (25.09., 20:00–20:35)
+
+**Befund Jacoby-Audio:** Philipp hat die Aufnahme „2026-09-21_17_16_56_interroll_süd_nico_jacoby.mp3“ um 19:22 in den Drive-Ordner Transkripte gelegt und Centcom im Chat auf die „audio datei“ verwiesen. Centcom suchte die Datei in Slack, meldete um 19:33 „BLOCKIERT … Audiodatei kann keines meiner Werkzeuge transkribieren“ und legte einen Lücken-Task für Bianca an (19:34). Flow I hat die Aufnahme um 19:50 automatisch verarbeitet (Exec 5982): Transkript `recHwBiTLXb52KymQ`, Funnel `recwGJYcnUEizQnUx`, Scorecard „On Hold“ (K.-o. Technik offen), Kandidatenprofil, Vorstellungsentwurf. Ursachen:
+- Centcom kannte den Transkript-Weg nicht.
+- Die Ergebnis-Meldung geht nur nach #maschinenraum.
+- Flow I prüft den Ordner nur um :20 und :50.
+- Die Scorecard kannte die Funnel-Angaben nicht.
+
+**Entscheidungen Bianca:** Punkte 1–3 (Philipp informieren, Task schließen, Meldung in den Centcom-Chat) nein; Punkt 5 (Takt 5 Minuten) nein; Punkte 4 und 6 ja.
+
+| Zeit | Was | Ergebnis |
+|---|---|---|
+| 20:23 | Flow I `gwWSt4dyvyXnFgQd` (Punkt 6) | Neuer Knoten „Funnel lesen (Details)“. Der Kontext für McGonnagal enthält jetzt Gehaltsvorstellung, Kommentar, Screening Status, Gesamtstatus, Stage und die letzten 2.500 Zeichen der Funnel-Notizen, mit dem Hinweis, dass beantwortete Punkte nicht als offen bewertet werden. Test am Jacoby-Funnel erfolgreich (`Kfp632XkG6dgIyf4`). Version 056df8d4. |
+| 20:29 | Centcom `uhJLPwsa8wTFTDAa` (Punkt 4) | Neues Werkzeug „Transkripte_lesen“ (Airtable, Tabelle Transkripte, höchstens 3 Treffer, neueste zuerst, nur lesen). Version ee6e2bea. |
+| 20:30 | Prompt „centcom“ (Airtable `recZ8KGZGnUVadmfr`, Punkt 4) | `Transkripte_lesen` in <lesen> aufgenommen und erklärt. <nicht_direkt_verfuegbar>: Transkripte liest CENTCOM selbst. Neuer Abschnitt <audio_und_transkripte>: Audio im Ordner Transkripte wird automatisch verarbeitet (:20/:50); nicht BLOCKIERT melden, keinen Lücken-Task anlegen, kurz auf die automatische Verarbeitung verweisen. Eintrag im Feld Notiz. Sicherung: `docs/sicherungen/prompt-centcom-2026-09-25-vor-transkripte.txt`. Eingespielt über `5jhiDM1YeWpa3zLd` mit Längenprüfung (Exec 6027), danach deaktiviert. |
+
+Offen (nicht beauftragt): Der Lücken-Task „Lücke: Slack-Audiodatei Interroll Süd (Nico Jacoby) nicht auffindbar“ ist weiter offen. Philipp weiß noch nicht, dass die Auswertung vorliegt.
