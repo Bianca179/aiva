@@ -141,3 +141,8 @@
     Credential-Umstellung dort unschädlich.
 30. **Offen bei Bianca:** Key aus „Anthropic account" `nrZk…` entfernen und Credential in „NICHT VERWENDEN – Bianca privat"
     umbenennen (Anleitung im Chat); alten Key in der Anthropic Console deaktivieren.
+31. **Drive fortgeschrieben (21:30–21:40):** `CENTCOM-OFFENE-PUNKTE-2026-09-25 (Stand 21:20) – Sitzung Anthropic-Zugang`
+    (Doc `15ieqKQTsL_SWAhOMY0LD1dChlJeYswH3z_RMSiV4wkk`; ergänzt die Fassung 09:45 und die der anderen Sitzungen).
+    BAUSTELLEN: Zeile `PD - Verbrauch zählen` auf „frei, live" inkl. Hinweis, dass die ZEITPLAN-Liste bei Taktänderungen
+    nachzuziehen ist. Gültige Fassung nach erneutem Fork: `10VMa6ZYWxy-gHGlZzsuk-vCSEcUMPXVkesCVm78lOn4` (Search 21:36,
+    inhaltsgleich mit meiner Zusammenführung; meine als Dublette umbenannt).
