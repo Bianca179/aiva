@@ -65,3 +65,15 @@
    - Kein Bravo-6-Zielprofil in Drive dokumentiert.
 9. **Wartet auf:** API-Key für rhineshore (per Header-Datei), dann Bravo 6 `SvC6VfroWvcuhAy1` lesen
    (Profil?), Bau-Plan Dienstagslauf vorlegen → Biancas Go.
+10. **Rhineshore-API-Zugang steht** (Key in Scratchpad-Header-Datei, nicht im Repo). 114 Workflows gelesen.
+    - `PD - Bravo 6 (Rolle)` `SvC6VfroWvcuhAy1`: aktiv, **noch nie gelaufen** (0 Executions). Der Lauf vom 17.08.
+      stammte aus der alten Fassung `66CuEFz05gjsgrRh` (inaktiv). Prompt = Airtable `Prompts`/„bravo 6".
+      Werkzeuge: Klients, Akquise-Pipeline, Mandate, Kondensat (nur lesen), Unipile LinkedIn (api60), HTTP-Abruf
+      (URL, keine Websuche). **Kein Schreibwerkzeug**, kein Zeitplan. Modell Sonnet 4.6 über Credential
+      „Anthropic account" `nrZkUZIQhvT2REnB` (dasselbe wie Findus/Centcom).
+    - Centcom ruft Bravo 6 mit dem Hinweis auf: „Rufe mit einem vollständigen Auftragstext auf: welche
+      Branche/Region/Größe gesucht wird" → das Profil kommt vom Aufrufer.
+    - **Ergebnis der Suche nach dem festen Profil:** in keinem der 114 Workflows, nicht im Prompt „bravo 6",
+      nicht in Skills/Kondensaten, nicht in Drive. Es existiert nur die Methode (80 km, Signale, Entscheider).
+    - Findus `oTeQ7TTbTxP0Dfxu`: 8 Läufe 19.–22.09. (3 Fehler am 21.09., danach erfolgreich).
+11. **Plan Bravo-6-Wochenlauf vorgelegt** (wartet auf Profil + Go; siehe Chat 25.09.).
