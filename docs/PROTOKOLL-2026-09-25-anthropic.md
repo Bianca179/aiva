@@ -34,3 +34,21 @@
    „The origin web server did not return a complete response within the 120-second Proxy Read Timeout window" (Cloudflare).
    Runde 7 in Exec 4847 brauchte 75 s für 2.759 Ausgabe-Tokens; maxTokens der Agenten 16.000–20.000.
    Offen/unbelegt: Voicespiegel „Request timed out" nach 10,6 s (Exec 5665) — braucht Cloudflare-Logs.
+7. **Paket 1 umgesetzt (Go Bianca):** Credential `nrZk…` → `SAq68…` im Claude-Knoten, sonst nichts geändert.
+   | Workflow | Knoten | versionId vorher | versionId neu (aktiv) |
+   |---|---|---|---|
+   | PD - Bravo 6 (Rolle) `SvC6VfroWvcuhAy1` | Claude (Bravo-6-Gehirn) | `754e03bd-4c28-4a09-8d74-dbba5b459111` | `ad44018e-ec60-4deb-af8f-f60b91a850c6` |
+   | PD - Findus (Rolle) `oTeQ7TTbTxP0Dfxu` | Claude (Findus-Gehirn) | `204d2ee3-26c1-4698-a43c-50b53d5ee5fe` | `8f9cd942-93f5-4b42-a549-2bade111604f` |
+   | Centcom `uhJLPwsa8wTFTDAa` | Claude (CENTCOM-Gehirn) | `f644e17b-6fc1-4654-8e26-93cad54b4911` | `a6cd126b-e3f7-49d1-9fd2-4658dfeb8ce6` |
+   Neue Version ist sofort aktiv (activeVersionId = versionId), kein separates Publish nötig. Rückweg: n8n-Versionierung.
+   Testlauf steht aus (Go Bianca).
+8. **Worker v2 freigegeben (Go Bianca), Cloudflare-Tarif: kostenlos** (10 ms CPU je Anfrage).
+9. **Worker v2 gebaut** (`cloudflare/worker-anthropic-cache-v2.js`, Drive `1NM_2Leg-YBuoGg9KchJyb7L91WYzbBoY`,
+   neben v1; v1 unverändert). Cache nur bei Anfragen mit Werkzeugen (Agenten); Agenten-Anfragen holt der Worker als Stream,
+   n8n bekommt sofort den Kopf + alle 10 s ein Leerzeichen + am Ende die normale JSON-Antwort. Fehler vor Stream-Beginn
+   mit echtem Status; Abbruch mitten im Stream → absichtlich ungültiges JSON „PROXY-ABBRUCH …" (Lauf wird rot).
+   Lokal getestet (`node cloudflare/test-worker-v2.mjs --puls`): 11/11 bestanden, u. a. credit balance 400, 429/529,
+   Abbruch, Werkzeugaufruf, Thinking-Signatur, Puls nach 0/10/20 s bei 25-s-Antwort.
+   CPU der reinen Worker-Logik bei 16.000 Ausgabe-Tokens ca. 3–5 ms (Node, warm) — Free-Tarif erlaubt 10 ms; kalter Start
+   in Cloudflare unbelegt. Überschreitung → sichtbarer Fehler (kein stilles Scheitern). Beim Umzug zu Philipp: Workers Paid erwägen.
+   Deployment durch Bianca (Cloudflare-Dashboard), Rückweg: Cloudflare-Rollback auf vorige Version.
