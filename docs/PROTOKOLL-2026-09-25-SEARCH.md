@@ -158,3 +158,17 @@
       (5 Titel × 7–8 Begriffe + NOT-Klauseln im Keyword-String); ein Aufruf ohne Keywords. Die Erfahrung vom 21.09.
       („kurze Booleans, max. 3 OR je Gruppe, kein NOT im Keyword-String, NOT über Sales Navigator/Filter") steht nur im
       Vorlage-Workflow `PD - Sourcing starten` `0xmEtvzNamAzRhil`, NICHT im Findus-Prompt → Vorschlag: in Prompt übernehmen.
+24. **Go Bianca 1+2+3.** Kritik Bianca: Die Boolean-Lehre vom 21.09. war schon bekannt — warum zweimal?
+    Ursache: Die Lehre stand nur im Auftragstext der Vorlage `PD - Sourcing starten` `0xmEtvzNamAzRhil`, nicht im
+    Findus-Prompt; jeder andere Auftragsweg (Centcom, Test) bekam sie nicht. **Neue Regel in CLAUDE.md:** Lehren gehören in
+    den Agenten-Prompt/Kondensat, nie nur in einen Auftrag; vor Tests Protokolle/Vorlagen nach Lehren durchsuchen.
+    - **Findus-Prompt `recU0ySXivoKFhXdR` geändert:** Werkzeugliste korrigiert (Findus_LinkedIn_Orte, HTTP Request statt
+      nicht existierender „Websuche"), SUCHKANAELE (HTTP Request nie für Suchmaschinen, max. 3 Abrufe), neuer Abschnitt
+      LINKEDIN-SUCHREGELN (Keywords Pflicht; 1 Titel- AND 1 Branchengruppe, max. 3 OR je Gruppe; kein NOT/Ort im Keyword-String,
+      Region über such_orte, Off-Limits/Klienten nach der Suche filtern; erst classic, dann sales_navigator; bei 0 Treffern
+      vereinfachen; max. 5 Suchen), AUSGABE max. 1.200 Wörter / 20 Tabellenzeilen. Sicherung der alten Stellen:
+      Drive `VERALTET-prompt-findus-2026-09-25 (vor LinkedIn-Suchregeln)` `1ZsG4WuQ9RJe1xm3rQxQ9mlaanxVoNMZX`.
+    - Test 2 gestartet (gleicher Heaten-Auftrag, Test-Workflow `H79EOEXmQe5NfQQb` reaktiviert, danach wieder deaktiviert).
+    - **Block 3 Recherche (25.09.):** Tavily: 1.000 Credits/Monat frei, keine Kreditkarte; Basic-Suche 1 Credit, Advanced 2;
+      danach 0,008 $/Credit. Brave Search API: 5 $ Freiguthaben/Monat (= 1.000 Anfragen), danach 5 $/1.000, Kreditkarte Pflicht,
+      Speichern von Ergebnissen für KI nur mit Sonderplan. Geschätzter Bedarf ca. 150 Suchen/Monat.

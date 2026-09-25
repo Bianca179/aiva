@@ -36,4 +36,8 @@
   `VERALTET-`; zusätzlich `docs/PROTOKOLL-<datum>-<thema>.md` in diesem Repo.
 - Ältere Session-Protokolle (Drive-Ordner `1XC51IQPrVdghUl4JXg0UtB8A9dHLj9Y_`) = Hintergrund, nicht aktuell.
 - Nie eine Vermutung als Diagnose ausgeben. Exakte IDs nennen.
+- **Lehren gehören in den Agenten, nicht in einen Auftrag:** Was ein Lauf zeigt (z. B. „LinkedIn-Booleans kurz halten"),
+  wird in den Agenten-Prompt (Airtable `Prompts`) oder dessen Kondensat geschrieben — nie nur in einen Auftragstext oder
+  eine Vorlage. Sonst wiederholt sich der Fehler (passiert 21.09. → 25.09. bei Findus).
+- Vor jedem Test/Umbau eines Agenten: bisherige Protokolle und Vorlagen-Workflows nach bekannten Lehren durchsuchen.
 - Antworten auf Deutsch, knapp; Anweisungen an Bianca nummeriert, ein Schritt pro Zeile.
