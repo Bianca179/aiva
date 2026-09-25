@@ -194,3 +194,11 @@
     - BAUSTELLEN: Fork-Chaos 17:55 (Search + Memory-Pilot gleichzeitig) → Prozesscheck hat 18:05 zusammengeführt; Forks
       umbenannt; Einträge Findus/Bravo 6 belegt 18:05 → frei 18:20 (aktuelle Fassung `1mkcybTQ-nvvO3cYn8esKk3BQog2fNV6Inpk3IFTRz9k`).
     - Test steht aus (eigene Frage an Bianca).
+28. **Bianca 20:05:** Interroll-Masse: Philipp will 50 Antworten (Erfahrung 10 % → ca. 500 Ansprachen); Staging-Tabelle ja;
+    Philipp hat Sales Navigator; Go für Websuche-Test.
+    - BAUSTELLEN: Fassung 18:20 (Anthropic-Zugang) gelesen; neue Fassung 20:10 `1dsZ_GLtXIBAWZIAGZ9hzdzx1WGQQJFdC8TXkmeZv_MY`
+      mit `H79EOEXmQe5NfQQb` belegt; Vorfassung umbenannt.
+    - Test-Workflow `H79E…` Auftrag geändert (Interroll Neu-Start, 1–3 Websuchen, max. 2 LinkedIn-Suchen), Version `d78584a6…`,
+      aktiviert und ausgelöst 20:13.
+    - **Bauplan Massensuche** (nur Plan + Roast): `docs/BAUPLAN-2026-09-25-interroll-massensuche.md`. Kern: Engpass ist die
+      Ansprache (ca. 200 Vernetzungsanfragen/Woche), nicht die Suche (Sales Navigator 2.500 Treffer/Suche).
