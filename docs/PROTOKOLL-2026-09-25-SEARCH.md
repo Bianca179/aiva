@@ -123,3 +123,4 @@
       Monk Dokumente, Termin vorbereiten, Voicespiegel (teils per HTTP direkt).
     - Frage Bianca: Anthropic nachhaltig lösen — hier oder eigene Session? → Empfehlung eigene Session (s. Chat).
 16. **Bianca: „Anthropic account" nrZk… ist ihr eigenes Konto (mehrfach gesagt) — Kosten trägt sie NICHT.** In CLAUDE.md festgehalten. Startprompt für eigene Anthropic-Session: `docs/START-SESSION-ANTHROPIC.md`.
+17. **Cockpit nach Änderung geprüft:** Exec 5808 (12:53) erfolgreich, „Akquise neu lesen" fehlerfrei, Seite vollständig; Akquise-Karte erwartungsgemäß ausgeblendet (Pipeline leer).
