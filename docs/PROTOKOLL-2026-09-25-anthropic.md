@@ -116,3 +116,14 @@
 23. **Wächter-Zweige lokal gebaut und getestet** (`n8n/waechter/zweig-laeufe-pruefen.js`, `zweig-zeitplan-pruefen.js`,
     Test `test-zweige.mjs` 8/8, Probe 110 Läufe → 11 Befunde). „Läufe prüfen" hinter „Lauf lesen", „Zeitplan prüfen" hinter
     „Läufe lesen", beide „bei Fehler weitermachen" (Zähler wird nie gestört), Slack über „Slack account" nach #maschinenraum.
+24. **Zähler läuft wieder:** Lauf 18:07 MESZ fehlerfrei, 18 neue Zeilen (u. a. Bravo 6 Exec 5819 = 1,13 $, deckt sich mit Schätzung).
+    Findus lief 2× echt über „Anthropic Rhineshore" + Worker v2 (Exec 5855, 5859, success; letzte Runden 100 s und 110 s).
+    Exec 5855: „Beide LinkedIn-Suchen liefern 0 Treffer — technisches Problem" (Unipile) → offener Punkt.
+25. **BAUSTELLEN-2026-09-25 (Drive):** Sitzungen legen neue Fassungen an (Drive kann nicht bearbeiten). Zweimal Fork (Prozesscheck,
+    Search) → zusammengeführt, gültig: Doc `1uXmiNPvV-bTw1pD5n5-lDXlnp-oVLcYROkUGZk7G5Pw`. Zeilen „Anthropic-Zugang" eingetragen,
+    `PD - Verbrauch zählen` belegt bis 21:00. Search hat Findus/Bravo 6 (Tavily) nach meinen Änderungen umgebaut; geprüft 18:14:
+    Credential „Anthropic Rhineshore" und HTML-Abruf 6.000 Zeichen erhalten.
+26. **Wächter-Zweig in `PD - Verbrauch zählen` eingebaut (Go Bianca):** „Wächter: Zeitplan prüfen" (hinter „Läufe lesen"),
+    „Wächter: Läufe prüfen" (hinter „Lauf lesen"), „Wächter: nach maschinenraum" (Slack account → C0BJE4M6Y92), Hinweis-Notiz.
+    Code-Knoten „bei Fehler weitermachen"; Knoten unterhalb des Zählers → Zähler rechnet/speichert zuerst.
+    versionId `d7a269aa-b87f-4376-b210-aa4dffb71370` → `b7046a88-d06c-4d73-af0b-e5aa2054fae3` (aktiv). Erster Lauf: nächste volle Stunde :07.
