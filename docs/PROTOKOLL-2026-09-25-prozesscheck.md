@@ -33,3 +33,22 @@ Alle Uhrzeiten MESZ. Es gab keine Läufe und keine Änderungen.
 - Gespräche: Kandidat → Person/Funnel; Auftraggeber zu einem Mandat → Mandat/Mandatsakte; ohne Mandat → Akquise.
 - Testfall für D1 ist die IntraFind-Mail vom 21.09. (`recvqY9JWEuecTBlD`), Task `recIW7rCqblRdsJWr`; ein Mandat fehlt.
 - **Geparkt:** Leadership-Assessment/Mentoring (Backhaus/Durable, BRYCK) ist ein eigenes Geschäftsfeld und braucht eine eigene Heimat im Cockpit und eigene Abläufe. Wird später angegangen.
+
+## Umbauten 25.09. (Go Bianca, inkl. Publish)
+
+Sicherungen: n8n-Versionierung und lokale Sicherung im Scratchpad dieser Sitzung (`backup/<id>-2026-09-25-vorher.json`).
+
+| Zeit | Workflow | Änderung | Vorher → Nachher (Version) |
+|---|---|---|---|
+| 17:48 | Flow F CV-Ablage `UHjMLLUPOAoR8rUx` | D2: Takt „0 10 8 * * 1-5“ → „0 20 8,12,15 * * 1-5“, Trigger umbenannt in „Taktung 08:20/12:20/15:20 Mo-Fr“. Dublettenschutz „Bereits abgelegt (Triage)“ war schon vorhanden. | f1912ffb → bd744be6 |
+| 17:52 | Postausgangs-Pass `8LJ0D5YUa1rrAd9n` | D1: Neuer Zweig ab „Zusage pruefen“: Vertrag? (Stichwort) → Vertrag denken (Haiku 4.5 direkt, Verbindung Anthropic Rhineshore) → Vertrag pruefen (nicht auswertbar → Lauf rot) → Mandate lesen / Klients lesen → Mandat anlegen? (Dubletten: Message-ID in Notes; offenes Mandat beim Klienten ohne neue Position) → Klient anlegen (falls neu) → Mandat anlegen (Status „in Anbahnung“, Mandate Type Executive Search, Owner Philipp). Assessment/Mentoring wird bewusst nicht angelegt. Der Zusage-Prompt ist unverändert. | – → d9737123 |
+| 17:57 | Flow I Transkript-Eingang `gwWSt4dyvyXnFgQd` | D3a: Audio-Transkripte laufen durch dieselbe Einordnung; der vorhandene Transkripte-Datensatz wird ergänzt (Zusammenfassung oben, Volltext unten) statt doppelt angelegt. Die Einordnung läuft jetzt über „Einordnen (Claude direkt)“ (Haiku 4.5) statt über die Langdock Assistant API, die seit 20.08.2026 abgeschaltet ist; der alte Knoten heißt „ALT - …“ und ist abgehängt. Fehler behoben: Die Mandatsliste im Prompt war immer leer (Airtable liefert `fields`), deshalb wurde nie ein Mandat verknüpft. | – → b9bc9080 |
+
+**Tests (ohne Schreibzugriff auf Airtable):**
+- `WtrpPZIKpsWj73d1` (Exec 5860): IntraFind → angebot_versendet, Klient IntraFind (neu), Titel „IntraFind – Position offen“. Gelsenwasser → kein_vertrag. FHDW → per Stichwortfilter aussortiert. Durable-Assessment → assessment_mentoring, nicht angelegt.
+- `zfbdxarF4kL5cwsv` (Exec 5861–5864): Gerlach → Kandidaten-Interview, Maximilian Gerlach, Interroll Foerdertechnik GmbH, Mandat „Gebietsverkaufsleiter / Regionalleiter technischer Vertrieb Mitteldeutschland“. Würde den bestehenden Datensatz `reczgwwSHMVVUSukS` ergänzen.
+- Beide Test-Workflows sind deaktiviert und in „ZZ-ARCHIV …“ umbenannt.
+
+**Neuer Befund:** „CENTCOM Flow G — Kondensate“ `TEzt3sVQgttVydv0` (aktiv, sonntags 18:00) nutzt ebenfalls die abgeschaltete Langdock Assistant API; letzter Lauf am 20.09. rot (Exec 4657). Nicht angefasst.
+
+**BAUSTELLEN:** Die Sitzungen „Search“ und „Memory-Pilot“ hatten um 17:55 gleichzeitig je eine neue Fassung angelegt. Zusammengeführt um 18:05 in Drive `1E7zZCocQ2L9ezKcAyTxMHiq1r8Imr0GOjDWEf-KfuAw`; die beiden Forks heißen jetzt VERALTET-….
