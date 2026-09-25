@@ -1204,3 +1204,28 @@ Bianca fragte „wurden meine Freigaben wirklich versendet?" → Diagnose des 09
 - **Bauweg:** `TMP - Donna Stimme pruefen` (`j6VXIloS4walGRId`), nur Manual Trigger, **kein Webhook** (keine offene Brücke), Credential `Elevenlabs` `W7YE9YwJcFJFmk1Q`. Läufe 16521 (lesen) und 16523 (PATCH + GET). Danach archiviert.
 - **Nicht geändert:** Sophia (`agent_4801…`) und Leandra (`agent_2601…`) behalten ihre Stimmen. Bei einer Übergabe Donna → Sophia wechselt die Stimme also hörbar.
 - **Offen:** Testanruf von einem fremden Telefon auf `+49 7156 4229016` durch Bianca. Hinweis: Anrufende, die Biancas Stimme kennen, könnten Donna für Bianca halten. Die Begrüßung für externe Anrufende enthält den KI-Hinweis (aus „Modus bestimmen" in `eTQjKoyHfxuUV1vA`), dieser bleibt Pflicht.
+
+### 22.21 Donna: Begrüßung kurz, Datenschutz-Hinweis am Ende · Qualitaetia: Mails nach Freigabe senden (GO Bianca, 25.09.)
+**Donna (Telefon), Auftrag „Hinweis auf die KI bitte ans Ende … oder ‚digitale Assistenz‘ lassen ohne weiteres Bla-Bla":**
+- Mein Einwand vorab (an Bianca): Nach EU-KI-Gesetz Art. 50 (anwendbar seit 02.08.2026) muss spätestens bei der ersten Interaktion erkennbar sein, dass eine KI spricht; mit geklonter Stimme ist das noch wichtiger. Umgesetzt ist Biancas zweite Variante, kombiniert mit der ersten:
+  - `eTQjKoyHfxuUV1vA` „Modus bestimmen" (publiziert `d3b53d62…`): Der lange Satz zu KI, Verarbeitung und Speicherung ist aus der Begrüßung entfernt. Es bleibt „Sie sprechen mit Donna, der digitalen Assistentin von Bianca Enderlin" (bekannte und unbekannte Anrufende), Biancas eigene Begrüßung ist unverändert. Live geprüft per `POST /webhook/donna-anruf-init` mit fremder Caller-ID.
+  - ElevenLabs-Prompt `agent_1801…`: angehängt (nicht überschrieben, mit Marker-Guard) wurde die **ABSCHLUSS-REGEL**. Im Modus empfang sagt Donna vor dem Verabschieden „Kurz zur Info: Unser Gespräch wurde verarbeitet und gespeichert, Details finden Sie in der Datenschutzerklärung auf biancaenderlin.de." Auf die Frage „Sind Sie ein Mensch?" antwortet sie immer ehrlich. Per GET verifiziert: Prompt 3.124 Zeichen, 8 Werkzeuge, Stimme `1xslNb9LF1u3Fw7jay66`, LLM unverändert. Bauweg `TMP - Donna Abschluss-Hinweis` (`ogw6SJNBCSAz0wnC`, nur Manual Trigger, Lauf 16525), danach archiviert.
+- Rechtliche Restfrage fürs Anwaltspaket: Hinweis auf Aufzeichnung und Speicherung erst am Gesprächsende (DSGVO Art. 13 verlangt Information bei der Erhebung).
+
+**Grow-Art-Thread „1, 2 oder beide":** Bianca antwortet „beide". War bereits am 23.09. 22:14 erledigt (Gedächtnis `recGkV96PUgdPSTQo`): Organigramm-Draft `recEoxLYgzXN36qnB`, Heyday-Vertragsentwurf `recvYej2dzIM9GgH3`. Nichts nachzuholen.
+
+**Mail-Versand nach Freigabe (GO Bianca „ad 1 go"):**
+- **Neue Tabelle** QM-Base › `Mail-Freigaben` `tblrmQrhy31HFAMCb`: Code (F-XXXX), An, CC, Betreff, Text, Anhang-IDs, Anhang-Namen, Status (Entwurf/Gesendet/Verworfen/Fehler), Vorgang, Erstellt, Gesendet am, Ergebnis.
+- **Qualitaetia `poAFUOTskMwwgPb8` v1.7 (publiziert `33740920…`):**
+  - Neues Werkzeug „Mail zur Freigabe vorlegen": POST in Mail-Freigaben, Code per Zufall, Status Entwurf. Pflicht: echte Umlaute und ß (der erste Test hatte ASCII-Ersatz, danach nachgeschärft), keine erfundenen Adressen.
+  - Prompt 1.7: Sie zeigt An, CC, Betreff, Anhänge und den Volltext mit „Zum Senden antworte: senden F-XXXX | Zum Verwerfen: verwerfen F-XXXX". Sie versendet nie selbst und behauptet nie „gesendet" ohne Bestätigung. Die Verlaufs-Aussage „ich kann nicht mailen" ist als überholt markiert.
+- **Neu: `GcQ5yQQbJKWU4Cfz` „ORCH - JUMIS Mail senden nach Freigabe - v1"** (callerPolicy: nur Dirigent). Ablauf:
+  1. Befehl prüfen: nur „senden/verwerfen F-XXXX" und nur mit `absender = Bianca`.
+  2. Entwurf laden: Code + Status Entwurf, genau ein Treffer.
+  3. Verwerfen → Status Verworfen.
+  4. Senden → Drive-Anhänge laden (Google-Dateien als PDF). **Fehlt ein Anhang, wird NICHT gesendet.** Danach Versand über SMTP von „Bianca Enderlin <bianca.enderlin@jumis-pharma.com>", **BCC an dieselbe Adresse** (SMTP legt keine Kopie in „Gesendet" ab).
+  5. Status Gesendet/Fehler + Ergebnis, Logbuch-Eintrag, Antwort in den Slack-Thread.
+  - **Noch nicht publiziert:** n8n verweigert das, weil die SMTP-Credential fehlt (gewollt).
+- **Dirigent `SpWLJA34XuMpI6qs` (publiziert `533b64fe…`):** Neu `isFreigabe` = menschliche Nachricht **mit Slack-User-ID U094G4R4W2X (Bianca)** im Qualitaetia-Kanal, Text `^(senden|verwerfen) F-XXXX` → Nativ-Route direkt auf `GcQ5yQQbJKWU4Cfz` (keine KI dazwischen, dadurch sicher gegen Prompt-Injection aus Mails). Die Antwort erscheint als Qualitaetia im Thread und landet im Gedächtnis.
+- **Test:** Qualitaetia-Testchat 16529/16530 legt Entwürfe korrekt an. `F-697M` (ASCII) wurde verworfen, **`F-EMLR`** (Testmail an Bianca, korrekte Umlaute) steht für Biancas ersten echten Versandtest bereit.
+- **Offen:** (1) Bianca legt in n8n die Credential „SMTP" an (smtp.ionos.de, 465, SSL, volle JUMIS-Adresse + Passwort). Danach: Credential an Node „Mail senden (JUMIS SMTP)" hängen, `GcQ5yQQbJKWU4Cfz` publizieren, Bianca schreibt in #qualitaetia `senden F-EMLR`. (2) Dann Beck/Grow Art und Ronja/CHG-2026-002 über Qualitaetia als Freigabe-Entwürfe. Offen dort: Organigramm undatiert/unsigniert, Prozessübersicht fehlt, Change-Formular als Dokument, Becks Adresse (nicht im Mail-Archiv, das erst ab 22.09. läuft).
