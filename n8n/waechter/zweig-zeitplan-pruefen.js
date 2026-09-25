@@ -1,14 +1,14 @@
 // PD - Verbrauch zählen · Wächter-Zweig „Wächter: Zeitplan prüfen" (P4.1)
 // Hängt hinter „Läufe lesen" (Liste ohne Inhalt) und meldet geplante Läufe, die nicht stattfanden.
 // Geprüft wird je Stunde das Fenster (jetzt-90 min, jetzt-30 min] → jeder Termin genau einmal.
-// Zeiten Europe/Berlin. Zeitpläne Stand 25.09. — bei Änderung eines Zeitplans hier nachziehen.
+// Zeiten Europe/Berlin. Zeitpläne Stand 25.09. 21:30 — bei Änderung eines Zeitplans hier nachziehen.
 
 const ZEITPLAN = [
   { id: 'TmwShtK9D4kt5KEa', name: 'CENTCOM – Inbox-Pass v2.1b', cron: ['0 0 8 * * 1-5', '0 0 12 * * 1-5', '0 0 15 * * 1-5', '0 0 9 * * 6'] },
   { id: '8LJ0D5YUa1rrAd9n', name: 'CENTCOM - Postausgangs-Pass v2', cron: ['0 50 6,12 * * 1-5'] },
   { id: '8LzkOa0iFOKfThsR', name: 'PD - Termin vorbereiten', cron: ['0 0 17 * * 1-5', '0 10 7 * * 1-5'] },
   { id: 'GAUWB6soXqqezKrJ', name: 'PD - Aufgaben-Verteiler v3 (Router)', cron: ['0 45 8,14 * * 1-5'] },
-  { id: 'Hw3kgSmYG8zSm8QM', name: 'PD - Voicespiegel', cron: ['0 0 19 * * *'] },
+  { id: 'Hw3kgSmYG8zSm8QM', name: 'PD - Voicespiegel', cron: ['0 0 19 * * 5'] }, // seit 25.09. 20:57 nur freitags (Memory-Pilot)
   { id: 'Rii70C8nlIsbSgHC', name: 'PD - LinkedIn-Pass', cron: ['0 20 8,12,16 * * 1-5'] },
   { id: 'o8dp531ELw35wRQN', name: 'PD - Klick-Abgleich', cron: ['0 15 7,13 * * 1-5'] },
   { id: 'gIrwBH3fA49Po9It', name: 'PD - Bravo 6 Wochenlauf', cron: ['0 0 7 * * 2'] },

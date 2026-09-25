@@ -127,3 +127,17 @@
     „Wächter: Läufe prüfen" (hinter „Lauf lesen"), „Wächter: nach maschinenraum" (Slack account → C0BJE4M6Y92), Hinweis-Notiz.
     Code-Knoten „bei Fehler weitermachen"; Knoten unterhalb des Zählers → Zähler rechnet/speichert zuerst.
     versionId `d7a269aa-b87f-4376-b210-aa4dffb71370` → `b7046a88-d06c-4d73-af0b-e5aa2054fae3` (aktiv). Erster Lauf: nächste volle Stunde :07.
+27. **Erster Wächter-Lauf 21:07 MESZ:** Zähler fehlerfrei (477 Zeilen, lauf_id bis 6049). Slack #maschinenraum ist für diese
+    Sitzung nicht lesbar (anderer Workspace); lokaler Nachlauf mit denselben 11 Läufen ergab 1 Meldung: Centcom Exec 6031,
+    Werkzeug „Mandatsakte" „Mehrdeutig (2 Mandate) … bitte mit Record-ID erneut aufrufen" → **Fehlalarm** (gewollte Rückfrage,
+    folgende Aufrufe im selben Lauf erfolgreich).
+28. **Korrektur Wächter (21:15):** (a) Regel „selbst geheilt": Knotenfehler ohne Anthropic-Kategorie werden nicht gemeldet, wenn
+    derselbe Knoten im selben Lauf danach gelingt. Folge: auch CENTCOM still 5340 `Mandate_lesen` (Airtable „Unknown field names:
+    geschäftsbereich") fällt heraus — Fehler bleibt als offener Punkt. (b) Voicespiegel seit 20:57 nur freitags 19:00
+    (Memory-Pilot, Go Bianca) → Zeitplan im Wächter angepasst. Alle 8 Zeitpläne gegen Live-Stand geprüft: identisch.
+    Tests 8/8, Probe 110 Läufe: 9 Befunde (nur echte). versionId `b7046a88-…` → `63925e72-e1a6-4842-b984-0dd7129dc486` (aktiv).
+29. **Korrektur zu Punkt 2/12:** `PD - Puls` ruft den Komponisten NICHT auf (Puls prüft nur, ob das Lagebild in #pd-centcom ankam;
+    Vermerk Memory-Pilot). Meine Aufrufer-Suche hatte die ID im Code-Text als Aufruf gewertet. Komponist ist seit 11:39 aus;
+    Credential-Umstellung dort unschädlich.
+30. **Offen bei Bianca:** Key aus „Anthropic account" `nrZk…` entfernen und Credential in „NICHT VERWENDEN – Bianca privat"
+    umbenennen (Anleitung im Chat); alten Key in der Anthropic Console deaktivieren.

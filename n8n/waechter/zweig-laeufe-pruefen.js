@@ -39,7 +39,11 @@ function fehlerAusLauf(ex, name) {
       text: String(text || '').replace(/\s+/g, ' ').slice(0, 160), lauf: String(ex.id) });
   };
   for (const [knoten, runs] of Object.entries(runData)) {
+    // Selbst geheilt: gelingt derselbe Knoten später im selben Lauf (z. B. Werkzeug-Rückfrage „Mehrdeutig … bitte
+    // mit Record-ID erneut aufrufen"), ist ein früherer Fehler dort kein stiller Ausfall — außer bei Anthropic-Kategorien.
+    const geheilt = (runs || []).some(r => !r.error);
     for (const run of runs || []) {
+      if (run.error && geheilt && !kategorie([run.error.message, run.error.description].join(' '), run.error.httpCode)) continue;
       if (run.error) {
         const e = run.error;
         neu(knoten, [e.message, e.description].filter(Boolean).join(' – '), e.httpCode || (e.context && e.context.httpCode));
