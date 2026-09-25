@@ -251,3 +251,27 @@
       - Neuer Vorschlag: nur Oberbayern, Schwaben, Niederbayern, Ulm/Neu-Ulm und Vorarlberg; Franken und Oberpfalz als Treffer für Mitteldeutschland prüfen.
       - Einige Treffer passen fachlich nicht, z. B. Bodenbeläge oder Gebäudetechnik. Deshalb braucht es einen Vorfilter (Haiku oder Regeln).
       - Einige Treffer haben nur „Deutschland“ als Ort → „prüfen“.
+34. **Go Bianca (21:00): `PD - Massensuche` gebaut und getestet.** Die Suche für Mitteldeutschland wartet auf Philipp; der Echtlauf braucht ein eigenes Go.
+    - **Airtable:**
+      - Neuer Prompt `massensuche-vorsortierung` `rec6sVimlSein5Rpy` in `Prompts`; Lehren kommen dorthin.
+      - Neuer Auftrag `recNYZZapDspAk4XC`: „Interroll Süd – Lauf 1 (Regionen fein)“, Status pausiert.
+    - **BAUSTELLEN:** vier Forks in fünf Minuten (Prozesscheck, Anthropic-Zugang, Search), zusammengeführt. Gültig ist `10VMa6ZYWxy-gHGlZzsuk-vCSEcUMPXVkesCVm78lOn4`.
+      Zeile PD - Massensuche bleibt bis 22:30 belegt (weiterer Regionen-Test möglich).
+    - **Workflow `CbB8necdWxLu0Z7r`** (Biancas Projekt, **inaktiv**; Test-Webhook noch drin, vor Echtlauf entfernen):
+      - Auslöser: Zeitplan Mo–Fr 08:10/11:10/14:10/17:10 (aus); nimmt den Auftrag mit Status „läuft“.
+      - Regionen: Namen werden über Unipile aufgelöst und als „Name=ID (Titel)“ zurück in den Auftrag geschrieben.
+      - Seiten: bis 10 Seiten à 25 je Lauf (= 1.000 pro Tag), 5 s Pause zwischen den Seiten.
+      - Dubletten: gegen Longlist-Roh (überspringen) und Persons (Status dublette; bei gleichem Namen „prüfen“).
+      - Sperre: Klients „klient“ + Mandatsfeld „Off-Limits Firmen“ → gesperrt; „ehemaliger Klient“ → prüfen.
+      - Vorsortierung: Haiku 4.5 über „Anthropic Rhineshore“.
+      - Stand (Cursor, Zähler, Letzter Lauf) wird nach jeder Seite gespeichert; ohne Cursor → Status fertig.
+      - Kein Knoten mit Retry.
+    - **Test Exec 6085 (2 Seiten, 44 s): erfolgreich.**
+      - 4 Dubletten aus Test 1 erkannt und übersprungen.
+      - 46 Zeilen angelegt; Seite 2 ohne Überschneidung zu Seite 1 (Cursor funktioniert).
+      - Vorsortierung: 15 passt, 22 passt nicht, 9 prüfen. Stichprobe plausibel, z. B. LTW Intralogistics, Festo, Bosch Rexroth,
+        KEB = passt; Pflegehilfskraft, ERP-Vertrieb, Seilbahnen = passt nicht.
+    - **Befund (Vermutung, nicht belegt):** Mit den feinen Regionen meldet Sales Navigator nur **256** Treffer (mit „Bayern“ waren es 4.512).
+      Fast alle Treffer liegen in Ulm, Neu-Ulm oder Vorarlberg, kaum Oberbayern oder Schwaben. Vermutlich wirken die IDs für Oberbayern (110732084),
+      Schwaben (110341886) und Niederbayern (113099211) im Sales Navigator nicht. Belegen lässt sich das mit je einer Testseite pro Region.
+      Alternative: Städte (München, Augsburg, Ingolstadt, Rosenheim, Kempten, Landshut …) statt Regierungsbezirke.
