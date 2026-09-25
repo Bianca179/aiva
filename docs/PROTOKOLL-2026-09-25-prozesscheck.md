@@ -1,13 +1,13 @@
 # Prozesscheck Rhineshore, 25.09.2026 (nur lesend)
 
 Geprüft wurden die Ausführungen vom 25.09. auf rhineshore.app.n8n.cloud und die SSOT `app2lmhCxLhMkdfmN`.
-Es gab keine Läufe und keine Änderungen.
+Alle Uhrzeiten MESZ. Es gab keine Läufe und keine Änderungen.
 
 ## Befunde
 
 | # | Station | Befund | Beleg |
 |---|---|---|---|
-| B1 | Anthropic-Zugang | Die Verbindung „Anthropic Rhineshore" `SAq68yfgETKLhMev` scheitert auf dem Weg über die Base URL (Proxy): 12:37 „Your credit balance is too low" (Bravo 6 `SvC6VfroWvcuhAy1`, Exec 5801, und Wochenlauf `gIrwBH3fA49Po9It`, Exec 5800); 06:10 „Bad request" (Dokumenttyp erkennen). Knoten mit fest eingetragener URL api.anthropic.com (Inbox-Pass, Entwurf schreiben) laufen. | Exec 5656, 5659, 5801, 5800 |
+| B1 | Anthropic-Zugang | Die Verbindung „Anthropic Rhineshore" `SAq68yfgETKLhMev` scheitert auf dem Weg über die Base URL (Proxy): 14:37 „Your credit balance is too low" (Bravo 6 `SvC6VfroWvcuhAy1`, Exec 5801, und Wochenlauf `gIrwBH3fA49Po9It`, Exec 5800); 08:10 „Bad request" (Dokumenttyp erkennen). Knoten mit fest eingetragener URL api.anthropic.com (Inbox-Pass, Entwurf schreiben) laufen. | Exec 5656, 5659, 5801, 5800 |
 | B2 | CV kommt | Der CV von Nico Jacoby (B+P, abgelegt als Drive `1na520erKbaRR3PBTiuxfSHI0k5v7MGsH`) wurde wegen B1 als „unklar" eingestuft → keine Person, kein Funnel. Auch der Aufgaben-Klick „Dokument prüfen" wurde nicht angelegt (Dedup auf gleichen Titel „uebergebener Text"). | Exec 5654 → 5658/5659; Persons/Funnel: kein Treffer „Jacoby" |
 | B3 | CV kommt | Flow F `UHjMLLUPOAoR8rUx` läuft nur 1× täglich (08:10). CVs, die später eingehen, werden erst am nächsten Werktag verarbeitet. Die Gmail-Zuordnung ergab 0 Treffer. | Exec 5654 |
 | B4 | Transkript | Das Audio „2026-09-24_17_30_01_interroll mitte_maximilian_gerlach.mp3" wurde transkribiert und nach Transkripte `reczgwwSHMVVUSukS` geschrieben, allerdings ohne Verknüpfung zu Person oder Mandat. Danach wertet kein Workflow automatisch aus (Dossier, Fletcher und Funnel aktualisieren starten nur, wenn Centcom sie aufruft). Maximilian Gerlach fehlt in Persons und Funnel. | Exec 5789, 5790 |
@@ -23,7 +23,7 @@ Es gab keine Läufe und keine Änderungen.
 
 ## Nachtrag 25.09. (nachmittags)
 
-- **Anthropic-Zugang:** Die Verbindung „Anthropic Rhineshore" `SAq68yfgETKLhMev` wurde heute um 10:26 (MESZ) zuletzt gespeichert. Der Proxy v2 (Drive `1NM_2Leg-YBuoGg9KchJyb7L91WYzbBoY`) reicht laut Code den Schlüssel aus n8n nur durch. Proxy und Direktaufruf verwenden also denselben Schlüssel. Verlauf: 12:37 „credit balance too low" (Bravo 6, Exec 5801); 13:47 Bravo 6 wieder erfolgreich (Exec 5819). Zu welchem Konto der Schlüssel gehört, ist über die API nicht sichtbar.
-- **Neue Fehler 15:01/15:07:** `PD - Entwurf schreiben` darf von einem aufrufenden Workflow nicht gerufen werden („cannot be called by this workflow", Exec 5842). `PD - Verbrauch zählen` hat keinen Zugriff auf die Verbindung (Exec 5845). Die Ursache ist nicht geklärt.
+- **Anthropic-Zugang:** Die Verbindung „Anthropic Rhineshore" `SAq68yfgETKLhMev` wurde heute um 10:26 (MESZ) zuletzt gespeichert. Der Proxy v2 (Drive `1NM_2Leg-YBuoGg9KchJyb7L91WYzbBoY`) reicht laut Code den Schlüssel aus n8n nur durch. Proxy und Direktaufruf verwenden also denselben Schlüssel. Verlauf: 14:37 „credit balance too low" (Bravo 6, Exec 5801); 15:47 Bravo 6 wieder erfolgreich (Exec 5819). Zu welchem Konto der Schlüssel gehört, ist über die API nicht sichtbar.
+- **Neue Fehler 17:01/17:07:** `PD - Entwurf schreiben` darf von einem aufrufenden Workflow nicht gerufen werden („cannot be called by this workflow", Exec 5842). `PD - Verbrauch zählen` hat keinen Zugriff auf die Verbindung (Exec 5845). Die Ursache ist nicht geklärt.
 - **CV-Trigger:** Einen Drive-Trigger auf den CV-Ordner `1gT3Q8xP7nKLCJppFXfD4HGnJ4osDb_hV` gibt es nicht. Der einzige Drive-Trigger ist Flow I (Transkripte-Ordner). CV-Intake wird nur von Flow F (08:10) aufgerufen.
 - **Backhaus:** Das Mandat `rec2lNnjG3TeZNOcZ` („Leadership-Assessment Frau Backhaus (Durable)", active) existiert seit 19.09. (Datenlücke-Import). Im Postausgang ist keine Mail mit Vertrag zu Backhaus/Durable gespeichert.
