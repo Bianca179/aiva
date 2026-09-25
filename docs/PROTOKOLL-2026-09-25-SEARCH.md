@@ -219,3 +219,15 @@
     Letzter Lauf, Notiz) und `Longlist-Roh` `tblmaFPacd0ifMuQ4` (Name, Titel, Firma, Ort, LinkedIn URL, Mandat, Suchauftrag,
     Gefunden am, Status neu/dublette/gesperrt/prüfen/passt/passt nicht/übernommen, Grund, Vorsortierung, Löschen ab, Notiz).
     Beide leer. Bianca hat eine Sales-Navigator-URL, kann sie aber nicht öffnen (nur mit Philipps Login).
+32. **Klärung Weg B (nur lesend geprüft):**
+    - Versand: Centcom `uhJLPwsa8wTFTDAa` hat das Werkzeug `LinkedIn_Kontaktanfrage_senden` (Unipile
+      `POST /users/add-by-identifier`, Konto `hb41rQKyRPe8NEizhGm8ZQ`). Das Werkzeug verschickt eine Anfrage pro Aufruf,
+      wenn Philipp es im Chat anstößt. Die einzige Sperre ist der Parametertext „von Philipp freigegeben“. Einen Stapelversand
+      gibt es nicht. Nicht geprüft: ob der Endpunkt funktioniert. `PD - Cockpit-Kandidat` legt bei „übernehmen“ nur die Aufgabe
+      „Erstansprache entwerfen … Nichts senden“ an.
+    - Sichtung: Philipp kann Rohtreffer heute nur in Airtable sichten. Das Cockpit zeigt nur Funnel „vorgeschlagen“
+      (Longlist ✓/✗).
+    - Bianca: Löschung nicht ausgewählter Zeilen nach 60 Tagen = ja. Der Löschlauf selbst wird ein eigener Bau mit Go.
+    - Kriterien Interroll aus `Bewertungskriterien` (v1 Handout 19.09.) geprüft. AT-PLZ 67–69 = **Vorarlberg** (nicht Tirol).
+      Branchen ergänzt: Automatisierung, Antriebe, Steuerungs- und Anlagentechnik. Es gibt ein **zweites Mandat**:
+      Mitteldeutschland `recRC8lOKc4opvvOY` (PLZ 35–36, 55–56, 60–69, 97), zusätzlich zu Süd `recwnvjoFT61kjzL7`.

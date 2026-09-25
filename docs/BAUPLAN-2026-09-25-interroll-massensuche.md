@@ -22,7 +22,7 @@ Vernetzungsanfragen, oder schneller mit InMails an offene Profile. Ansprache ble
 ## Ablauf (Vorschlag)
 1. **Suchdesign einmalig (Findus, ein Lauf):** 6–10 kurze Titel×Branche-Kombinationen + Zielfirmen Pool A/B.
 2. **Sales-Navigator-Suchen als URL (Philipp oder Bianca, einmalig):** im Sales Navigator mit allen Filtern bauen
-   (Geografie: Bayern/BW-Regionen der PLZ 80–87, 89, Vorarlberg, Tirol; Funktion Vertrieb; Firmen AUSSCHLIESSEN:
+   (Geografie: Bayern/BW-Regionen der PLZ 80–87, 89 und Vorarlberg (AT 67–69); Funktion Vertrieb; Firmen AUSSCHLIESSEN:
    Interroll + 8 Klienten + Off-Limits) und die Such-URLs in die Tabelle „Massensuche-Aufträge" kopieren.
    Vorteil: Filter wirken exakt (auch Firmenausschluss), kein Modell rät.
 3. **Workflow `PD - Massensuche` (ohne KI):** liest die URLs, holt alle Seiten über Unipile (Cursor), höchstens
