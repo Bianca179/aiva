@@ -62,3 +62,21 @@
     - **Kostentreiber gefunden:** Werkzeug „HTTP Request" lädt LinkedIn-Stellenseiten als rohes HTML (357.000 und 309.000 Zeichen)
       in den Verlauf → letzte Runde ca. 270.000 Eingabe-Tokens (n8n-Schätzung). Vorschlag: Abruf kürzen/HTML entfernen (eigener Umbau, Go nötig).
     - Findus und Centcom: Test per Slack-Zuruf durch Bianca (beide haben keinen API-Auslöser).
+11. **Slack-Test Centcom (Bianca, 13:53 UTC):** Exec 5820 und 5822 success, Antworten kamen. Centcom kennt den Begriff
+    „Klicks" nicht (fragt nach) — Punkt für Offene Punkte (Vokabular Cockpit ↔ Centcom). Findus wurde NICHT aufgerufen:
+    Centcom hat die Mandatsliste selbst aus dem SSOT gezogen („Findus ist für Sourcing innerhalb eines Mandats"). Findus ungetestet.
+12. **Paket 2 umgesetzt (Go Bianca):** Credential `nrZk…` → `SAq68…`.
+    | Workflow | Knoten | versionId vorher | versionId neu |
+    |---|---|---|---|
+    | PD - CENTCOM still (Verteiler) `75lT7ogXUNBDwDwW` | Claude (still) | `0fa06590-c8c5-4c91-9acf-caede3ee0ae8` | `dc427b6e-c82a-400b-93de-fb0e1b846487` |
+    | PD - McGonnagal (Rolle) `L5OJCDruVuwGf5Mh` | Claude (McGonnagal-Gehirn) | `0bbf8f51-7fad-48a1-b8ca-65f543ec6c61` | `fd808da6-e0bd-4b7f-859b-325e63459c14` |
+    | Fletcher — Kandidatenvorstellung `VufJGSTnRHFRPUDg` | Claude (Fletcher) | `1b08a82a-9002-4f1f-bf35-f98937cc1bdb` | `bf5f2da2-e696-4424-910a-f4cebb117104` |
+    | PD - Komponist `OM7PyMRW0YsNUwJ0` (inaktiv, von Puls aufgerufen) | Kopf texten (HTTP) | `1fff9a45-78a6-4aea-b54b-68e0e711599f` | `7e8b0dc0-8296-4da9-8f77-9cf45163db94` |
+13. **Gegenprobe (alle 116 Workflows neu gelesen):** kein aktiver Workflow nutzt `nrZk…`; kein inaktiver, der (auch über Ketten)
+    von einem aktiven aufgerufen wird. 19 inaktive (Altfassungen, ZZ-ARCHIV) nutzen `nrZk…` noch → Bianca entfernt den Key.
+    **Ziel 1 erreicht.**
+14. **Kosten der Tests (Schätzung aus n8n-Tokenzahlen, Listenpreise; genaue Zahl nur in der Anthropic Console):**
+    Bravo 6 (Sonnet 4.6): 343.314 Eingabe + 6.459 Ausgabe ≈ 1,13 $ (mit Cache-Schreibaufschlag höchstens ≈ 1,40 $).
+    Centcom 2 Zurufe (Sonnet 5): 132.177 Eingabe + 2.146 Ausgabe ≈ 0,29 $. Zusammen ≈ 1,40–1,70 $.
+15. **Plan Bravo-6-HTML-Abruf:** Werkzeug „HTTP Request" in Bravo 6 erhält dieselben Einstellungen wie das bewährte in Findus
+    (nur Seiteninhalt, ohne script/style/nav/…, gekürzt auf 6.000 Zeichen, Timeout 15 s). Wartet auf Go.
