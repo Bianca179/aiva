@@ -275,3 +275,25 @@
       Fast alle Treffer liegen in Ulm, Neu-Ulm oder Vorarlberg, kaum Oberbayern oder Schwaben. Vermutlich wirken die IDs für Oberbayern (110732084),
       Schwaben (110341886) und Niederbayern (113099211) im Sales Navigator nicht. Belegen lässt sich das mit je einer Testseite pro Region.
       Alternative: Städte (München, Augsburg, Ingolstadt, Rosenheim, Kempten, Landshut …) statt Regierungsbezirke.
+35. **Go Bianca (21:38): Regionen prüfen (1) und Suchbegriffe erweitern (2).** Testläufe Exec 6087–6094, je 1–2 Seiten, danach deaktiviert.
+    - **Regionen belegt:**
+      - Oberbayern (110732084) liefert **1 Treffer** → die Regierungsbezirke greifen im Sales Navigator nicht.
+      - „Metropolregion München“ (90009735) liefert 4.330 Treffer mit Würzburg und Nürnberg; sie wirkt wie ganz Bayern → nicht verwenden.
+      - „München“ (100477049) allein liefert 844 Treffer, alle in München und Umgebung → Städte und Landkreise greifen sauber.
+    - **Neue Ortsliste für alle Süd-Aufträge:** München, Freising, Erding, Dachau, Fürstenfeldbruck, Starnberg, Ebersberg, Augsburg,
+      Ingolstadt, Rosenheim, Landshut, Kempten, Memmingen, Kaufbeuren, Traunstein, Landsberg am Lech, Neuburg, Günzburg,
+      Neu-Ulm, Ulm, Vorarlberg. „München (Landkreis)“ wird zu München-Stadt aufgelöst, schadet nicht.
+    - **Drei Suchaufträge** (Status pausiert, Cursor zurückgesetzt):
+      - A `rec2Ai6qJxxPcAiwz` Vertriebsingenieur/Antrieb: **1.874** Treffer (Exec 6094; alle Orte im Gebiet).
+      - B `recmu4aQqI9VbKVDN` `(Außendienst OR "Area Sales Manager" OR "Technischer Vertrieb") AND (Intralogistik OR Fördertechnik OR Antriebstechnik)`:
+        1.036 Treffer mit der alten Ortsliste.
+      - C `recRMFtqaSxfKa690` `(Vertriebsingenieur OR "Sales Engineer" OR "Area Sales Manager") AND (Intralogistik OR Anlagenbau OR Steuerungstechnik)`:
+        4.278 Treffer mit der alten Ortsliste; mit der neuen noch nicht gemessen.
+      - Die Aufträge überschneiden sich. Dubletten fängt der Workflow ab.
+    - **Fehler und Lehre:**
+      - Exec 6088: Haiku gab zwei JSON-Blöcke aus (Korrektur nachgeschoben) → der Parser scheiterte, 4 Zeilen ohne Vorsortierung.
+      - Behoben: Der Parser nimmt jetzt den letzten gültigen Block. Sicherung vorher `SICHERUNG-vor-parser.json` (Scratchpad). Lokal mit der Originalausgabe getestet.
+      - Die 4 Zeilen sind in Airtable nachgetragen.
+      - **Lehre im Prompt** `massensuche-vorsortierung`: Regel 2 „Gebiet = K.o., immer passt nicht“ (Haiku hatte Würzburg „passt“ gegeben),
+        Regel 6 „genau ein JSON-Array, keine Korrektur“.
+    - Diagnose-Aufträge `recUHrf2AwJAs3Wxe`, `recNYZZapDspAk4XC`, `recCob5fZJZkoH9UY`, `recZ2mHyeIRYKjLeZ`, `recHMcIhzJb4k3wsx` bleiben pausiert und werden nicht gelöscht.
