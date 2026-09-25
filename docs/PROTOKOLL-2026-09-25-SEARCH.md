@@ -183,3 +183,14 @@
     umbenannt in `VERALTET-BAUSTELLEN-2026-09-25 (Stand 17:47)` `1ZlPgENl3sMwICZX1HTY5QCfwxiEn3-A8T7WO00SXBso`.
     Vermerk zu den 17:01-Fehlern („cannot be called by this workflow"): nicht diese Sitzung; mögliche Ursache Projekt-Eigentümer
     bei per API angelegten Workflows (→ /transfer).
+27. **Websuche (Tavily) eingebaut (Go Bianca „bau ein"):** Credential `tavily` Bearer Auth `CYRiV69Dc0HY8qck` (Bianca; zusätzlich
+    existiert ein Header-Auth-Credential `tavily` `3AghToOeAsBrXcBO` — nicht angefasst). Erster PUT abgelehnt („no access to
+    credentials"): Credential lag nur in Biancas Projekt, API-Key = Philipps Konto → Bianca hat es mit Philipp geteilt.
+    - Knoten „Websuche" (POST api.tavily.com/search, basic, max. 5 Treffer, thema general|news) in
+      Findus `oTeQ…` (Version `cb041c4a…` → `92914acb…`) und Bravo 6 `SvC6…` (`af77d339…` → `158c0f8d…`).
+    - Prompts: findus (Werkzeugliste + Suchkanäle: Websuche für Unternehmen, max. 5), bravo 6 (Suchkanäle neu: Websuche für
+      Signale max. 8, LinkedIn-Regeln wie Findus, HTTP Request nie für Suchmaschinen). Sicherung Drive
+      `VERALTET-prompts-findus-bravo6-2026-09-25 (vor Websuche Tavily)` `1v1sGDxfhJ5tKcUP8X7BlCqvrdX4zzmj7`.
+    - BAUSTELLEN: Fork-Chaos 17:55 (Search + Memory-Pilot gleichzeitig) → Prozesscheck hat 18:05 zusammengeführt; Forks
+      umbenannt; Einträge Findus/Bravo 6 belegt 18:05 → frei 18:20 (aktuelle Fassung `1mkcybTQ-nvvO3cYn8esKk3BQog2fNV6Inpk3IFTRz9k`).
+    - Test steht aus (eigene Frage an Bianca).
