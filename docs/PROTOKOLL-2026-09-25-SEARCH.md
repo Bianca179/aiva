@@ -124,3 +124,7 @@
     - Frage Bianca: Anthropic nachhaltig lösen — hier oder eigene Session? → Empfehlung eigene Session (s. Chat).
 16. **Bianca: „Anthropic account" nrZk… ist ihr eigenes Konto (mehrfach gesagt) — Kosten trägt sie NICHT.** In CLAUDE.md festgehalten. Startprompt für eigene Anthropic-Session: `docs/START-SESSION-ANTHROPIC.md`.
 17. **Cockpit nach Änderung geprüft:** Exec 5808 (12:53) erfolgreich, „Akquise neu lesen" fehlerfrei, Seite vollständig; Akquise-Karte erwartungsgemäß ausgeblendet (Pipeline leer).
+18. **13:35 — Stand nach Anthropic-Session (Branch `claude/upbeat-carson-feyx90`, parallel):** Ziel-Credential für alle
+    Agenten = „Anthropic Rhineshore" `SAq68…` (Philipps Konto), Proxy bleibt, Timeout-Fix bis Di 29.09. 07:00.
+    Rhineshore-API-Key dieser Session ist gelöscht (401) → keine Prüfung/Änderung auf rhineshore mehr möglich ohne neuen Key.
+    Bianca: „wie machen wir mit der Search weiter?" → Fahrplan vorgelegt (Chat).
