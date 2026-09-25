@@ -172,3 +172,14 @@
     - **Block 3 Recherche (25.09.):** Tavily: 1.000 Credits/Monat frei, keine Kreditkarte; Basic-Suche 1 Credit, Advanced 2;
       danach 0,008 $/Credit. Brave Search API: 5 $ Freiguthaben/Monat (= 1.000 Anfragen), danach 5 $/1.000, Kreditkarte Pflicht,
       Speichern von Ergebnissen für KI nur mit Sonderplan. Geschätzter Bedarf ca. 150 Suchen/Monat.
+25. **Findus-Test 2 (Exec 5859, 17:47–17:49 MESZ, success):** LinkedIn-Suchregeln greifen — 2 kurze Booleans
+    (je 3 Titel AND 3 Branchenbegriffe, kein NOT, Orte über IDs) → **je 10 Treffer**; 10 Kandidaten in der Longlist
+    (Schwerpunkt NRW = Mandatsregion Remscheid), Klientenliste gelesen. Offen: bei 7 von 10 fehlt die aktuelle Firma im
+    LinkedIn-Treffer → Off-Limits-/Klientenprüfung für diese nur manuell möglich; Antwort 1.778 Wörter statt max. 1.200.
+    Test-Workflow wieder deaktiviert.
+26. **BAUSTELLEN-Dokument (Bianca-Anweisung):** Drive `BAUSTELLEN-2026-09-25` gelesen, keine Kollision. Da Google Docs mit
+    den verfügbaren Werkzeugen nicht bearbeitbar sind: neue Fassung `1TS3cGqv8-kPl2ua9HxWqrSmg1UxSEXa5HxPoRY4h6HY` mit allen
+    bisherigen Zeilen + Zeilen dieser Sitzung (Findus, Test-Workflows, Cockpit, Wochenlauf — alle „frei"); alte Fassung
+    umbenannt in `VERALTET-BAUSTELLEN-2026-09-25 (Stand 17:47)` `1ZlPgENl3sMwICZX1HTY5QCfwxiEn3-A8T7WO00SXBso`.
+    Vermerk zu den 17:01-Fehlern („cannot be called by this workflow"): nicht diese Sitzung; mögliche Ursache Projekt-Eigentümer
+    bei per API angelegten Workflows (→ /transfer).

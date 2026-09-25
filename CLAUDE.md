@@ -40,4 +40,7 @@
   wird in den Agenten-Prompt (Airtable `Prompts`) oder dessen Kondensat geschrieben — nie nur in einen Auftragstext oder
   eine Vorlage. Sonst wiederholt sich der Fehler (passiert 21.09. → 25.09. bei Findus).
 - Vor jedem Test/Umbau eines Agenten: bisherige Protokolle und Vorlagen-Workflows nach bekannten Lehren durchsuchen.
+- **Vor jeder Änderung auf rhineshore:** Drive-Dokument `BAUSTELLEN-<Datum>` lesen (belegt?), eigene Zeile VOR der Änderung
+  eintragen (ID, Name, Sitzung, seit, bis), danach auf „frei" setzen. Google Docs sind mit den Drive-Werkzeugen nicht
+  bearbeitbar → neue Fassung anlegen, alte in `VERALTET-… (Stand hh:mm)` umbenennen.
 - Antworten auf Deutsch, knapp; Anweisungen an Bianca nummeriert, ein Schritt pro Zeile.
