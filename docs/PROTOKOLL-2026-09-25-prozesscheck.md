@@ -88,3 +88,62 @@ Beide Nachlauf-Workflows sind deaktiviert und in „ZZ-ARCHIV …“ umbenannt.
 | 20:30 | Prompt „centcom“ (Airtable `recZ8KGZGnUVadmfr`, Punkt 4) | `Transkripte_lesen` in <lesen> aufgenommen und erklärt. <nicht_direkt_verfuegbar>: Transkripte liest CENTCOM selbst. Neuer Abschnitt <audio_und_transkripte>: Audio im Ordner Transkripte wird automatisch verarbeitet (:20/:50); nicht BLOCKIERT melden, keinen Lücken-Task anlegen, kurz auf die automatische Verarbeitung verweisen. Eintrag im Feld Notiz. Sicherung: `docs/sicherungen/prompt-centcom-2026-09-25-vor-transkripte.txt`. Eingespielt über `5jhiDM1YeWpa3zLd` mit Längenprüfung (Exec 6027), danach deaktiviert. |
 
 Nachtrag 20:40: Der Lücken-Task „Lücke: Slack-Audiodatei Interroll Süd (Nico Jacoby) nicht auffindbar“ (`recY9IoyN17f7OMyH`) ist auf Erledigt gesetzt (Go Bianca), mit Vermerk in der Beschreibung. Philipp ist laut Bianca informiert.
+
+## G1–G5 Mandats- und Akquisegespräche (25.09., 20:50–21:39)
+
+Plan und Roast: `docs/BAUPLAN-2026-09-25-mandats-und-akquisegespraeche.md`.
+
+**Entscheidungen Bianca:**
+- Action Items: für jeden Punkt eine eigene Aufgabe.
+- Unbekannte Akquise-Unternehmen: automatisch in der Pipeline anlegen (Stufe meeting).
+- Sparring und Sprachmemo: werden ausgewertet.
+- Go schließt Publish ein.
+
+| Zeit | Was | Ergebnis |
+|---|---|---|
+| 20:55 | Sicherung | Stand vorher: `gwWSt4dyvyXnFgQd` (vor G1–G5), `wdDlQLmF6WOIosjZ` |
+| 20:55–21:30 | Test-Kopie `ZW3UFEDqQVlUkH68` | Alle Schreib- und Meldeknoten sind durch Stubs ersetzt. 21 Läufe (Exec 6058–6081) mit 15 echten Transkripten, dabei wurde nichts geschrieben. Geprüfte Wege: Mandat, Akquise, Notiz, Kandidat, Folgegespräch-Erkennung, Person unklar. Danach deaktiviert, nicht gelöscht. |
+| 21:32 | Flow I `gwWSt4dyvyXnFgQd` | Live, Version 178c319f, 80 Knoten. Details siehe unten. |
+| 21:32 | MacWhisper-Eingang `wdDlQLmF6WOIosjZ` | Live, Version 90be6fad. Nach „Transkript speichern“ neuer Knoten „Flow I: einordnen und auswerten“: Aufruf von Flow I mit record_id, ohne auf das Ergebnis zu warten. |
+| 21:33 | Aufruftest `4R4T8s6bsIBh1iAw` | Exec 6083 erfolgreich. Weg: Von MacWhisper → Verteiler, Ergebnis Typ Sonstiges, Route nichts. Danach deaktiviert. |
+
+**Flow I im Einzelnen:**
+- **G1 Typen:** Die Einordnung liefert Kandidaten-Erstgespräch, Kandidaten-Folgegespräch, Mandatsgespräch, Akquisegespräch, Sparring, Sprachmemo, Intern oder Sonstiges. Action Items werden nur für Philipp und sein Team erfasst.
+- **G1 Verteiler „Gespraech verteilen“:** Hat das Unternehmen ein offenes Mandat, gilt das Gespräch als Mandatsgespräch, sonst als Akquisegespräch.
+  - Eigene Firmen sind kein Akquise-Ziel: B+P, Rhineshore, newen, Contio, Quantum Capital, Alpine Advisors.
+  - Assessment-, Mentoring- und Coaching-Mandate werden nur geparkt.
+- **G2 Folgegespräch:** Ein Gespräch gilt als Folgegespräch, wenn der Typ es sagt, wenn der Funnel schon ein anderes Erstgespräch-Datum hat oder wenn schon eine Scorecard existiert.
+  - Die Scorecard heißt dann „Folgegespräch“.
+  - Die Erstgespräch-Daten bleiben unverändert.
+  - Kandidatenprofil, Dossier und Fletcher werden übersprungen.
+  - Das Transkript wird mit dem Kandidaten verknüpft.
+- **Person-Abgleich:** Zuerst exakt nach Name, dann über den Funnel des Mandats, dann über Vor- und Nachname.
+  - Ist die Person unklar, entsteht die Aufgabe „Kandidat zuordnen“ mit Meldung. Es wird keine neue Person angelegt.
+  - Ohne erkannten Namen entsteht die Aufgabe „Kandidat oder Mandat nicht erkannt“.
+- **G3 Mandatsgespräch:**
+  - Die Kriterien werden gelesen und per Haiku ausgewertet.
+  - Die Notiz wird über PD - Mandat aktualisieren an das Mandat gehängt, das Transkript mit dem Mandat verknüpft.
+  - Zu jedem Action Item entsteht eine Aufgabe.
+  - Geänderte Anforderungen und Kandidaten-Feedback werden zu einer Aufgabe gebündelt. Die Kriterien selbst ändern sich nicht, ebenso wenig die Funnel-Stufe.
+  - Ist das Mandat mehrdeutig, entsteht die Aufgabe „Welches Mandat?“.
+- **G4 Akquisegespräch:**
+  - Bravo 7 analysiert das Gespräch und schlägt die nächste Handlung mit Frist vor.
+  - In der Akquise-Pipeline wird der Eintrag angelegt oder ergänzt: Stufe mindestens meeting, Notiz vorangestellt, Transkript verknüpft.
+  - Mehrere Treffer führen zu einer Aufgabe statt einer Neuanlage.
+- **Sparring und Sprachmemo:** Aus den Action Items entstehen Aufgaben, dazu kommt eine Meldung.
+- **G6 Meldung:** Jeder Weg meldet in #maschinenraum, was angelegt oder ergänzt wurde.
+- Anlegende Knoten laufen ohne „Retry on fail“. Aufgaben werden über PD - Task anlegen (dedupliziert) angelegt.
+
+**Korrekturen aus den Testläufen:**
+- Name-Schutz: Die Antwort „Name nicht genannt“ gilt nicht mehr als Kandidat.
+- Nachname allein erzeugt keine Dublette mehr.
+- Quantum wird nicht mehr als Akquise-Ziel geführt.
+- Fehlende Kriterien werden nicht mehr als „Anforderung geändert“ gewertet.
+- Markdown wird aus den Aufgabentiteln von Bravo 7 entfernt.
+
+**Offen:**
+- Die etwa 25 alten MacWhisper-Transkripte mit Status „neu“ werden nicht nachverarbeitet. Ein Nachlauf ist möglich, braucht aber ein eigenes Go.
+- Aufgaben aus Sparring können unruhig werden; nach der ersten Woche prüfen.
+- Flow G Kondensate `TEzt3sVQgttVydv0` ist weiter kaputt (Langdock) und unverändert.
+
+**BAUSTELLEN:** aktuelle Fassung 21:39 in Drive `1AzQ5FDSe3l3AZLomHkbL1PhZFMjS_bUIlkE2FDoA2to`. Flow I und der MacWhisper-Eingang sind frei.

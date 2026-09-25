@@ -1,4 +1,4 @@
-# Bauplan: Mandatsgespräche und Akquisegespräche auswerten (Entwurf 25.09.2026, nicht freigegeben)
+# Bauplan: Mandatsgespräche und Akquisegespräche auswerten (25.09.2026, entschieden und gebaut, live 21:32)
 
 Anschluss an D3 (Flow I `gwWSt4dyvyXnFgQd`). Bisher werden nur Kandidaten-Interviews ausgewertet. Gespräche mit Auftraggebern und Akquise-Gespräche werden nur eingeordnet und gemeldet.
 Alle Uhrzeiten MESZ. Gebaut wird erst nach Roast und Go von Bianca, mit Sicherung vorher.
@@ -64,7 +64,10 @@ Die bestehende Meldung in #maschinenraum nennt je Gesprächstyp, was angelegt bz
 | R8 | Zu viele Klicks für Philipp. | Pro Gespräch höchstens ein Klick, der alles bündelt. |
 | R9 | Parallele Sitzungen ändern an Audio transkribieren, MacWhisper-Eingang oder Task anlegen. | Vorher in BAUSTELLEN eintragen. |
 
-## Offene Fragen an Bianca
+## Entschieden (Bianca 25.09.) – ehemals offene Fragen
+Antworten: 1. je Action Item eine Aufgabe; 2. automatisch anlegen (Stufe meeting); 3. Sparring/Sprachmemo werden ausgewertet. Umsetzung siehe PROTOKOLL-2026-09-25-prozesscheck.md, Abschnitt G1–G5.
+
+Ursprüngliche Fragen:
 1. Action Items aus Mandatsgesprächen: ein gebündelter Klick „Nachbereitung <Mandat> <Datum>“, oder je Action Item eine eigene Aufgabe?
 2. Akquise: Legt ein Gespräch mit einem noch unbekannten Unternehmen automatisch einen Pipeline-Eintrag an (Stufe meeting), oder erst nach Philipps Klick?
 3. Sollen „sparring“ und „sprachmemo“ (heute nur als alte Auswahlwerte vorhanden) etwas auslösen, oder nur abgelegt werden?
