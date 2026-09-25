@@ -52,3 +52,13 @@
    CPU der reinen Worker-Logik bei 16.000 Ausgabe-Tokens ca. 3–5 ms (Node, warm) — Free-Tarif erlaubt 10 ms; kalter Start
    in Cloudflare unbelegt. Überschreitung → sichtbarer Fehler (kein stilles Scheitern). Beim Umzug zu Philipp: Workers Paid erwägen.
    Deployment durch Bianca (Cloudflare-Dashboard), Rückweg: Cloudflare-Rollback auf vorige Version.
+10. **Worker v2 von Bianca deployed. Testlauf (Go Bianca) Bravo-6-Wochenlauf, 25.09. 13:47 UTC:**
+    - Temporärer Test-Webhook eingebaut (versionId `4814e850-…`), ausgelöst, sofort wieder entfernt
+      (versionId `ae85c93f-1f9a-4977-b01b-c6c3aa8de210`, 8 Knoten, aktiv, Dienstag 07:00 unverändert).
+    - **Wochenlauf Exec 5818: success** (2 min 35 s). **Bravo 6 Exec 5819: success** über `SAq68…` + Worker v2.
+      5 Modellrunden: 4,3 / 7,8 / 13,1 / 9,9 / **105,5 s** — letzte Runde knapp unter der früheren 120-s-Abbruchgrenze, lief durch.
+    - **6 Einträge in der Akquise-Pipeline angelegt** (Stage `identifiziert`, Intent `search-akquise`, Branche `Other`),
+      Signale: Exec-Vakanzen auf LinkedIn (GF Deutschland, Country Manager, General Manager DACH, Country Director, Vertriebsleitung).
+    - **Kostentreiber gefunden:** Werkzeug „HTTP Request" lädt LinkedIn-Stellenseiten als rohes HTML (357.000 und 309.000 Zeichen)
+      in den Verlauf → letzte Runde ca. 270.000 Eingabe-Tokens (n8n-Schätzung). Vorschlag: Abruf kürzen/HTML entfernen (eigener Umbau, Go nötig).
+    - Findus und Centcom: Test per Slack-Zuruf durch Bianca (beide haben keinen API-Auslöser).
