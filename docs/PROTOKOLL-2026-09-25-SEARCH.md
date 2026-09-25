@@ -149,3 +149,12 @@
     6 Anfragen an `html.duckduckgo.com` von n8n Cloud aus → **alle HTTP 202 mit Sperrseite, 0 Treffer — schon ab der ersten Anfrage.**
     Workflow danach deaktiviert (nicht gelöscht). Ergebnis: kostenlose Suchmaschine per HTTP Request ist von rhineshore aus
     nicht nutzbar (Google 19.09. ebenfalls gesperrt) → Websuche nur über Such-API mit Freikontingent.
+23. **Findus-Test Ergebnis (Exec 5855, 15:37–15:39, success; Test-Workflow `H79EOEXmQe5NfQQb` danach deaktiviert):**
+    - **Klienten-Sperre wirkt:** `Findus_Klients_lesen` 1× aufgerufen; Off-Limits getrennt ausgewiesen: Mandatsfeld (INNIO,
+      Clarke Energy) + 8 aktuelle Klienten gesperrt (Optimed, Interroll, Heaten, Actoom, Glas-Lerchenmüller, heinekingmedia,
+      Durable, Cofibra) + Kendox (ehemaliger Klient) als Prüfpunkt. Bestand Heaten (34 Funnel-Einträge) korrekt gelesen,
+      Pools A–D + Booleans geliefert.
+    - **LinkedIn: 0 Treffer in allen 3 Suchen** (kein technischer Fehler, Unipile antwortet sauber): Booleans zu lang
+      (5 Titel × 7–8 Begriffe + NOT-Klauseln im Keyword-String); ein Aufruf ohne Keywords. Die Erfahrung vom 21.09.
+      („kurze Booleans, max. 3 OR je Gruppe, kein NOT im Keyword-String, NOT über Sales Navigator/Filter") steht nur im
+      Vorlage-Workflow `PD - Sourcing starten` `0xmEtvzNamAzRhil`, NICHT im Findus-Prompt → Vorschlag: in Prompt übernehmen.
