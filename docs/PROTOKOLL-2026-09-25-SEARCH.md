@@ -122,3 +122,4 @@
       Dossier, Router, Bravo 7, Delta 3, Dokumenttyp, Entwurf schreiben, Klick-Abgleich, LinkedIn-Pass, Monk,
       Monk Dokumente, Termin vorbereiten, Voicespiegel (teils per HTTP direkt).
     - Frage Bianca: Anthropic nachhaltig lösen — hier oder eigene Session? → Empfehlung eigene Session (s. Chat).
+16. **Bianca: „Anthropic account" nrZk… ist ihr eigenes Konto (mehrfach gesagt) — Kosten trägt sie NICHT.** In CLAUDE.md festgehalten. Startprompt für eigene Anthropic-Session: `docs/START-SESSION-ANTHROPIC.md`.

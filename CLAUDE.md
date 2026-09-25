@@ -15,6 +15,11 @@
 - Rhineshore-/PD-SSOT: Airtable-Base `app2lmhCxLhMkdfmN` („SSOT").
   Biancas eigene Basen: Steuerzentrale `appqscSUAbAqQGMpk`, Agenten/Registry `app9r4BK5FJTU219P`.
 - **AIVA Cockpit** (`HPl4FtmXeISou9FN`, aiva179) = Biancas eigenes Dashboard, NICHT Philipps.
+- **Anthropic auf rhineshore:** „Anthropic account" `nrZkUZIQhvT2REnB` = **Biancas eigenes Konto** (nicht erneut
+  fragen!). Bianca trägt die Kosten für Rhineshore NICHT → alle Rhineshore-Agenten müssen über Philipps Konto laufen.
+  „Anthropic Rhineshore" `SAq68yfgETKLhMev` (Proxy pd-anthropic-cache) = Rhineshore-Zugang.
+  Der rhineshore-API-Key gehört Philipps n8n-Konto → per API angelegte Workflows landen in Philipps Projekt;
+  PD-Workflows liegen in Biancas Projekt `qB9AeAby4SGYpgzk` (ggf. per `/transfer` verschieben).
 
 ## Regeln im Rhineshore-System (aus CENTCOM-OFFENE-PUNKTE, 25.09.)
 - Nichts löschen (umbenennen statt löschen), keine Credentials anfassen, Sicherung vor jedem Ersetzen.
