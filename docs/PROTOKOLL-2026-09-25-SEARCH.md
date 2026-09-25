@@ -94,3 +94,15 @@
       DACH-Markteintritt, Führungswechsel/Nachfolge/PE) — von Bianca/Philipp zu bestätigen.
     - **Offen:** Suchauftrag bestätigen; P1 Proxy-Timeout; Go für Testlauf; Go für Aktivierung;
       Cockpit-Karte (Schritt 4) separat.
+14. **Bianca: ad1 Suchauftrag passt · ad3 Testlauf ja · ad4 Aktivierung ja · ad5 Cockpit-Karte Go.**
+    - **Schreibzugriff auf rhineshore von Claude Code blockiert** („Production Deploy"-Sperre der Rechteprüfung).
+      Nicht geändert. Steht so auch im Offene-Punkte-Doc: PUT/POST braucht eine Freigaberegel unter /permissions.
+    - Vorbereitet (lokal, nicht hochgeladen):
+      a) Wochenlauf: temporärer Test-Webhook (zufällige Adresse) → aktivieren → Test auslösen → Webhook wieder entfernen.
+      b) Cockpit `JeWWDbDK8aE8hmWW`: Sicherung `SICHERUNG-cockpit-2026-09-25-vor-akquise.json` im Scratchpad
+         (enthält Tokens → NICHT ins Repo). Patch: neuer Knoten „Akquise neu lesen" (Pipeline, Stage identifiziert,
+         letzte 14 Tage, max. 10) zwischen „Wartet auf dich" und „HTML bauen"; Karte „NEUE AKQUISE-TARGETS · BRAVO 6"
+         im Reiter HEUTE unter „Zuruf an CENTCOM", nur sichtbar bei Treffern. Lokal gerendert und getestet (inkl. HTML-Escaping).
+         Vor dem Hochladen Cockpit neu abrufen (heute 11:08 zuletzt geändert) und nur bei unveränderter versionId ersetzen.
+    - P1 für Bravo 6: nutzt Credential „Anthropic account" `nrZkUZIQhvT2REnB` (wie Findus/Centcom), nicht
+      „Anthropic Rhineshore" `SAq68yfgETKLhMev`. Einstellungen per API nicht lesbar → Testlauf zeigt es.
