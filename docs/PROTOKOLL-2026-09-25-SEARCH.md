@@ -231,3 +231,23 @@
     - Kriterien Interroll aus `Bewertungskriterien` (v1 Handout 19.09.) geprüft. AT-PLZ 67–69 = **Vorarlberg** (nicht Tirol).
       Branchen ergänzt: Automatisierung, Antriebe, Steuerungs- und Anlagentechnik. Es gibt ein **zweites Mandat**:
       Mitteldeutschland `recRC8lOKc4opvvOY` (PLZ 35–36, 55–56, 60–69, 97), zusätzlich zu Süd `recwnvjoFT61kjzL7`.
+33. **Go Bianca (20:45): Test Weg B Interroll.** Die Frage an Philipp gilt für beide Interroll-Mandate. Der Test lief nur für Süd.
+    - BAUSTELLEN: Eintrag vor dem Bau (Fassung 20:52), danach „frei“ (Fassung 20:55, Doc `1BtN6ORFouKEmQbOmfE_MvYKPmr1xPp96DymOsaLDxRw`).
+    - Auftrag `recUHrf2AwJAs3Wxe` in `Massensuche-Aufträge`. Suchbegriffe:
+      `(Vertriebsingenieur OR Gebietsverkaufsleiter OR "Sales Engineer") AND (Fördertechnik OR Antriebstechnik OR Automatisierung)`.
+    - Neuer Workflow `PD - TEST Massensuche` `NRJdNPaq2rgGnPEP`, ohne KI, in Biancas Projekt verschoben. Ablauf: Regionen-IDs über Unipile →
+      Sales-Navigator-Suche mit einer Seite (limit 25) → 25 Zeilen in `Longlist-Roh` (Status neu, Löschen ab +60 Tage) → Auftrag aktualisiert.
+      Ein Lauf, Exec 6053 erfolgreich, danach deaktiviert. Kein Versand.
+    - **Ergebnis:**
+      - Sales-Navigator-Suche über Unipile-Parameter funktioniert ohne Philipps URL.
+      - Laut Sales Navigator gibt es insgesamt **4.512 Treffer**.
+      - Firma ist bei 25/25 gefüllt (bei Classic fehlte sie meist).
+      - Weitere Seiten lassen sich über den Cursor abrufen.
+      - Zusätzlich liefert Unipile `network_distance` (5/25 bereits direkt vernetzt → keine Anfrage nötig) und `pending_invitation`.
+      - Regionen-IDs: Bayern 100545973, Ulm 106397743, Vorarlberg 103609356.
+    - **Befunde:**
+      - „Bayern“ ist zu grob. Franken ist enthalten, obwohl Süd nur PLZ 80–87 und 89 umfasst. Beispiele: Nürnberg, Würzburg, Bamberg, Bad Königshofen.
+        Würzburg (PLZ 97) gehört zum Mandat Mitteldeutschland.
+      - Neuer Vorschlag: nur Oberbayern, Schwaben, Niederbayern, Ulm/Neu-Ulm und Vorarlberg; Franken und Oberpfalz als Treffer für Mitteldeutschland prüfen.
+      - Einige Treffer passen fachlich nicht, z. B. Bodenbeläge oder Gebäudetechnik. Deshalb braucht es einen Vorfilter (Haiku oder Regeln).
+      - Einige Treffer haben nur „Deutschland“ als Ort → „prüfen“.
