@@ -10,7 +10,7 @@
   in die Header-Datei, **nie in eine Befehlszeile**, und wird nach der Sitzung gelöscht.
 - Die `PD - …`-/CENTCOM-Workflows auf aiva179 sind alte Kopien/Prototypen — **nicht** der Live-Stand.
 - Live-IDs auf rhineshore (Stand 25.09.): Centcom `uhJLPwsa8wTFTDAa`, PD - Findus (Rolle) `oTeQ7TTbTxP0Dfxu`,
-  PD - Bravo 6 (Rolle) `SvC6VfroWvcuhAy1`, PD - Cockpit `JeWWDbDK8aE8hmWW`
+  PD - Bravo 6 (Rolle) `SvC6VfroWvcuhAy1`, PD - Bravo 6 Wochenlauf `gIrwBH3fA49Po9It` (inaktiv), PD - Cockpit `JeWWDbDK8aE8hmWW`
   (`https://rhineshore.app.n8n.cloud/webhook/cockpit`), Long-/Shortlist `PxHsuMYG6lnlWdBI`.
 - Rhineshore-/PD-SSOT: Airtable-Base `app2lmhCxLhMkdfmN` („SSOT").
   Biancas eigene Basen: Steuerzentrale `appqscSUAbAqQGMpk`, Agenten/Registry `app9r4BK5FJTU219P`.

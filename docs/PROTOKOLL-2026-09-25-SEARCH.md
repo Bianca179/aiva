@@ -81,3 +81,16 @@
     abgeleitet, von Philipp zu bestätigen): Signale statt Branchenliste — (1) lange offene Exec-Stellenanzeigen
     (Unipile Kategorie `jobs`), (2) ausländische Firmen mit DACH-Markteintritt → Country Manager,
     (3) Jobwechsel im eigenen Netzwerk (Persons), (4) PE/Nachfolge/Führungswechsel (braucht News-/Registerquelle).
+13. **Go Bianca: „ad 3 go 2 + 3"** → Schritt 2 (Wochenlauf-Workflow) + Schritt 3 (Ausgabe Akquise-Pipeline).
+    Schritt 1 (Profil als Airtable-Eintrag) NICHT freigegeben → Profil steht im Knoten „Suchauftrag (hier anpassen)".
+    - **Angelegt: `PD - Bravo 6 Wochenlauf` `gIrwBH3fA49Po9It` auf rhineshore — INAKTIV**, kein Testlauf, kein Publish.
+    - Ablauf: Dienstag 07:00 (Europe/Berlin, Cron `0 0 7 * * 2`) → Suchauftrag → `PD - Bravo 6 (Rolle)`
+      `SvC6VfroWvcuhAy1` (unverändert) → Pipeline + Klients lesen → VORSCHLAG-Block auslesen, Dubletten raus
+      (Rechtsformen inkl. AS/AB/BV normalisiert) → Akquise-Pipeline anlegen (Stage `identifiziert`,
+      Intent `search-akquise`/`investment`, Branche nur bestehende Werte sonst `Other`, kein typecast).
+    - Error-Workflow wie andere PD-Workflows: `SdR76scsRwpxkSU0`.
+    - Auswertelogik lokal getestet (Dubletten gegen Klients Heaten/Actoom, Branchen-Mapping); zwei Fehler gefunden und behoben.
+    - Suchauftrag = ENTWURF (Executive-Level, DACH, 50–2.000 MA, Signale: Exec-Stellenanzeigen via Unipile `jobs`,
+      DACH-Markteintritt, Führungswechsel/Nachfolge/PE) — von Bianca/Philipp zu bestätigen.
+    - **Offen:** Suchauftrag bestätigen; P1 Proxy-Timeout; Go für Testlauf; Go für Aktivierung;
+      Cockpit-Karte (Schritt 4) separat.
