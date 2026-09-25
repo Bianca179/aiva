@@ -128,3 +128,15 @@
     Agenten = „Anthropic Rhineshore" `SAq68…` (Philipps Konto), Proxy bleibt, Timeout-Fix bis Di 29.09. 07:00.
     Rhineshore-API-Key dieser Session ist gelöscht (401) → keine Prüfung/Änderung auf rhineshore mehr möglich ohne neuen Key.
     Bianca: „wie machen wir mit der Search weiter?" → Fahrplan vorgelegt (Chat).
+19. **Block 1 (Go Bianca, 13:45) — Findus nachgeschärft:**
+    - Live-Prüfung zuerst: **F1 (Off-Limits-Feld), F2 (Kriterien je Mandat), F4 (Umlaute/LinkedIn-URL) waren bereits
+      umgesetzt** (Findus-Version `8f9cd942…`, Credential schon `SAq68…`). Keine Änderung nötig.
+    - **F5 kein Fehler:** Longlist-Einträge stehen bewusst ohne Sourcing Status auf „vorgeschlagen"; `PD - Cockpit-Kandidat`
+      `Fn1N8PrNcFLlkXon` setzt bei „übernehmen" `identified` + legt Ansprache-Aufgabe an; „ablehnen" braucht Grund.
+    - **F3 umgesetzt:** Knoten `Findus_Klients_lesen` (nur lesen, Tabelle Klients, alle Einträge, Felder Klient Name/
+      Beziehungstyp/Hauptsitz/Branche) in `PD - Findus (Rolle)` ergänzt — Version vorher `8f9cd942…`, nachher `cb041c4a…`.
+      Prompt `findus` (Airtable Prompts `recU0ySXivoKFhXdR`): Werkzeugliste + KLIENTEN-SPERRE ('klient' = gesperrt,
+      'ehemaliger Klient'/leer = Prüfpunkt). Alte Stellen gesichert in Drive
+      `VERALTET-prompt-findus-2026-09-25 (vor Klienten-Regel)` `1lnye4vkJWEg3d-_3jLfGbrYyJJBrkalv`.
+    - Kein Testlauf (braucht Biancas Go; Anthropic-Timeout-Fix läuft parallel).
+    - Nebenbefund (Block 3): Prompt nennt Werkzeug „Websuche", das es nicht gibt (nur „HTTP Request" = einzelne URL).
