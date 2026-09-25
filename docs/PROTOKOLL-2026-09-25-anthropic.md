@@ -79,4 +79,12 @@
     Bravo 6 (Sonnet 4.6): 343.314 Eingabe + 6.459 Ausgabe ≈ 1,13 $ (mit Cache-Schreibaufschlag höchstens ≈ 1,40 $).
     Centcom 2 Zurufe (Sonnet 5): 132.177 Eingabe + 2.146 Ausgabe ≈ 0,29 $. Zusammen ≈ 1,40–1,70 $.
 15. **Plan Bravo-6-HTML-Abruf:** Werkzeug „HTTP Request" in Bravo 6 erhält dieselben Einstellungen wie das bewährte in Findus
-    (nur Seiteninhalt, ohne script/style/nav/…, gekürzt auf 6.000 Zeichen, Timeout 15 s). Wartet auf Go.
+    (nur Seiteninhalt, ohne script/style/nav/…, gekürzt auf 6.000 Zeichen, Timeout 15 s).
+16. **Entscheidungen Bianca:** HTML-Abruf Go; Test erst im echten Wochenlauf Dienstag 29.09. 07:00; Findus-Test beim nächsten echten Auftrag.
+17. **Bravo 6 `SvC6VfroWvcuhAy1`, Knoten „HTTP Request" umgebaut:** Parameter 1:1 aus Findus übernommen (nur Seiteninhalt,
+    script/style/nav/footer/header/svg/noscript/iframe entfernt, max. 6.000 Zeichen, Timeout 15 s). URL-Parameter unverändert.
+    versionId `ad44018e-ec60-4deb-af8f-f60b91a850c6` → `af77d339-e23c-4bb4-9f46-85ac81d46744` (sofort aktiv).
+    Erwartung: letzte Runde statt ca. 270.000 nur ca. 40.000 Eingabe-Tokens (≈ 0,30 $ statt 1,13 $ je Wochenlauf) — Beleg Dienstag.
+18. **Vorprüfung Wächter:** alle 55 aktiven Workflows speichern Erfolgs- und Fehlerdaten (Standard) → Wächter kann Laufinhalte lesen.
+    `PD - Fehleralarm` schreibt mit Slack-Credential „Slack account" `4uKZNVEDjJYBbPWa` in Kanal `C0BJE4M6Y92` (#maschinenraum).
+    Sitzungs-API-Key läuft am 01.10.2026 ab → Wächter braucht eigenen, dauerhaften Key (Credential legt Bianca an).
