@@ -209,3 +209,8 @@
     - LinkedIn: 2 von 3 Suchen je 10 Treffer; **1 Aufruf wieder ohne Keywords** (trotz Regel 1) → Vorschlag: Werkzeug
       technisch sperren (leere Keywords gar nicht erst an Unipile senden). Booleans teils ohne Klammern/AND.
     - Antwort 1.767 Wörter (Ziel max. 1.200) — Längengrenze wird ignoriert → Vorschlag: maxTokens senken oder Ausgabe kürzen lassen.
+30. **BAUSTELLEN nach Test:** Fork 20:19 (Memory-Pilot) / 20:20 (Search) → von Search zusammengeführt
+    (`1gummvYMrgMpY8Q0Oo4lCXGxRCjsLnsscqxLkzh9B_uA`, 20:25), Forks umbenannt, Nachprüfung ohne weitere Fassung.
+    H79E, Findus, Bravo 6 = frei. Hinweis: Suche „title = …" findet nicht zuverlässig alle Fassungen →
+    `title contains 'BAUSTELLEN' and createdTime > …` nutzen. Vorschlag an Bianca: Baustellen-Liste als Airtable-Tabelle
+    (Zeilen einzeln bearbeitbar → keine Forks).
