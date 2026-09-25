@@ -5,9 +5,9 @@
 > **nicht aktuell** — nur Hintergrund.
 
 ## Feste Regeln (von Bianca, gelten dauerhaft)
-- **Es gibt nur EINE n8n-Instanz: `aiva179.app.n8n.cloud`.** Rhineshore/PD/CENTCOM läuft dort.
-  Bianca kann kein zweites n8n verbinden. **Nie wieder vorschlagen, ein zweites n8n / einen weiteren
-  n8n-Connector anzubinden.**
+- **Zwei n8n-Instanzen:** `aiva179` (Werkstatt, per MCP) und `rhineshore.app.n8n.cloud` (Live CENTCOM/PD,
+  nur per REST-API mit Header-Datei `n8n-header.txt`, Key gibt Bianca pro Sitzung). **Nie vorschlagen, ein
+  zweites n8n per Connector anzubinden** — geht nicht. Key nie in Befehlszeile, nie im Chat anfordern.
 - Rhineshore-SSOT = Airtable-Base `app2lmhCxLhMkdfmN` („SSOT", Philipp Dicke). Biancas eigene Basen
   (Steuerzentrale `appqscSUAbAqQGMpk`, Agenten `app9r4BK5FJTU219P`) sind NICHT Rhineshore.
 - Das **AIVA Cockpit** (`HPl4FtmXeISou9FN`) ist Biancas eigenes Dashboard — nicht Rhineshore/Philipp.
@@ -50,3 +50,18 @@
 6. **Session-Protokolle gefunden:** Google Drive, Ordner `1XC51IQPrVdghUl4JXg0UtB8A9dHLj9Y_`
    (SESSION-*.md, PD-HANDOVER, SYSTEMBESCHREIBUNG-CENTCOM, START-NAECHSTER-CHAT) + `roast-2026-09` (Zip)
    + `IMPORT-PROTOKOLL-2026-09-20`. Laut Bianca veraltet, nur zum Aufschlauen.
+7. **KORREKTUR (nach Lesen der Drive-Protokolle):** Punkt 4 war falsch. Findus/Bravo 6 laufen NICHT in
+   `Centcom` auf aiva179, sondern auf **rhineshore.app.n8n.cloud** (Findus `oTeQ7TTbTxP0Dfxu`,
+   Bravo 6 `SvC6VfroWvcuhAy1`, Cockpit `JeWWDbDK8aE8hmWW`). Erste Fassung von CLAUDE.md („nur eine Instanz")
+   war falsch und ist korrigiert. REST-API erreichbar (HTTP 401 ohne Key).
+8. **Relevanter aktueller Stand (CENTCOM-OFFENE-PUNKTE-2026-09-25, Stand 09:45, Drive-Doc
+   `1uyMXPuH-aGTleERRFFSlU33DyMiX6ZjGn6oYFGLN92I`):**
+   - P1: Proxy-Timeout (pd-anthropic-cache Worker) legt alle LangChain-Agenten lahm, auch Findus → betrifft
+     auch einen Bravo-6-Wochenlauf. Bianca-Entscheidung offen (Base URL auf api.anthropic.com oder Cloudflare-Diagnose).
+   - Findus bewusst ohne Automatik (Entscheidung 08.08., Off-Limits). Cofibra-Mandat seit 22.09. `lost`
+     → fehlende Cofibra-Übernahme ist korrekt, kein Fehler.
+   - Akquise war „bewusst geparkt — Zuruf-Weg genügt"; neu (heute): Bravo 6 wöchentlich dienstags.
+   - Ziel für Akquise: Akquise-Pipeline im SSOT (Pipedrive für B+P abgeschaltet).
+   - Kein Bravo-6-Zielprofil in Drive dokumentiert.
+9. **Wartet auf:** API-Key für rhineshore (per Header-Datei), dann Bravo 6 `SvC6VfroWvcuhAy1` lesen
+   (Profil?), Bau-Plan Dienstagslauf vorlegen → Biancas Go.
