@@ -140,3 +140,12 @@
       `VERALTET-prompt-findus-2026-09-25 (vor Klienten-Regel)` `1lnye4vkJWEg3d-_3jLfGbrYyJJBrkalv`.
     - Kein Testlauf (braucht Biancas Go; Anthropic-Timeout-Fix läuft parallel).
     - Nebenbefund (Block 3): Prompt nennt Werkzeug „Websuche", das es nicht gibt (nur „HTTP Request" = einzelne URL).
+20. **Stand aus Anthropic-Session gelesen:** Worker v2 deployed; Bravo-6-Wochenlauf-Test 25.09. 13:47 erfolgreich (Exec 5818/5819),
+    **6 Firmen in der Akquise-Pipeline** (Stage identifiziert). Bravo-6-„HTTP Request" dort auf Seiteninhalt gekürzt.
+21. **ad 1 Go (Findus-Test):** Test-Workflow `PD - TEST Findus Klienten-Sperre` `H79EOEXmQe5NfQQb` angelegt, in Biancas Projekt
+    übertragen, aktiviert, ausgelöst (15:37, Findus-Exec 5855), wird nach Ende deaktiviert (nicht gelöscht).
+    Auftrag: Heaten GL Vertrieb, höchstens 2 LinkedIn-Suchen, max. 10 Vorschläge, Off-Limits + Klientenliste ausweisen.
+22. **ad 3 DuckDuckGo-Test (Go Bianca):** Test-Workflow `PD - TEST DuckDuckGo` `j8XIP3aX8fEhTbEX` (Exec 5856, 15:38):
+    6 Anfragen an `html.duckduckgo.com` von n8n Cloud aus → **alle HTTP 202 mit Sperrseite, 0 Treffer — schon ab der ersten Anfrage.**
+    Workflow danach deaktiviert (nicht gelöscht). Ergebnis: kostenlose Suchmaschine per HTTP Request ist von rhineshore aus
+    nicht nutzbar (Google 19.09. ebenfalls gesperrt) → Websuche nur über Such-API mit Freikontingent.
