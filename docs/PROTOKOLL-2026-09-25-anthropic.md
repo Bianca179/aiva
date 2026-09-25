@@ -100,3 +100,19 @@
       **Router 5672 „credit balance" (Lauf grün)**; **CENTCOM still 5340: Airtable-Filter „Unknown field names: geschäftsbereich"
       im Werkzeug Mandate_lesen (Lauf grün)**; CV-Intake 5401 „Invalid URL" (Lauf grün).
     - Datenmenge real: 110 Läufe = 51 MB in 45 h (≈ 1,1 MB/h). Größter Brocken Inbox-Pass: bis 7,3 MB je Lauf (3× werktags).
+21. **Wächter nicht als eigener Workflow**, sondern als Zweig in `PD - Verbrauch zählen` `kKIevwJ1wAvZOet2` (parallele Sitzung,
+    Kostenzähler fürs Cockpit, Tabelle „Modellverbrauch" `sJMaUoMxkn739kZp`) → keine zusätzlichen Downloads/Ausführungen. Go Bianca.
+    Tabelle 18.–25.09.: 34,57 $ über „Anthropic account" (Bianca), 2,96 $ über „Anthropic Rhineshore". Größter Treiber
+    **CENTCOM still 25,46 $** (59 Läufe, 11,2 Mio. Eingabe-Tokens, bis 15 Aufrufe/600.000 Tokens je Lauf).
+22. **Zähler repariert (Go Bianca „mach du das"):**
+    - Befund: seit Aktivierung keine neuen Zeilen (höchste lauf_id 5805 = einmalige Nachbefüllung 12:47 UTC). Exec 5845 (15:07 UTC)
+      rot: „Workflows lesen does not have access to the credential"; kein Fehler-Workflow → still.
+    - Zweiter Befund: Filter „Workflows lesen" `activeWorkflows: false` → API liefert NUR die 60 inaktiven Workflows.
+    - Credential „rhineshore Verbrauch" `k2DNRjogvCUwAVn8`: Verbindungstest rot („Couldn't connect") → Bianca hat neuen
+      n8n-API-Key ohne Ablauf eingetragen (15:45 UTC). Derselbe Key dient künftig dem Wächter.
+    - Fehler-Workflow `SdR76scsRwpxkSU0` gesetzt. Filter leeren per API nicht möglich (n8n setzt `false` wieder ein) →
+      auf `activeWorkflows: true` gestellt (nur aktive; inaktiver Komponist wird nicht gezählt, Cent-Beträge).
+      versionId `419ce2a2-d91e-4153-8e9c-a20188263f4f` → `d7a269aa-b87f-4376-b210-aa4dffb71370` (aktiv).
+23. **Wächter-Zweige lokal gebaut und getestet** (`n8n/waechter/zweig-laeufe-pruefen.js`, `zweig-zeitplan-pruefen.js`,
+    Test `test-zweige.mjs` 8/8, Probe 110 Läufe → 11 Befunde). „Läufe prüfen" hinter „Lauf lesen", „Zeitplan prüfen" hinter
+    „Läufe lesen", beide „bei Fehler weitermachen" (Zähler wird nie gestört), Slack über „Slack account" nach #maschinenraum.
