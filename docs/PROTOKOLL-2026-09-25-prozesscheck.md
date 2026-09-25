@@ -27,3 +27,9 @@ Alle Uhrzeiten MESZ. Es gab keine Läufe und keine Änderungen.
 - **Neue Fehler 17:01/17:07:** `PD - Entwurf schreiben` darf von einem aufrufenden Workflow nicht gerufen werden („cannot be called by this workflow", Exec 5842). `PD - Verbrauch zählen` hat keinen Zugriff auf die Verbindung (Exec 5845). Die Ursache ist nicht geklärt.
 - **CV-Trigger:** Einen Drive-Trigger auf den CV-Ordner `1gT3Q8xP7nKLCJppFXfD4HGnJ4osDb_hV` gibt es nicht. Der einzige Drive-Trigger ist Flow I (Transkripte-Ordner). CV-Intake wird nur von Flow F (08:10) aufgerufen.
 - **Backhaus:** Das Mandat `rec2lNnjG3TeZNOcZ` („Leadership-Assessment Frau Backhaus (Durable)", active) existiert seit 19.09. (Datenlücke-Import). Im Postausgang ist keine Mail mit Vertrag zu Backhaus/Durable gespeichert.
+
+## Entscheidungen Bianca (25.09., abends)
+- Mandat schon beim versendeten Angebot/Rahmenvertrag, Status „Anbahnung“.
+- Gespräche: Kandidat → Person/Funnel; Auftraggeber zu einem Mandat → Mandat/Mandatsakte; ohne Mandat → Akquise.
+- Testfall für D1 ist die IntraFind-Mail vom 21.09. (`recvqY9JWEuecTBlD`), Task `recIW7rCqblRdsJWr`; ein Mandat fehlt.
+- **Geparkt:** Leadership-Assessment/Mentoring (Backhaus/Durable, BRYCK) ist ein eigenes Geschäftsfeld und braucht eine eigene Heimat im Cockpit und eigene Abläufe. Wird später angegangen.
