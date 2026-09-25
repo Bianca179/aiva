@@ -1183,3 +1183,14 @@ Bianca fragte „wurden meine Freigaben wirklich versendet?" → Diagnose des 09
   3. Lexware-Aufräumarbeit (siehe oben).
   4. Grenzen: Die Erkennung sieht Mailtext und Dateinamen, nicht den PDF-Inhalt. Rechnungen, die nur als Link kommen, landen unter „manuell". Die Gmail-Suche ist auf 50 Mails pro Lauf begrenzt.
 - **Nachtrag 25.09., 14:37 MESZ (Frage Bianca „funktioniert Qualitaetia vollumfänglich?"):** Nein. Test-Chat 16506 (`poAFUOTskMwwgPb8`, Auftrag „Antworte nur mit ok") → Modell „Bad request". Ursache: dasselbe leere Anthropic-Guthaben. Slack-Anfragen an Qualitaetia bekommen derzeit nur die Fehlermeldung, auch Dokument-Lesen per OCR schlägt fehl. Die JUMIS-Mailverarbeitung (Langdock) läuft weiter (Lauf 16485 heute, success).
+- **Nachtrag 25.09., ~15:10 MESZ: Guthaben aufgeladen (Bianca), Tests über die Daten (Regel 5):**
+  - Qualitaetia, Test-Chat 16510: Antwort „ok", funktioniert wieder.
+  - Rechnungslauf 16511 (success, 14 s), Claude-Erkennung aktiv:
+    - „Leaders of AI Circle" → keine Rechnung → Label Rechnung-geprueft.
+    - Neue Mail Design Offices / Flavia Olas (11:47, dieselben Rechnungsnummern plus Bitte um Ausweis und Handelsregister) → **unklar** (Phishing-Verdacht) → Label Rechnung-geprueft, Protokoll `recUdbn4p1asWQEwe`, Tagesmeldung in #aurea. Nicht an Lexware gesendet (die Rechnungen liegen dort seit dem Vormittag bereits).
+  - aurea nativ, Test-Chat 16520 (success, 31 s; die Statusanzeige stand noch Minuten später auf „running"):
+    - Lexware Belege: 13 überfällige Ausgangsrechnungen, 28.003,54 EUR, größter Posten REES Manufacturing RE-2026040017 über 19.250 EUR.
+    - Rechnungseingang heute: 3 Vorgänge, Status korrekt.
+    - Befund: `voucherStatus=open,overdue` wird mit 400 abgelehnt, weil `overdue` nur einzeln zulässig ist. Die Tool-Beschreibung ist angepasst (publiziert `9278d624…`).
+  - **Freigeschaltet:** Dirigent-Allowlist `NATIVE_ROUTE_AGENTS = ['Qualitaetia', 'aurea']` (publiziert `0b31cd51…`), Registry `recd2jFoHhEjHfVPK`: „Nativer Workflow (n8n)" = `LbzBhyy3ZnJdXjPq`, Zugriffe aktualisiert. Nachrichten in #aurea gehen ab jetzt an die native aurea. Ein Ende-zu-Ende-Test über Slack und ein Test des Angebots-Entwurfs stehen noch aus.
+  - **Frage Bianca zu Mail-Entwürfen (JUMIS/IONOS):** Entwürfe im IONOS-Postfach anlegen ist mit n8n nicht möglich (kein IMAP-APPEND). Versand nach Freigabe ist möglich, braucht aber eine SMTP-Zugangsdaten-Hinterlegung für das JUMIS-Postfach in n8n. Davon existiert keine: `list_credentials type smtp` = 0. Die Entwürfe an Herrn Beck (Grow Art, 23.09. 12:04) und an Ronja Loy (Change-Formular CHG-2026-002, 23.09. 13:44) liegen im Gedächtnis `tblKLft0WgrALNlIH`. Bau erst nach GO und SMTP-Zugangsdaten.
