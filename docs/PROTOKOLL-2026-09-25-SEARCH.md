@@ -77,3 +77,7 @@
       nicht in Skills/Kondensaten, nicht in Drive. Es existiert nur die Methode (80 km, Signale, Entscheider).
     - Findus `oTeQ7TTbTxP0Dfxu`: 8 Läufe 19.–22.09. (3 Fehler am 21.09., danach erfolgreich).
 11. **Plan Bravo-6-Wochenlauf vorgelegt** (wartet auf Profil + Go; siehe Chat 25.09.).
+12. **Frage Bianca: Wo macht die Kundensuche auf Executive-Level Sinn?** Empfehlung (aus Mandatshistorie
+    abgeleitet, von Philipp zu bestätigen): Signale statt Branchenliste — (1) lange offene Exec-Stellenanzeigen
+    (Unipile Kategorie `jobs`), (2) ausländische Firmen mit DACH-Markteintritt → Country Manager,
+    (3) Jobwechsel im eigenen Netzwerk (Persons), (4) PE/Nachfolge/Führungswechsel (braucht News-/Registerquelle).
