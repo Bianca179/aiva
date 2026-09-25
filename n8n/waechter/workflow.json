@@ -1,0 +1,210 @@
+{
+ "name": "PD - Stille-Fehler-Wächter",
+ "nodes": [
+  {
+   "id": "74158bd7-19b2-449f-8eda-044da5aae140",
+   "name": "Stündlich Mo–Fr 06–21",
+   "type": "n8n-nodes-base.scheduleTrigger",
+   "typeVersion": 1.2,
+   "position": [
+    0,
+    0
+   ],
+   "parameters": {
+    "rule": {
+     "interval": [
+      {
+       "field": "cronExpression",
+       "expression": "0 5 6-21 * * 1-5"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "a9515718-7af4-4eb8-bb96-c2a1cf89a8f9",
+   "name": "Läufe auflisten",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    220,
+    0
+   ],
+   "parameters": {
+    "url": "https://rhineshore.app.n8n.cloud/api/v1/executions",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpHeaderAuth",
+    "sendQuery": true,
+    "queryParameters": {
+     "parameters": [
+      {
+       "name": "limit",
+       "value": "250"
+      }
+     ]
+    },
+    "options": {
+     "timeout": 60000
+    }
+   }
+  },
+  {
+   "id": "09b1e90b-0b6a-429e-8295-d14ea77263af",
+   "name": "Auswählen",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    440,
+    0
+   ],
+   "parameters": {
+    "jsCode": "// PD - Stille-Fehler-Wächter · Knoten „Auswählen\"\n// Nimmt die Laufliste (ohne Inhalt) und wählt die noch nicht geprüften, fertigen Läufe\n// der Workflows mit Anthropic-Anbindung aus. Nur diese werden danach mit Inhalt gelesen.\n// Erster Lauf: merkt sich nur den Stand (keine Flut alter Meldungen).\n\nconst RELEVANT = {\n  '3mTqQ3zOAnqoMERh': 'Dossier bauen (Kandidatenprofil)',\n  '75lT7ogXUNBDwDwW': 'PD - CENTCOM still (Verteiler)',\n  '8LJ0D5YUa1rrAd9n': 'CENTCOM - Postausgangs-Pass v2',\n  '8LzkOa0iFOKfThsR': 'PD - Termin vorbereiten',\n  'BNAdFC6cJK6IjHSK': 'PD - Dokumenttyp erkennen',\n  'GAUWB6soXqqezKrJ': 'PD - Aufgaben-Verteiler v3 (Router)',\n  'Hw3kgSmYG8zSm8QM': 'PD - Voicespiegel',\n  'JPQsqqp7dOCueLT7': 'PD - Monk (Rolle)',\n  'L5OJCDruVuwGf5Mh': 'PD - McGonnagal (Rolle)',\n  'OM7PyMRW0YsNUwJ0': 'PD - Komponist',\n  'Rii70C8nlIsbSgHC': 'PD - LinkedIn-Pass',\n  'SvC6VfroWvcuhAy1': 'PD - Bravo 6 (Rolle)',\n  'TWrqGjacJgpfkk1A': 'PD - Monk Dokumente (R94)',\n  'TmwShtK9D4kt5KEa': 'CENTCOM – Inbox-Pass v2.1b',\n  'VufJGSTnRHFRPUDg': 'Fletcher — Kandidatenvorstellung',\n  'atRKji9CDwe3QyzF': 'PD - Entwurf schreiben',\n  'gIrwBH3fA49Po9It': 'PD - Bravo 6 Wochenlauf',\n  'o8dp531ELw35wRQN': 'PD - Klick-Abgleich',\n  'oMD8i8PSkgeENa8H': 'PD - Delta 3 (Rolle)',\n  'oTeQ7TTbTxP0Dfxu': 'PD - Findus (Rolle)',\n  'sC0Oha2cKFcTCjgw': 'CV-Intake (Person aus CV)',\n  'uhJLPwsa8wTFTDAa': 'Centcom',\n  'z2P1EB99wznVJfjZ': 'PD - Bravo 7 (Rolle)',\n};\n\nconst state = $getWorkflowStaticData('global');\nconst liste = ($('Läufe auflisten').first().json.data) || [];\nconst fertig = liste.filter(e => e.stoppedAt && !['running', 'waiting', 'new'].includes(e.status));\n\nconst erster = !Array.isArray(state.geprueft);\nif (erster) state.geprueft = fertig.map(e => String(e.id));\nconst geprueft = new Set(state.geprueft);\n\nconst neu = erster ? [] : fertig.filter(e => RELEVANT[e.workflowId] && !geprueft.has(String(e.id)));\n\nconst out = neu.map(e => ({ json: {\n  id: String(e.id), workflowId: e.workflowId, workflow: RELEVANT[e.workflowId], status: e.status, startedAt: e.startedAt,\n} }));\n// Immer mindestens ein Element, damit Auswerten (auch „nicht gelaufen\") jede Stunde läuft\nreturn out.length ? out : [{ json: { id: null } }];\n"
+   }
+  },
+  {
+   "id": "ac1d0840-9147-4ed9-b7ec-324f5fb28976",
+   "name": "Lauf lesen",
+   "type": "n8n-nodes-base.httpRequest",
+   "typeVersion": 4.2,
+   "position": [
+    660,
+    0
+   ],
+   "parameters": {
+    "url": "={{ $json.id ? 'https://rhineshore.app.n8n.cloud/api/v1/executions/' + $json.id + '?includeData=true' : 'https://rhineshore.app.n8n.cloud/api/v1/executions?limit=1' }}",
+    "authentication": "genericCredentialType",
+    "genericAuthType": "httpHeaderAuth",
+    "options": {
+     "timeout": 60000,
+     "batching": {
+      "batch": {
+       "batchSize": 1,
+       "batchInterval": 200
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "06fcc6bf-cf4d-43ff-9303-418f4637bc6e",
+   "name": "Auswerten",
+   "type": "n8n-nodes-base.code",
+   "typeVersion": 2,
+   "position": [
+    880,
+    0
+   ],
+   "parameters": {
+    "jsCode": "// PD - Stille-Fehler-Wächter · Knoten „Auswerten\"\n// Prüft die gelesenen Läufe strukturell (Fehler-Einträge je Knoten, Anthropic-Fehlerantworten\n// in HTTP-Knoten, leere Agenten-Antworten) und die Zeitpläne („nicht gelaufen\").\n// Kein Textsuchen im ganzen Lauf — sonst würden zitierte Alarmtexte (z. B. in Slack-Nachrichten) gemeldet.\n// Gleiche Kombination Workflow + Kategorie höchstens alle 6 Stunden. Kein KI-Modell.\n\nconst BASIS = 'https://rhineshore.app.n8n.cloud';\nconst SPERRE_MS = 6 * 3600 * 1000;\n// Workflows ohne Fehler-Workflow: dort meldet der Wächter auch rote Läufe mit sonstigen Fehlern\nconst OHNE_FEHLERALARM = new Set(['3mTqQ3zOAnqoMERh', '8LzkOa0iFOKfThsR', 'TWrqGjacJgpfkk1A', 'VufJGSTnRHFRPUDg', 'sC0Oha2cKFcTCjgw']);\n// Zeitgesteuerte Workflows (Stand 25.09.; bei Änderung des Zeitplans hier nachziehen). Zeiten Europe/Berlin.\nconst ZEITPLAN = [\n  { id: 'TmwShtK9D4kt5KEa', name: 'CENTCOM – Inbox-Pass v2.1b', cron: ['0 0 8 * * 1-5', '0 0 12 * * 1-5', '0 0 15 * * 1-5', '0 0 9 * * 6'] },\n  { id: '8LJ0D5YUa1rrAd9n', name: 'CENTCOM - Postausgangs-Pass v2', cron: ['0 50 6,12 * * 1-5'] },\n  { id: '8LzkOa0iFOKfThsR', name: 'PD - Termin vorbereiten', cron: ['0 0 17 * * 1-5', '0 10 7 * * 1-5'] },\n  { id: 'GAUWB6soXqqezKrJ', name: 'PD - Aufgaben-Verteiler v3 (Router)', cron: ['0 45 8,14 * * 1-5'] },\n  { id: 'Hw3kgSmYG8zSm8QM', name: 'PD - Voicespiegel', cron: ['0 0 19 * * *'] },\n  { id: 'Rii70C8nlIsbSgHC', name: 'PD - LinkedIn-Pass', cron: ['0 20 8,12,16 * * 1-5'] },\n  { id: 'o8dp531ELw35wRQN', name: 'PD - Klick-Abgleich', cron: ['0 15 7,13 * * 1-5'] },\n  { id: 'gIrwBH3fA49Po9It', name: 'PD - Bravo 6 Wochenlauf', cron: ['0 0 7 * * 2'] },\n];\n\nfunction kategorie(text, code) {\n  const t = String(text || '');\n  const c = Number(code) || 0;\n  if (/credit balance/i.test(t)) return 'GUTHABEN';\n  if (/PROXY-ABBRUCH|is not valid JSON|Unexpected token/i.test(t)) return 'Proxy-Abbruch';\n  if (/timed out|timeout|Proxy Read Timeout|\\b524\\b/i.test(t)) return 'Zeitüberschreitung';\n  if (/Invalid URL/i.test(t)) return 'Invalid URL';\n  if (c === 401 || c === 403 || /authentication_error|permission_error|invalid x-api-key/i.test(t)) return 'Schlüssel ungültig (401/403)';\n  if (c === 429 || /rate_limit_error/i.test(t)) return 'Rate-Limit (429)';\n  if (c === 529 || /overloaded_error/i.test(t)) return 'Anthropic überlastet (529)';\n  if (c >= 500 || /api_error/i.test(t)) return 'Serverfehler (5xx)';\n  return null; // sonstiger Fehler\n}\n\nfunction fehlerAusLauf(sel, ex) {\n  const funde = [];\n  const rd = (ex.data && ex.data.resultData) || {};\n  const runData = rd.runData || {};\n  const still = sel.status === 'success';\n  const gesehen = new Set();\n  const neu = (knoten, text, code) => {\n    const kat = kategorie(text, code);\n    const melden = kat || still || OHNE_FEHLERALARM.has(sel.workflowId);\n    const k = kat || 'Sonstiger Knotenfehler';\n    if (!melden || gesehen.has(k)) return;\n    gesehen.add(k);\n    funde.push({ workflowId: sel.workflowId, workflow: sel.workflow, knoten, kategorie: k, still,\n      text: String(text || '').replace(/\\s+/g, ' ').slice(0, 160), lauf: sel.id });\n  };\n  for (const [knoten, runs] of Object.entries(runData)) {\n    for (const run of runs || []) {\n      if (run.error) {\n        const e = run.error;\n        neu(knoten, [e.message, e.description].filter(Boolean).join(' – '), e.httpCode || (e.context && e.context.httpCode));\n      }\n      const main = (run.data && run.data.main) || [];\n      for (const zweig of main) for (const it of zweig || []) {\n        const j = it && it.json;\n        if (!j || !j.error || typeof j.error !== 'object') continue;\n        if (j.type === 'error' && (j.error.type || j.error.message)) {\n          // HTTP-Knoten mit „neverError\": Anthropic-Fehlerantwort steht als normales Ergebnis im Ausgang\n          neu(knoten, j.error.type + ': ' + j.error.message, null);\n        } else if (typeof j.error.message === 'string' && (j.error.name || j.error.description)) {\n          // Knoten mit „bei Fehler weitermachen\": Fehler steht als json.error im Ausgang, Lauf bleibt grün\n          neu(knoten, [j.error.message, j.error.description].filter(Boolean).join(' – '), j.error.httpCode);\n        }\n      }\n    }\n  }\n  if (!funde.length && rd.error) neu(rd.lastNodeExecuted || '?', [rd.error.message, rd.error.description].filter(Boolean).join(' – '), rd.error.httpCode);\n  // Leere Agenten-Antwort\n  const antwort = runData['Antwort zurueckgeben'];\n  if (sel.status === 'success' && antwort && antwort.length) {\n    const letzte = antwort[antwort.length - 1];\n    const j = (((letzte.data || {}).main || [])[0] || [])[0];\n    const txt = j && j.json ? (j.json.text ?? j.json.output ?? j.json.antwort) : undefined;\n    if (!j || typeof txt !== 'string' || !txt.trim()) {\n      funde.push({ workflowId: sel.workflowId, workflow: sel.workflow, knoten: 'Antwort zurueckgeben', kategorie: 'Leere Agenten-Antwort', still: true, text: '', lauf: sel.id });\n    }\n  }\n  return funde;\n}\n\n// Uhrzeit-Teile in Europe/Berlin\nfunction berlin(d) {\n  const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Berlin', hour12: false, weekday: 'short',\n    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(d).map(x => [x.type, x.value]));\n  const wt = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[p.weekday];\n  return { min: +p.minute, std: +p.hour % 24, tag: +p.day, mon: +p.month, wt, text: `${p.day}.${p.month}. ${p.hour}:${p.minute}` };\n}\nfunction feld(ausdruck, wert) {\n  if (ausdruck === '*') return true;\n  return ausdruck.split(',').some(teil => {\n    if (teil.includes('-')) { const [a, b] = teil.split('-').map(Number); return wert >= a && wert <= b; }\n    return Number(teil) === wert;\n  });\n}\nfunction passt(cron, b) {\n  const [, m, h, dom, mon, dow] = cron.trim().split(/\\s+/);\n  return feld(m, b.min) && feld(h, b.std) && feld(dom, b.tag) && feld(mon, b.mon) && feld(dow, b.wt);\n}\n\n// Geplante Zeitpunkte im Fenster (jetzt-90 min, jetzt-30 min]: je Wächterlauf (stündlich) wird jeder Termin genau einmal geprüft\nfunction nichtGelaufen(liste, jetzt) {\n  const funde = [];\n  for (const z of ZEITPLAN) {\n    for (let t = jetzt - 89 * 60000; t <= jetzt - 30 * 60000; t += 60000) {\n      const minute = Math.floor(t / 60000) * 60000;\n      const b = berlin(new Date(minute));\n      if (!z.cron.some(c => passt(c, b))) continue;\n      const gelaufen = liste.some(e => e.workflowId === z.id && e.startedAt &&\n        Date.parse(e.startedAt) >= minute - 2 * 60000 && Date.parse(e.startedAt) <= minute + 30 * 60000);\n      if (!gelaufen) funde.push({ workflowId: z.id, workflow: z.name, knoten: 'Zeitplan', kategorie: 'Nicht gelaufen', still: false,\n        text: `geplant ${b.text} Uhr, kein Lauf gefunden`, lauf: null, schluessel: z.id + '|fehlt|' + minute });\n    }\n  }\n  return funde;\n}\n\n// ---- Hauptteil ----\nconst state = $getWorkflowStaticData('global');\nstate.gemeldet = state.gemeldet || {};\nconst jetzt = Date.now();\nconst auswahl = $('Auswählen').all();\nconst gelesen = $input.all();\nconst liste = ($('Läufe auflisten').first().json.data) || [];\n\nlet funde = [];\ngelesen.forEach((item, i) => {\n  const sel = auswahl[i] && auswahl[i].json;\n  if (!sel || !sel.id) return;\n  funde = funde.concat(fehlerAusLauf(sel, item.json));\n  state.geprueft.push(sel.id);\n});\nstate.geprueft = state.geprueft.slice(-1500);\nfunde = funde.concat(nichtGelaufen(liste, jetzt));\n\n// Sperre: gleiche Kombination höchstens alle 6 Stunden\nfor (const [k, t] of Object.entries(state.gemeldet)) if (jetzt - t > 48 * 3600 * 1000) delete state.gemeldet[k];\nconst zuMelden = funde.filter(f => {\n  const k = f.schluessel || (f.workflowId + '|' + f.kategorie);\n  if (state.gemeldet[k] && jetzt - state.gemeldet[k] < SPERRE_MS) return false;\n  state.gemeldet[k] = jetzt;\n  return true;\n});\nif (!zuMelden.length) return [];\n\nconst zeile = f => `• *${f.workflow}* · ${f.knoten} · *${f.kategorie}*${f.still ? ' (Lauf stand auf „erfolgreich\")' : ''}` +\n  (f.text ? ` – ${f.text}` : '') + (f.lauf ? ` – <${BASIS}/workflow/${f.workflowId}/executions/${f.lauf}|Lauf ${f.lauf}>` : '');\nconst guthaben = zuMelden.some(f => f.kategorie === 'GUTHABEN');\nlet text = (guthaben ? ':moneybag: *Anthropic-Guthaben leer* (Konto „Anthropic Rhineshore\") – Agenten antworten nicht, bis aufgeladen ist.\\n' : '') +\n  `:mag: *Stille-Fehler-Wächter* – ${zuMelden.length} Befund${zuMelden.length === 1 ? '' : 'e'}\\n` + zuMelden.map(zeile).join('\\n');\nif (text.length > 3500) text = text.slice(0, 3450) + '\\n… (gekürzt)';\nreturn [{ json: { text } }];\n"
+   }
+  },
+  {
+   "id": "b7b87952-c51f-4d04-93c9-20b1afbaf818",
+   "name": "Nach maschinenraum",
+   "type": "n8n-nodes-base.slack",
+   "typeVersion": 2.5,
+   "position": [
+    1100,
+    0
+   ],
+   "parameters": {
+    "select": "channel",
+    "channelId": {
+     "__rl": true,
+     "mode": "id",
+     "value": "C0BJE4M6Y92"
+    },
+    "text": "={{ $json.text }}",
+    "otherOptions": {
+     "includeLinkToWorkflow": false
+    }
+   },
+   "credentials": {
+    "slackApi": {
+     "id": "4uKZNVEDjJYBbPWa",
+     "name": "Slack account"
+    }
+   }
+  },
+  {
+   "id": "0cf1f12a-e668-4387-a12c-5c29e191f1d9",
+   "name": "Hinweis",
+   "type": "n8n-nodes-base.stickyNote",
+   "typeVersion": 1,
+   "position": [
+    0,
+    -260
+   ],
+   "parameters": {
+    "width": 900,
+    "height": 220,
+    "content": "## PD - Stille-Fehler-Wächter (P4.1)\nStündlich Mo–Fr 06–21 Uhr. Liest neue Läufe der ~23 Anthropic-Workflows über die n8n-API und meldet nach #maschinenraum: credit balance, Zeitüberschreitung, Proxy-Abbruch, Invalid URL, 401/403, 429, 5xx/529, stille Knotenfehler (Lauf grün), leere Agenten-Antworten, geplante Läufe, die nicht stattfanden.\nKein KI-Modell. Speichert eigene erfolgreiche Läufe nicht. Gleicher Befund höchstens alle 6 h.\nZeitpläne stehen im Knoten „Auswerten\" (ZEITPLAN) — bei Änderung nachziehen. Quelle: Repo aiva, n8n/waechter/."
+   }
+  }
+ ],
+ "connections": {
+  "Stündlich Mo–Fr 06–21": {
+   "main": [
+    [
+     {
+      "node": "Läufe auflisten",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Läufe auflisten": {
+   "main": [
+    [
+     {
+      "node": "Auswählen",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Auswählen": {
+   "main": [
+    [
+     {
+      "node": "Lauf lesen",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Lauf lesen": {
+   "main": [
+    [
+     {
+      "node": "Auswerten",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  },
+  "Auswerten": {
+   "main": [
+    [
+     {
+      "node": "Nach maschinenraum",
+      "type": "main",
+      "index": 0
+     }
+    ]
+   ]
+  }
+ },
+ "settings": {
+  "executionOrder": "v1",
+  "timezone": "Europe/Berlin",
+  "errorWorkflow": "SdR76scsRwpxkSU0",
+  "saveDataSuccessExecution": "none",
+  "saveDataErrorExecution": "all",
+  "saveManualExecutions": false
+ }
+}
