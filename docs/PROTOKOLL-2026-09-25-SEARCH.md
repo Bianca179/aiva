@@ -106,3 +106,19 @@
          Vor dem Hochladen Cockpit neu abrufen (heute 11:08 zuletzt geändert) und nur bei unveränderter versionId ersetzen.
     - P1 für Bravo 6: nutzt Credential „Anthropic account" `nrZkUZIQhvT2REnB` (wie Findus/Centcom), nicht
       „Anthropic Rhineshore" `SAq68yfgETKLhMev`. Einstellungen per API nicht lesbar → Testlauf zeigt es.
+15. **Umsetzung nach Freigabe Schreibzugriff (A erledigt):**
+    - Wochenlauf `gIrwBH3fA49Po9It`: temporärer Test-Webhook → **aktiviert** → Test 1 (Exec 5797) scheiterte am
+      Aufrufschutz: API-Key gehört Philipps Konto → Workflow lag in Philipps Projekt, Bravo 6 erlaubt nur gleichen
+      Eigentümer. **Workflow in Biancas Projekt `qB9AeAby4SGYpgzk` übertragen** (Bravo 6 unverändert).
+    - Test 2 (Exec 5800, 12:37): **„Your credit balance is too low to access the Anthropic API"** (Bad request) im
+      Aufruf von Bravo 6 → Credential **„Anthropic account" `nrZkUZIQhvT2REnB` ohne Guthaben**. Kein Proxy-Problem.
+      Die Fehlermeldung „Bad request" im Alarmkanal stammt von diesem Test.
+    - Test-Webhook wieder entfernt; Wochenlauf aktiv (dienstags 07:00), 8 Knoten.
+    - **Cockpit `JeWWDbDK8aE8hmWW` ersetzt** (versionId vorher 8786efc2… geprüft, neu f41e0f39…): Karte
+      „NEUE AKQUISE-TARGETS · BRAVO 6". Sicherung lokal + n8n-Versionierung. Erster Cockpit-Aufruf danach wird beobachtet.
+    - **Anthropic-Inventur (aktive Workflows):**
+      „Anthropic account" `nrZk…` (KEIN GUTHABEN): Centcom, CENTCOM still (Verteiler), Findus, Bravo 6, McGonnagal, Fletcher.
+      „Anthropic Rhineshore" `SAq68…` (Proxy pd-anthropic-cache, Timeouts): Inbox-Pass, Postausgangs-Pass, CV-Intake,
+      Dossier, Router, Bravo 7, Delta 3, Dokumenttyp, Entwurf schreiben, Klick-Abgleich, LinkedIn-Pass, Monk,
+      Monk Dokumente, Termin vorbereiten, Voicespiegel (teils per HTTP direkt).
+    - Frage Bianca: Anthropic nachhaltig lösen — hier oder eigene Session? → Empfehlung eigene Session (s. Chat).
