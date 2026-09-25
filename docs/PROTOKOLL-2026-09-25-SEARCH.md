@@ -202,3 +202,10 @@
       aktiviert und ausgelöst 20:13.
     - **Bauplan Massensuche** (nur Plan + Roast): `docs/BAUPLAN-2026-09-25-interroll-massensuche.md`. Kern: Engpass ist die
       Ansprache (ca. 200 Vernetzungsanfragen/Woche), nicht die Suche (Sales Navigator 2.500 Treffer/Suche).
+29. **Websuche-Test (Findus Exec 6007, 20:12–20:15, success; Test-Workflow wieder deaktiviert):**
+    - **Websuche (Tavily) funktioniert:** 3 Suchen, je 5 Treffer mit Textauszug; Zielfirmen werden mit Domain belegt
+      (z. B. Bonfiglioli, Linde MH, MLOG, Columbus McKinnon via induux.de; Dematic/KION via statista.de), der Rest
+      sauber als ANNAHME markiert.
+    - LinkedIn: 2 von 3 Suchen je 10 Treffer; **1 Aufruf wieder ohne Keywords** (trotz Regel 1) → Vorschlag: Werkzeug
+      technisch sperren (leere Keywords gar nicht erst an Unipile senden). Booleans teils ohne Klammern/AND.
+    - Antwort 1.767 Wörter (Ziel max. 1.200) — Längengrenze wird ignoriert → Vorschlag: maxTokens senken oder Ausgabe kürzen lassen.
