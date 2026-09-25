@@ -214,3 +214,8 @@
     H79E, Findus, Bravo 6 = frei. Hinweis: Suche „title = …" findet nicht zuverlässig alle Fassungen →
     `title contains 'BAUSTELLEN' and createdTime > …` nutzen. Vorschlag an Bianca: Baustellen-Liste als Airtable-Tabelle
     (Zeilen einzeln bearbeitbar → keine Forks).
+31. **Go Bianca: Tabellen angelegt (SSOT app2lmhCxLhMkdfmN):** `Massensuche-Aufträge` `tblNbuwBmLAKCXO3T` (Name, Mandat→Mandates,
+    Sales-Navigator-URL, Suchbegriffe, Orts-IDs, Status neu/läuft/fertig/pausiert/Fehler, Treffer gesamt, Letzter Cursor,
+    Letzter Lauf, Notiz) und `Longlist-Roh` `tblmaFPacd0ifMuQ4` (Name, Titel, Firma, Ort, LinkedIn URL, Mandat, Suchauftrag,
+    Gefunden am, Status neu/dublette/gesperrt/prüfen/passt/passt nicht/übernommen, Grund, Vorsortierung, Löschen ab, Notiz).
+    Beide leer. Bianca hat eine Sales-Navigator-URL, kann sie aber nicht öffnen (nur mit Philipps Login).
