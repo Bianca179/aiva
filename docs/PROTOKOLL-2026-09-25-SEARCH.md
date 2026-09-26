@@ -340,3 +340,18 @@
       - Prompt `massensuche-vorsortierung`: Regel 3 „PLZ vor Ländernamen“, Regel 6 „keine Anführungszeichen“.
     - **BAUSTELLEN-2026-09-26:** Fork mit Sitzung „Cockpit P2“ zusammengeführt (`1kxXRnoOrQhZq_eJfLdJ-fdKaDDGIVrccrf0mvG_UmiE`).
       **Cockpit ist bis 13:00 von „Cockpit P2“ belegt.** Die Sichtungskarte wird mit dieser Sitzung abgestimmt.
+39. **26.09. 08:33, Go Bianca: Sichtung der Massensuche im Cockpit** (`JeWWDbDK8aE8hmWW`, Version fffc8279).
+    - „Cockpit P2“ ist laut Bianca fertig. BAUSTELLEN-Eintrag (`1meRHAXl7zZD09DHoTm5_V7MywQXKFYt1hfYxDaAke2Q`).
+    - Sicherung vorher: `SICHERUNG-cockpit-2026-09-26-vor-rohtreffer.json` (Scratchpad).
+    - **Neuer Lese-Knoten „Rohtreffer lesen“:** Longlist-Roh mit Vorsortierung passt und Status neu, max. 400; bei Fehler läuft das Cockpit weiter.
+    - **Mandatskarte, neuer Abschnitt „Rohtreffer Massensuche · N vorsortiert passt“:**
+      - Zeigt die neuesten 25 mit Titel, Firma, Ort, Haiku-Grund, LinkedIn-Link und Kennzeichen „1. Grad“.
+      - Jede Zeile hat ✓/✗.
+    - **Neuer Zweig „Rohtreffer (Webhook)“** `/webhook/cockpit-rohtreffer` (eigener Token):
+      - ✓ setzt in Longlist-Roh Status = passt (ansprechen), ✗ setzt passt nicht. Sonst passiert nichts, auch kein Versand.
+    - **Tests:**
+      - Lokaler Render mit Beispieldaten: ok.
+      - Falscher Token → 500, abgewiesen.
+      - Echter Klick auf recHeLGVcYanMRQ8E (Pflegehilfskraft) → passt nicht, 200.
+      - **Offen:** Anzeige im Live-Cockpit. Der Abruf ist per Basic-Auth geschützt (Credential „Cockpit Zugang“, nicht angefasst).
+        Bianca öffnet das Cockpit einmal, danach prüfe ich die Ausführung.
