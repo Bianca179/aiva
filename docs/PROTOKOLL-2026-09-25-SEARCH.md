@@ -315,3 +315,28 @@
       - Findus nennt STILL einen „aktuellen Klienten“. STILL steht nicht in `Klients` (10 Einträge geprüft), der Satz ist also unbelegt.
       - Findus meldet, der Mandatsdatensatz sei leer geliefert worden (Off-Limits ungeprüft).
       - Beides ist offen und gehört in den Findus-Prompt bzw. das Werkzeug.
+38. **26.09., Go Bianca 1–3: Philipps Briefing umgesetzt, Suche heute gestartet.**
+    - **Philipp (über Bianca):** keine Off-Limits außer Interroll. In PLZ 97 nur Schweinfurt, Würzburg, Alzenau.
+      - Beide Mandate, Feld „Off-Limits Firmen“: jetzt nur Interroll mit Vermerk.
+      - Kriterium Mitte `rec7un3gcGnInrlO5` ergänzt.
+    - **Suchaufträge** (alle „läuft“, je max. 3 ODER pro Gruppe):
+      - Süd 1–3 `rec2Ai6qJxxPcAiwz`, `recmu4aQqI9VbKVDN`, `recRMFtqaSxfKa690` (neue Begriffe, Cursor zurückgesetzt).
+      - Süd 4 Zielfirmen `recVEfBrabLLvGtAh`.
+      - Mitte 1–4 `recSwTbevjJOApfxk`, `rec5VtGcN11Vk7NEP`, `rec7tTZ6XVSQnvQVt`, `recqEWXDymb3GVk2e`.
+      - Orte Mitte: Hessen, Rheinland-Pfalz, Saarland, Mannheim, Heidelberg, Schweinfurt, Würzburg, Alzenau. Bundesländer greifen, Regierungsbezirke nicht.
+    - **Firmenfilter** (neues Feld „Firmen“ `fldnn1EEQQ3mZiNmc`, Unipile `company.include`):
+      - Test Exec 6117: 355 Treffer, alle bei Zielfirmen.
+      - Per Name falsch aufgelöst: SICK → „Sick Agency“, NORD → Indien, ifm → Frankreich.
+      - Deshalb IDs fest eingetragen (Exec 6119 geprüft): SICK 12346, Getriebebau NORD 2379977 (+ Österreich 90798383), ifm 877499, SEW + SEW Germany.
+      - Workflow bevorzugt jetzt exakte Namenstreffer.
+    - **Workflow `CbB8necdWxLu0Z7r`:**
+      - Sicherungen vor jeder Änderung: `SICHERUNG-vor-firmenfilter/-exaktmatch/-parser2/-samstag.json`.
+      - Zeitplan jetzt **Mo–Sa** 08:10/11:10/14:10/17:10 (Bianca: heute starten). Test-Webhook entfernt.
+    - **Erster voller Lauf 08:05 (Exec 6120, Mitte 2):** 10 Seiten, 246 Zeilen; 80 passt, 108 passt nicht, 33 prüfen.
+    - **Fehler und Lehre:**
+      - Auf einer Seite hat Haiku ein Anführungszeichen im Grund gesetzt → JSON kaputt → 25 Zeilen ohne Vorsortierung.
+      - Parser-Ausweichweg eingebaut (lokal mit Originalausgabe getestet: 25/25). Die 25 Zeilen sind nachgetragen.
+      - Zwei Urteile falsch: Saarland 66 als „außerhalb“ bewertet, PLZ 34 als „passt“. Beim Nachtragen auf „prüfen“ korrigiert.
+      - Prompt `massensuche-vorsortierung`: Regel 3 „PLZ vor Ländernamen“, Regel 6 „keine Anführungszeichen“.
+    - **BAUSTELLEN-2026-09-26:** Fork mit Sitzung „Cockpit P2“ zusammengeführt (`1kxXRnoOrQhZq_eJfLdJ-fdKaDDGIVrccrf0mvG_UmiE`).
+      **Cockpit ist bis 13:00 von „Cockpit P2“ belegt.** Die Sichtungskarte wird mit dieser Sitzung abgestimmt.
