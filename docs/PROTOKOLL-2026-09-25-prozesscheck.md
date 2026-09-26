@@ -147,3 +147,14 @@ Plan und Roast: `docs/BAUPLAN-2026-09-25-mandats-und-akquisegespraeche.md`.
 - Flow G Kondensate `TEzt3sVQgttVydv0` ist weiter kaputt (Langdock) und unverändert.
 
 **BAUSTELLEN:** aktuelle Fassung 21:39 in Drive `1AzQ5FDSe3l3AZLomHkbL1PhZFMjS_bUIlkE2FDoA2to`. Flow I und der MacWhisper-Eingang sind frei.
+
+## Nachtrag 26.09.
+- Header-Datei mit dem API-Key im Scratchpad gelöscht, nachdem Bianca den Key in n8n gelöscht hatte. Keine weitere Kopie gefunden.
+- **MacWhisper-Altbestand:** 24 Transkripte mit Status „neu“ und ohne Auswertung, aufgenommen vom 31.07. bis 21.09.2026.
+  - Aufteilung: 1 aus dem Juli, 7 aus dem August, 16 aus dem September.
+  - Nachlauf erst nach Biancas Bestätigung. Er braucht einen neuen API-Key.
+- **Flow G Kondensate** (`TEzt3sVQgttVydv0`, So 18:00) ist der einzige Workflow, der die Kondensate der Agenten schreibt.
+  - Gelesen werden sie von Findus, Monk, Monk Dokumente, McGonnagal, Bravo 6, Bravo 7, Delta 3 und Fletcher.
+  - Die Memory-Sitzung hat Flow G nicht verändert. Der Voicespiegel schreibt nur die Kondensate voice-lernen und daten-lernen.
+  - Reparatur vorgeschlagen: den Langdock-Aufruf durch einen direkten Claude-Aufruf ersetzen. Braucht ein Go.
+- **Übersicht „CENTCOM Wochentakt“ für Philipp** als Artifact: https://claude.ai/artifact/RydmQN9XRwnSJMqfACSPQs. Grundlage sind die Zeitpläne der aktiven Workflows, Stand 25.09. 21:02.
