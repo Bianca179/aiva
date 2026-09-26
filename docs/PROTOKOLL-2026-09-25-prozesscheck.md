@@ -225,3 +225,21 @@ Ergebnis MacWhisper-Nachlauf (Exec 6196–6222):
   - `recUAjZgQfQT4I8Pc` (14.09., Interroll Mitte): als „Intern“ eingeordnet, nichts geschrieben.
 
 **Handout nachziehen:** Heute ist Samstag, deshalb gab es um 16:40 keinen Lauf. Der erste echte Lauf ist Mo 28.09. 07:40.
+
+## 26.09. Handout ereignisgesteuert, Posteingang auch sonntags (Go Bianca 16:58)
+Vorher geprüft (16:53): Seit 16:45 hat sich an keinem betroffenen Workflow etwas geändert, es gab keine neuen Läufe, und in BAUSTELLEN war niemand parallel eingetragen. Der einzige Fehler heute war Cockpit Exec 6128 um 08:38, also vor dieser Sitzung.
+
+| Zeit | Was | Ergebnis |
+|---|---|---|
+| 16:58 | Sicherungen | `*-2026-09-26-vor-ereignis.json` für Handout nachziehen, Funnel anlegen, CV-Intake, Cockpit, Inbox-Pass, Verbrauch zählen |
+| 16:59 | PD - Handout nachziehen `7U8E8ydWDMi2Yz8t` | Drei Eingänge führen in den Code-Knoten „Eingang“. Der Zeitplan läuft täglich um 07:40 statt stündlich Mo–Fr. Beim Knopf gibt es keinen Kandidaten-Zwang und keinen Assessment-Ausschluss, Philipp entscheidet. Probeläufe ohne Schreibzugriff: 6227 Knopf Actoom → ausgewählt; 6228 falscher Token → abgewiesen; 6229 Interroll Süd (hat Handout) → nichts. |
+| 17:01 | PD - Funnel anlegen `VL6eqi6X9VN1rx0l` 98524f74 | „Erster Kandidat ohne Handout?“ (Mandat vorher 0 Funnel-Einträge und ohne Link) → „Handout anstossen“ ohne Warten. Test-Kopie `J6SFBo0W6MJ1pII2` (Exec 6230): Die Rückmeldung bleibt der letzte Knoten und damit das Ergebnis für Flow I und CENTCOM. Handout-Aufruf kam an (Exec 6231, quelle ereignis). |
+| 17:01 | CV-Intake `sC0Oha2cKFcTCjgw` 62893dd0 | Nach „Funnel-Eintrag anlegen“: „Handout anstossen“ ohne Warten, der Handout-Workflow prüft Kandidaten und Link selbst. |
+| 17:02 | Cockpit 72b7a886 | Knopf „Handout erstellen“ auf der Mandatskarte, wenn kein Handout vorhanden ist: Rückfrage, dann POST mit Token; der Knopf wird danach grau. Lokal gerendert: Knopf nur beim Mandat ohne Handout, Script-Syntax ok. |
+| 17:03 | Inbox-Pass b75f80b9 | Zusätzlicher Takt `0 0 9 * * 0` (sonntags 09:00), dazu eine Notiz am Knoten. |
+| 17:03 | Verbrauch zählen ab124614 | Wächter-ZEITPLAN: Inbox-Pass So 09:00 und Handout nachziehen täglich 07:40 ergänzt. |
+| 17:02 | Actoom-Handout (Knopf-Weg, echt) | Exec 6232: Monk hat das Handout geschrieben und den Link am Mandat eingetragen (`1ByI-2buZUvailcUUFJAX3pkWYrGbM4nezw0FcU4m0YM`). Danach Fehler in „Pruefen“: Syntaxfehler aus dem Umbau um 16:59 (Zeichenkette falsch zusammengesetzt). Behoben, alle Code-Knoten per Syntaxprüfung kontrolliert, live 17:03 (f88205ec). Die Aufgabe `recy8RxaAB6TpQi0P` habe ich von Hand nachgelegt. |
+| 17:04 | Test der restlichen Kette `Q9HfcFqEDrkOCJXK` (Monk und Aufgabe als Stubs) | Exec 6236: Prüfen → Link am Mandat → Aufgabe → Meldung in #maschinenraum. Die Meldung ging echt raus und ersetzt die fehlende von 17:02. |
+| 17:05 | Wochentakt (Artifact) | Handout: sofort, Knopf, täglich 07:40, an allen Tagen. Posteingang am Wochenende Sa und So um 09:00. |
+
+Offen: Der Fehlerweg „Melden (Fehler)“ ist nicht live getestet.
