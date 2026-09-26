@@ -158,3 +158,37 @@ Plan und Roast: `docs/BAUPLAN-2026-09-25-mandats-und-akquisegespraeche.md`.
   - Die Memory-Sitzung hat Flow G nicht verändert. Der Voicespiegel schreibt nur die Kondensate voice-lernen und daten-lernen.
   - Reparatur vorgeschlagen: den Langdock-Aufruf durch einen direkten Claude-Aufruf ersetzen. Braucht ein Go.
 - **Übersicht „CENTCOM Wochentakt“ für Philipp** als Artifact: https://claude.ai/artifact/RydmQN9XRwnSJMqfACSPQs. Grundlage sind die Zeitpläne der aktiven Workflows, Stand 25.09. 21:02.
+
+## 26.09. V1/V2 (Go Bianca: „ad 1 ja, ad 2 ja“), neuer API-Key
+Plan: `docs/BAUPLAN-2026-09-26-vorstellung-und-handout.md`. Eingetragen in BAUSTELLEN-2026-09-26, Fassung 16:11.
+
+| Zeit | Was | Ergebnis |
+|---|---|---|
+| 16:12 | Sicherung Flow I | `gwWSt4dyvyXnFgQd-2026-09-26-vor-V1.json`, Stand 178c319f |
+| 16:12–16:14 | Test V1 in der Test-Kopie `ZW3UFEDqQVlUkH68` (Stubs, McGonnagal mit festem Vorschlag, Jacoby-Transkript) | 4 Fälle, alle wie erwartet: Exec 6185 Erstgespräch „On Hold“ → keine Vorstellung, Hinweis in der Meldung · 6186 „Weiter“ → Vorstellung · 6187 Folgegespräch „Gut“ → Drive findet „Kandidatenvorstellung lang Nico Jacoby 2026-09-25“, keine neue · 6188 Folgegespräch „Absage“ → keine Vorstellung. Test-Kopie danach deaktiviert. |
+| 16:14 | Flow I live, Version 2f3fb701 (84 Knoten) | Neue Knoten „Vorstellung sinnvoll?“, „Folge: Vorschlag weiter?“, „Vorstellung vorhanden? (Drive)“ (nur lesen) und „Noch keine Vorstellung?“. Die Meldung „Auswertung melden“ nennt den Grund, wenn keine Vorstellung entsteht. |
+| 16:15 | Neuer Workflow „PD - Handout nachziehen“ `7U8E8ydWDMi2Yz8t` | Angelegt, nach `qB9AeAby4SGYpgzk` verschoben, aktiviert. Probelauf (Exec 6189, ohne Schreibzugriff) wählt genau 1 Mandat: Actoom Country Manager DACH `rec0DaXTrnPg6VDAa`, 45 im Funnel. |
+| 16:16 | „PD - Handout nachziehen“ live, Version adf810be | Test-Eingang entfernt. Erster echter Lauf nach Takt um 16:40. |
+| 16:20 | Wochentakt für Philipp (Artifact) | Neue Zeilen „Candidate Handout anlegen“ und „Kandidaten-Massensuche“ (Takt laut BAUSTELLEN 26.09.). |
+
+Nicht direkt getestet: der Fall Folgegespräch mit „weiter“ und noch keiner Vorstellung. Das ist derselbe IF-Knoten wie im getesteten Fall, nur der andere Ausgang.
+
+**MacWhisper-Altbestand, Abgleich mit den aktuellen Mandaten.** Grundlage ist eine Stichwortsuche nach Mandats- und Firmennamen im Transkripttext plus die Dateinamen. Die Zuordnung ist vorläufig, nicht vom Modell geprüft.
+
+- **Aktive Mandate:**
+  - Glas-Lerchenmüller GF, 5 Transkripte:
+    - Fuchs `rec1qjv0XQidZM1sM`
+    - Bartsch `recmiCBsEEcnT4SjJ`
+    - Markus G. `recqX5nJ2x05hyWYf`
+    - Baiker `recw9lRi6hocBX8iK`
+    - vermutlich Klientengespräch 10.09. `rech5SulY40fE1tV6`
+  - Heaten GL Vertrieb, 3 Transkripte:
+    - Pelle `reciZrTMMwHwzxRjm`
+    - 02.09. Herr Schneider `reccVfirSxNaCrfLw`
+    - Gößwein 23.07. `recUeqtZZK5oWlopg` (unsicher)
+  - Interroll Mitte, 1 Transkript: `recUAjZgQfQT4I8Pc`
+- **Geparkt:** Durable/Backhaus Assessment `recdLINMFijgT1oxM`.
+- **Unklar:** IntraFind vielleicht `rec3ZjG2yzFuPQEXc` (nur 1 Treffer).
+- **Abgeschlossene Mandate:** Cofibra (lost), 3 Transkripte: `recW5kxgFQ4tuE650`, `recTuWJzqVvPtlw8t`, `recXHaaGyaGlkfJGw`.
+- **Quantum/Invest:** 2 Transkripte, `recktyFwkWX0W0H2A`, `recudNefKtmOrOa6j`.
+- **Intern oder ohne Bezug:** 8 Transkripte, `recIuyAUULIQPneTM`, `recN3mL7Z4FiT6vBf`, `recHWh3v3nz1PjJuB`, `recmYEjpLXyAE1CQd`, `recsOAZ17T0BZ6S9E`, `reczybZ0q2nfJOccy`, `rechVfLSr1mmzWO1o`, `recyar6j0kGphL1pM`.
