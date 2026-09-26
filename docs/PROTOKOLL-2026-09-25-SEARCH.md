@@ -363,3 +363,9 @@
       - Pause zwischen den Seiten zufällig 20–40 s statt 5 s. Ein Lauf dauert damit etwa 8–10 Minuten.
       - Zeitlimit pro Lauf 20 min.
     - BAUSTELLEN `10hRd50ae1Qhcm274eAvm7MGuXSArfe_mQLw7PyT5iUU`: beide frei.
+41. **26.09. 11:25, Prüfung Lauf 11:10 (Exec 6153, Auftrag Mitte 3), nur gelesen:**
+    - Status **canceled** („timed out“) nach genau 5:00 min. n8n Cloud begrenzt eine Ausführung offenbar auf 5 Minuten; das eingestellte Zeitlimit von 20 min greift nicht.
+    - Bis zum Abbruch: 6 von 10 Seiten geholt und gespeichert (Cursor gesichert, kein Datenverlust), 139 Zeilen, alle vorsortiert
+      (36 passt, 78 passt nicht, 25 prüfen). Der Abbruch kam in der Pause.
+    - Ursache: 10 Seiten mit 20–40 s Pause (Änderung 09:07) passen nicht in 5 Minuten.
+    - Nichts geändert. Vorschlag an Bianca: 5 Seiten pro Lauf und doppelt so viele Läufe (Tagesmenge bleibt ≈ 1.000).
