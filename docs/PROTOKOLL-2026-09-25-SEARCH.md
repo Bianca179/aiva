@@ -297,3 +297,21 @@
       - **Lehre im Prompt** `massensuche-vorsortierung`: Regel 2 „Gebiet = K.o., immer passt nicht“ (Haiku hatte Würzburg „passt“ gegeben),
         Regel 6 „genau ein JSON-Array, keine Korrektur“.
     - Diagnose-Aufträge `recUHrf2AwJAs3Wxe`, `recNYZZapDspAk4XC`, `recCob5fZJZkoH9UY`, `recZ2mHyeIRYKjLeZ`, `recHMcIhzJb4k3wsx` bleiben pausiert und werden nicht gelöscht.
+36. **Go Bianca (25.09., 22:12): Dauerbetrieb `PD - Massensuche`.**
+    - Test-Webhook entfernt (Sicherung `SICHERUNG-vor-dauerbetrieb.json`).
+    - Aufträge A/B/C auf „läuft“. Der Workflow wechselt reihum: Er nimmt jeweils den Auftrag, der am längsten nicht dran war.
+    - Aktiv seit 26.09. 07:34 (Version 75bbbc87), erster Lauf **Mo 28.09. 08:10**.
+    - Sichtung laut Bianca **über das Cockpit**. Die Planung läuft, gebaut ist noch nichts.
+    - Cockpit `JeWWDbDK8aE8hmWW` und `PD - Cockpit-Kandidat` `Fn1N8PrNcFLlkXon` nur gelesen.
+37. **26.09.: Philipps Suchbriefing gefunden.** Centcom hat es am 25.09. um 19:38 an Findus gegeben (Exec 5975, Mandat Mitteldeutschland `recRC8lOKc4opvvOY`).
+    - Titel: Gebietsverkaufsleiter, Gebietsleiter, Area/Regional Sales Manager, Sales Engineer, Vertriebsingenieur,
+      Technical Sales Manager, (Key) Account Manager, technischer Außendienst.
+    - Branchen: Intralogistik, Fördertechnik, Antriebs-/Automatisierungstechnik, Material Handling, Maschinen-/Anlagenbau.
+      Direkte Fördertechnik-Erfahrung ist nicht nötig.
+    - Zielfirmen: Rulmeca, Itoh Denki, SEW-EURODRIVE, NORD, Lenze, Bonfiglioli, Bosch Rexroth, Festo, SICK, ifm, Turck, Balluff,
+      Pilz, Beckhoff, SSI Schäfer, Dematic, TGW, Vanderlande, BEUMER, Jungheinrich, STILL.
+    - Priorität: eigenes Gebiet, Hunter-Anteil.
+    - **Befund Findus-Ausgabe 5975:**
+      - Findus nennt STILL einen „aktuellen Klienten“. STILL steht nicht in `Klients` (10 Einträge geprüft), der Satz ist also unbelegt.
+      - Findus meldet, der Mandatsdatensatz sei leer geliefert worden (Off-Limits ungeprüft).
+      - Beides ist offen und gehört in den Findus-Prompt bzw. das Werkzeug.
