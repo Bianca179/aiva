@@ -355,3 +355,11 @@
       - Echter Klick auf recHeLGVcYanMRQ8E (Pflegehilfskraft) → passt nicht, 200.
       - **Offen:** Anzeige im Live-Cockpit. Der Abruf ist per Basic-Auth geschützt (Credential „Cockpit Zugang“, nicht angefasst).
         Bianca öffnet das Cockpit einmal, danach prüfe ich die Ausführung.
+40. **26.09. 09:07: Cockpit-Anzeige bestätigt, Pause erhöht.**
+    - Bianca sieht „Rohtreffer Massensuche · 34“ (Süd).
+    - Ausführung 6130: Mitte zeigte nur 66, weil der Airtable-Knoten bei 100 abschnitt.
+      Behoben: „Rohtreffer lesen“ liest jetzt alle Zeilen (Cockpit-Version 13f54d10; Sicherung `SICHERUNG-cockpit-2026-09-26-vor-returnall.json`).
+    - Go Bianca, Massensuche (Version 6f511d84; Sicherung `SICHERUNG-vor-pause.json`):
+      - Pause zwischen den Seiten zufällig 20–40 s statt 5 s. Ein Lauf dauert damit etwa 8–10 Minuten.
+      - Zeitlimit pro Lauf 20 min.
+    - BAUSTELLEN `10hRd50ae1Qhcm274eAvm7MGuXSArfe_mQLw7PyT5iUU`: beide frei.
