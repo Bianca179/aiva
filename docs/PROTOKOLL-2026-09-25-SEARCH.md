@@ -369,3 +369,8 @@
       (36 passt, 78 passt nicht, 25 prüfen). Der Abbruch kam in der Pause.
     - Ursache: 10 Seiten mit 20–40 s Pause (Änderung 09:07) passen nicht in 5 Minuten.
     - Nichts geändert. Vorschlag an Bianca: 5 Seiten pro Lauf und doppelt so viele Läufe (Tagesmenge bleibt ≈ 1.000).
+42. **26.09. 11:52, Go Bianca: Massensuche an das 5-Minuten-Limit angepasst** (Version 2fbb4d5e; Sicherung `SICHERUNG-vor-5seiten.json`).
+    - Max. 5 Seiten je Lauf, Pause 15–30 s. Erwartete Dauer etwa 3,5 min (ca. 18 s Verarbeitung pro Seite).
+    - Zeitplan Mo–Sa 08:10/09:40/11:10/12:40/14:10/15:40/17:10/18:40, also 8 × 125 = max. 1.000 Profile pro Tag.
+    - BAUSTELLEN `1w4l0z_pzNoPYdp8fmjjlxL5Q0hRp32SOPLd36i4gUms`: frei, mit Hinweis an alle Sitzungen zum 5-Minuten-Limit von n8n Cloud.
+    - Prüfung des Laufs um 12:40 ist eingeplant (Erinnerung 12:50).
