@@ -192,3 +192,36 @@ Nicht direkt getestet: der Fall Folgegespräch mit „weiter“ und noch keiner 
 - **Abgeschlossene Mandate:** Cofibra (lost), 3 Transkripte: `recW5kxgFQ4tuE650`, `recTuWJzqVvPtlw8t`, `recXHaaGyaGlkfJGw`.
 - **Quantum/Invest:** 2 Transkripte, `recktyFwkWX0W0H2A`, `recudNefKtmOrOa6j`.
 - **Intern oder ohne Bezug:** 8 Transkripte, `recIuyAUULIQPneTM`, `recN3mL7Z4FiT6vBf`, `recHWh3v3nz1PjJuB`, `recmYEjpLXyAE1CQd`, `recsOAZ17T0BZ6S9E`, `reczybZ0q2nfJOccy`, `rechVfLSr1mmzWO1o`, `recyar6j0kGphL1pM`.
+
+## 26.09. Flow G, MacWhisper-Nachlauf, alle Unterlagen im Cockpit (Go Bianca)
+
+| Zeit | Was | Ergebnis |
+|---|---|---|
+| 16:20–16:28 | Flow G `TEzt3sVQgttVydv0`, Test-Kopie `lrktSBChniROTADu` (Stubs) | Exec 6191: thinking verbrauchte das Tokenbudget, Texte abgeschnitten → `thinking: disabled`. 6192–6194: Philipp-Kondensat über 2.500 Zeichen und mit Kandidatendetails → Regeln im Systemtext geschärft. 6195: alle 6 gültig (philipp 2.021 Zeichen; bravo 6, fletcher, findus, msgonnagal, bravo 7). Sicherung `TEzt3sVQgttVydv0-2026-09-26-vorher.json`. |
+| 16:29 | Flow G live, Version 98f8c728 | Der Knoten „CENTCOM destillieren“ (Langdock) ist deaktiviert und umbenannt. Neu: „Destillieren (Claude direkt)“ mit Sonnet 5 über Anthropic Rhineshore. „Antwort parsen“ versteht jetzt die Claude-Antwort. Fehler-Workflow gesetzt. Letzter Stand der Kondensate war der 09.08.; nächster Lauf So 27.09. 18:00. |
+| 16:31–16:45 | MacWhisper-Nachlauf `GBrkwcgGdxyPjBRz` (Kopie von Flow I, danach deaktiviert) | Abgeschaltet waren Aufgaben, Profil, Vorstellung, Bravo 7, Slack und Stufenwechsel. Details siehe Liste unter der Tabelle. |
+| 16:45 | Airtable Transkripte | Die übrigen 15 MacWhisper-Transkripte stehen auf „archived“: Cofibra (3), Quantum (2), intern (8), Durable, IntraFind?. |
+| 16:40 | Airtable Funnel | Neues Feld „Kandidatenvorstellung Drive Link“ `fldmSAHM8HsDv8rsb`. Jacoby und Gerlach: Profil- und Vorstellungs-Link von Hand nachgetragen (Doc-IDs aus Exec 5991/5993 und 5872/5874). |
+| 16:46 | Flow I e49a7292 | Nebenzweige „Profil-Link da?“ → „Profil-Link eintragen (Funnel)“ und „Vorstellung-Link da?“ → „Vorstellung-Link eintragen (Funnel)“. Test Exec 6225 in der Test-Kopie. |
+| 16:46 | Dossier bauen 6f22f0cc | **Ursache des fehlenden Profil-Links:** Das IF prüfte `$json.Mandate`. Airtable liefert das Feld aber unter `fields`, dadurch war die Bedingung immer falsch. Kein Funnel hatte je einen Profil-Link. Korrigiert auf `($json.fields || $json).Mandate`. |
+| 16:46 | PD - Termin vorbereiten a12d17f3 | „Termin schreiben“ schreibt „Briefing-Link“. Vorher wurde der Link berechnet, aber nie gespeichert, deshalb hat das Cockpit nie einen Briefing-Knopf gezeigt (Feld nur bei 1 Termin befüllt). |
+| 16:46 | PD - Cockpit 5d62aae6 | „Funnel lesen“ liest das neue Feld, beim Kandidaten erscheint der Link „Vorstellung“, wenn er vorhanden ist. Lokal mit Beispieldaten gerendert: Vorstellungs- und Profil-Link erscheinen, kein falscher „fehlt“-Hinweis. |
+
+Sicherungen: `*-2026-09-26-vor-cockpitdocs.json`.
+
+Ergebnis MacWhisper-Nachlauf (Exec 6196–6222):
+- 7 Scorecards:
+  - Glas-Lerchenmüller:
+    - Fuchs, On Hold
+    - Bartsch, On Hold
+    - Markus Grasecker, On Hold, Person neu angelegt
+    - Baiker, Weiter
+  - Heaten:
+    - Pelle, On Hold
+    - Schneider, Weiter
+    - Ralf Gößwein, On Hold, Person neu angelegt; als Datum steht das Importdatum 07.09. statt des Gesprächsdatums 23.07.
+- Nicht zugeordnet:
+  - `rech5SulY40fE1tV6` (10.09.): als Kandidat „Zeindlinger“ für Head of Field Sales erkannt, Person unklar, nichts geschrieben.
+  - `recUAjZgQfQT4I8Pc` (14.09., Interroll Mitte): als „Intern“ eingeordnet, nichts geschrieben.
+
+**Handout nachziehen:** Heute ist Samstag, deshalb gab es um 16:40 keinen Lauf. Der erste echte Lauf ist Mo 28.09. 07:40.
